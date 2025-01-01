@@ -17,10 +17,7 @@
                     <td>{{ $categories->firstItem() + $index }}</td>
                     <td>{{ $category->name }}</td>
                     <td>{{ $category->slug }}</td>
-                    <td
-                        style="max-width: 600px; /* Set the max width you desire */
-    overflow: hidden; /* Prevents overflow of text */
-    text-overflow: ellipsis">
+                    <td style="max-width: 600px; overflow: hidden; text-overflow: ellipsis">
                         <div style="max-height: 100px; overflow: auto;display: block;">
                             {!! $category->description !!}
                         </div>
