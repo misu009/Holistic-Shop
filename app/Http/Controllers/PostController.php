@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ActivityLogger;
 use App\Models\Post;
 use App\Models\PostCategory;
 use Illuminate\Http\Request;
@@ -63,6 +64,8 @@ class PostController extends Controller
             }
         }
 
+        ActivityLogger::log('Created a post', 'Post', $post->id);
+
         return redirect()->route('admin.posts.index')->with('success', 'Post created successfully');
     }
 
@@ -116,6 +119,8 @@ class PostController extends Controller
             }
         }
 
+        ActivityLogger::log('Updated a post', 'Post', $post->id);
+
         return redirect()->route('admin.posts.edit', ['post' => $post->id])->with('success', 'Post updated successfully');
     }
 
@@ -130,6 +135,7 @@ class PostController extends Controller
             }
         }
         $post->delete();
+        ActivityLogger::log('Created a post', 'Post', $post->id);
         return redirect()->back()->with('success', 'Post deleted with success');
     }
 

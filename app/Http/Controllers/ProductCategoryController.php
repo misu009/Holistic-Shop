@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ActivityLogger;
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -41,7 +42,8 @@ class ProductCategoryController extends Controller
             $path = $request->file('picture')->store('shop-categories', 'public');
             $productCategory['picture'] = $path;
         }
-        ProductCategory::create($productCategory);
+        $productCategory = ProductCategory::create($productCategory);
+        ActivityLogger::log('Added a new product category', 'ProductCategory', $productCategory->id);
         return redirect()->route('admin.shop-categories.index')->with('success', 'Product category created successfully');
     }
 
@@ -90,6 +92,7 @@ class ProductCategoryController extends Controller
         }
 
         $productCategory->save();
+        ActivityLogger::log('Updated a product category', 'ProductCategory', $productCategory->id);
         return redirect()->route('admin.shop-categories.edit', ['productCategory' => $productCategory->id])->with('success', 'Category updated with success');
     }
 
@@ -103,6 +106,7 @@ class ProductCategoryController extends Controller
             Storage::delete($picturePath);
         }
         $productCategory->delete();
+        ActivityLogger::log('Deleted a product category', 'ProductCategory', $productCategory->id);
         return back()->with('success', 'Product category deleted successfully');
     }
 }

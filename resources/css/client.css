@@ -1,0 +1,436 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+:root {
+    --col1: #8afff9;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    width: 100vw !important;
+    background-color: black;
+}
+
+.navbar {
+    font-size: 16px;
+    height: 65px !important;
+    background-color: black !important;
+}
+
+footer {
+    background-color: black;
+}
+
+.homepage {
+    background-color: black;
+}
+
+.hero-section {
+    background: url("/images/client/hero-background.png") no-repeat center
+        center;
+    background-size: cover;
+    width: 100%;
+    height: 100vh; /* Full height */
+    color: white; /* Adjust text color */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+}
+.hero-left {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row-start: 1;
+    z-index: 2;
+    color: white;
+}
+
+.hero-right {
+    grid-column-start: 3;
+    grid-column-end: 6;
+    grid-row-start: 1;
+    background-image: url("/images/client/hero-rectangle.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    z-index: 1;
+}
+
+.rounded-container {
+    background-color: red;
+    padding-left: 4rem;
+    border-radius: 0px 110px 110px 0px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    margin-top: 40vh;
+}
+
+.hero-text-1 {
+    font-size: 22px;
+}
+
+.hero-text-2 {
+    font-size: 40px;
+}
+
+.our-mision {
+    color: white;
+}
+
+.our-mision-texts h2 {
+    color: var(--col1);
+}
+
+.our-mision-content {
+    background: url("/images/client/our-mision-bg.png") no-repeat center center;
+    background-size: cover;
+    width: 100%;
+    height: 75vh;
+}
+
+ul.info-list {
+    list-style: none; /* Remove default bullets */
+    padding: 0;
+    margin: 0;
+}
+
+ul.info-list li {
+    display: flex;
+    align-items: flex-start; /* Aligns items to the top */
+    gap: 10px; /* Space between bullet and text */
+    color: white;
+    font-size: 16px;
+}
+
+ul.info-list li::before {
+    content: "";
+    width: 16px; /* Adjust bullet size */
+    height: 16px;
+    border: 2px solid var(--col1); /* Blue outline */
+    border-radius: 50%; /* Makes it circular */
+    display: inline-block;
+    flex-shrink: 0; /* Prevents resizing */
+    margin-top: 4px; /* Adjusts bullet alignment */
+}
+
+ul.info-list-left {
+    list-style: none; /* Remove default bullets */
+    padding: 0;
+    margin: 0;
+}
+
+ul.info-list-left li {
+    display: flex;
+    align-items: flex-start; /* Align bullet with top of text */
+    gap: 10px; /* Space between text and bullet */
+    flex-direction: row; /* Moves bullet to the right */
+    color: white;
+    font-size: 16px;
+    text-align: right; /* Align text to the right */
+}
+
+ul.info-list-left li::after {
+    content: "";
+    width: 16px; /* Adjust bullet size */
+    height: 16px;
+    border: 2px solid var(--col1); /* Blue outline */
+    border-radius: 50%; /* Makes it circular */
+    display: inline-block;
+    flex-shrink: 0; /* Prevents resizing */
+    margin-top: 4px; /* Adjusts bullet alignment */
+}
+
+.about-us {
+    background: url("/images/client/cine-suntem-noi-bg.png") no-repeat center
+        center;
+    background-size: cover;
+    width: 100%;
+    padding: 50px 0;
+}
+
+.about-us-content {
+    height: 100vh;
+}
+
+.about-us-images {
+    position: relative;
+}
+
+.scrollable-paragraph {
+    max-height: 40vh;
+    overflow-y: auto;
+}
+
+.image-about-us {
+    position: absolute;
+    height: auto;
+    border-radius: 10px;
+    opacity: 0.8;
+}
+
+.image-about-us-1 {
+    width: 41%;
+    top: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.image-about-us-2 {
+    width: 25%;
+    top: 19%;
+    left: 18%;
+}
+
+.image-about-us-3 {
+    width: 33.34%;
+    top: 50%;
+    left: 29.8%;
+}
+
+.image-about-us-4 {
+    width: 20%;
+    top: 64%;
+    left: 55%;
+}
+
+.image-about-us-5 {
+    left: 18%;
+    top: 66.67%;
+    width: 20%;
+}
+
+.blog-section {
+    background: url("/images/client/blog-bg.png") no-repeat center center;
+    background-size: cover;
+    width: 100%;
+    padding: 50px 0;
+}
+
+.image-box {
+    border: 1px solid #60c9d8;
+    border-radius: 20px;
+    padding: 10px;
+    position: relative;
+    height: inherit;
+    overflow: hidden;
+}
+
+.image-box > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-box p {
+    font-size: 20px;
+}
+
+.image-box p,
+.image-box h1 {
+    position: absolute;
+    bottom: 10px; /* Adjust as needed */
+    left: 10px; /* Adjust as needed */
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.blog-images-1 {
+    height: 500px;
+    position: relative;
+}
+.blog-images-2 {
+    height: 500px;
+    position: relative;
+}
+
+.text-container {
+    padding: 20px;
+}
+.btn-custom {
+    background-color: #b96e2e;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+}
+.btn-custom:hover {
+    background-color: #9a5c25;
+}
+
+.product-section {
+    background: url("/images/client/shop-main-bg.png") no-repeat center center;
+    background-size: cover;
+    min-height: 80vh;
+}
+
+.product-container {
+    background: url("images/client/shop-main.png");
+    background-size: cover;
+    background-position: center;
+    border-radius: 20px;
+    padding: 50px;
+}
+
+.product-container a {
+    color: var(--col1) !important;
+}
+
+.product-bg {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 105px;
+    border-color: black !important;
+}
+
+.border-golden {
+    border: black;
+    border-width: 10px;
+}
+
+/* .card {
+    position: relative;
+    background: transparent;
+    border-radius: 15px;
+    padding: 2px; 
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 15px;
+    padding: 2px; 
+    background: linear-gradient(
+        to right,
+        #6b2d14,
+        #8c5125,
+        #a56a34,
+        #d1a269,
+        #e0c08e
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+} */
+
+.my-gradient-card {
+    position: relative;
+    background: transparent;
+    border-radius: 15px;
+    padding: 2px; /* To make space for the border */
+}
+
+.my-gradient-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 15px;
+    padding: 2px; /* Adjust the border thickness */
+    background: linear-gradient(
+        to right,
+        #6b2d14,
+        #8c5125,
+        #a56a34,
+        #d1a269,
+        #e0c08e
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+@media (max-width: 1024px) {
+    .hero-section {
+        height: 80vh;
+    }
+    .rounded-container {
+        margin-top: 50vh;
+        padding-left: 1rem;
+    }
+    .hero-text-1 {
+        font-size: 16px;
+    }
+
+    .hero-text-2 {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-text-1 {
+        font-size: 12px;
+    }
+    .hero-text-2 {
+        font-size: 18px;
+    }
+    .rounded-container {
+        margin-top: 33vh;
+    }
+    .hero-lotus {
+        height: 150px;
+    }
+    .hero-left {
+        grid-column-end: 5;
+    }
+    .hero-right {
+        grid-column-start: 2;
+    }
+    .our-mision-content {
+        height: 50vh;
+    }
+
+    .blog-images-1 {
+        height: 300px;
+    }
+    .blog-images-2 {
+        height: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .image-about-us-1 {
+        width: 80%;
+        top: 15%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .image-about-us-2 {
+        width: 70%;
+        top: 30%;
+        left: 15%;
+    }
+
+    .image-about-us-3 {
+        width: 70%;
+        top: 50%;
+        left: 15%;
+    }
+
+    .image-about-us-4 {
+        width: 60%;
+        top: 70%;
+        left: 20%;
+    }
+
+    .image-about-us-5 {
+        width: 60%;
+        top: 85%;
+        left: 15%;
+    }
+
+    .blog-images-1 {
+        height: 150px;
+        left: 15%;
+        clip-path: inset(0px 15% 0px 0px);
+    }
+    .blog-images-2 {
+        height: 150px;
+        left: -15%;
+    }
+}

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ActivityLogger;
 use App\Models\Collaborator;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -49,7 +50,8 @@ class CollaboratorController extends Controller
             $validated['picture'] = $request->input('user-picture');
         }
 
-        Collaborator::create($validated);
+        $collaborator = Collaborator::create($validated);
+        ActivityLogger::log('Added a new collaborator', 'Collaborator', $collaborator->id);
         return redirect()->route('admin.collaborators.index')->with('success', 'Collaborator created successfully');
     }
 
@@ -92,6 +94,7 @@ class CollaboratorController extends Controller
         }
 
         $collaborator->update($request->only(['name', 'short_description', 'long_description', 'email', 'phone_number']));
+        ActivityLogger::log('Updated a collaborator', 'Collaborator', $collaborator->id);
         return redirect()->route('admin.collaborators.edit', $collaborator->id)->with('success', 'Collaborator updated successfully');
     }
 
@@ -102,6 +105,7 @@ class CollaboratorController extends Controller
     {
         $this->deleteCollaboratorImage($collaborator->picture);
         $collaborator->delete();
+        ActivityLogger::log('Deleted a collaborator', 'Collaborator', $collaborator->id);
         return redirect()->route('admin.collaborators.index')->with('success', 'Collaborator deleted successfully');
     }
 

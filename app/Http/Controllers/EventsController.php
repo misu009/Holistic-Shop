@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ActivityLogger;
 use App\Models\Collaborator;
 use App\Models\Events;
 use App\Traits\admin\MediaContentTrait;
@@ -57,6 +58,7 @@ class EventsController extends Controller
             'ends_at' => $request->ends_at,
             'price' => $request->price,
         ]);
+        ActivityLogger::log('Added a new event', 'Event', $event->id);
 
         foreach ($request->primary_collaborators as $collaboratorId) {
             $event->collaborators()->attach($collaboratorId, ['is_primary' => true]);
@@ -124,6 +126,7 @@ class EventsController extends Controller
             'ends_at' => $request->ends_at,
             'price' => $request->price,
         ]);
+        ActivityLogger::log('Updated an event', 'Event', $event->id);
 
         $event->collaborators()->detach();
         foreach ($request->primary_collaborators as $collaboratorId) {
@@ -160,6 +163,7 @@ class EventsController extends Controller
             }
         }
         $event->delete();
+        ActivityLogger::log('Deleted an event', 'Event', $event->id);
         return back()->with('success', 'Event deleted successfully');
     }
 

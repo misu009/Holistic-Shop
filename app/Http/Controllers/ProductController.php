@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ActivityLogger;
 use App\Models\CategoryProduct;
 use App\Models\Product;
 use App\Models\ProductCategory;
@@ -54,6 +55,7 @@ class ProductController extends Controller
             'user_id' => auth()->id(),
             'price' => $request->price,
         ]);
+        ActivityLogger::log('Added a new product', 'Product', $product->id);
 
         $product->categories()->attach($request->product_category);
 
@@ -106,6 +108,7 @@ class ProductController extends Controller
             'description' => $request->description,
             'price' => $request->price,
         ]);
+        ActivityLogger::log('Updated a product', 'Product', $product->id);
 
         $product->categories()->detach();
         $product->categories()->attach($request->product_category);
@@ -137,6 +140,7 @@ class ProductController extends Controller
             }
         }
         $product->delete();
+        ActivityLogger::log('Deleted a product', 'Product', $product->id);
         return back()->with('success', 'Product deleted successfully');
     }
 
@@ -246,12 +250,14 @@ class ProductController extends Controller
     public function destroyImage($productId, $imageId)
     {
         $this->deleteImage($productId, $imageId, Product::class);
+        ActivityLogger::log('Image order changed', 'Product', $productId);
         return redirect()->route('admin.products.edit', $productId)->with('success', 'Image deleted successfully');
     }
 
     public function updateImage(Request $request, $productId, $imageId)
     {
         $this->changeImageOrder($productId, $imageId, Product::class);
+        ActivityLogger::log('Image order changed', 'Product', $productId);
         return redirect()->route('admin.products.edit', $productId)->with('success', 'Image order updated successfully');
     }
 }

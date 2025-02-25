@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CollaboratorController;
 use App\Http\Controllers\EventsController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostCategoryController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductCategoryController;
@@ -25,13 +26,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get("/", function () {
-    dd('home');
-})->name('home');
-
 Route::get('/login', [LoginController::class, 'show'])->name('sign.in.show');
 Route::post('/login', [LoginController::class, 'login'])->name('sign.in');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::get("/", [HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');

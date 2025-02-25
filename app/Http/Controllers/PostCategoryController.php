@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ActivityLogger;
 use App\Models\PostCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -44,7 +45,8 @@ class PostCategoryController extends Controller
             $path = $request->file('picture')->store('post-categories', 'public');
             $postCategory['picture'] = $path;
         }
-        PostCategory::create($postCategory);
+        $category = PostCategory::create($postCategory);
+        ActivityLogger::log('Created a post category', 'PostCategory', $category->id);
         return redirect()->route('admin.blog-categories.index')->with('success', 'Blog category created successfully');
     }
 
@@ -96,6 +98,7 @@ class PostCategoryController extends Controller
         }
 
         $postCategory->save();
+        ActivityLogger::log('Updated a post category', 'PostCategory', $postCategory->id);
         return redirect()->route('admin.blog-categories.edit', ['postCategory' => $postCategory->id])->with('success', 'Category updated with success');
     }
 
@@ -108,6 +111,7 @@ class PostCategoryController extends Controller
             Storage::delete('public/' . $postCategory->picture);
         }
         $postCategory->delete();
+        ActivityLogger::log('Deleted a post category', 'PostCategory', $postCategory->id);
         return redirect()->route('admin.blog-categories.index')->with('success', 'Category deleted with success');
     }
 }

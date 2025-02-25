@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ActivityLogger;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -32,7 +33,8 @@ class UserController extends Controller
             $path = $request->file('picture')->store('users', 'public');
             $user['picture'] = $path;
         }
-        User::create($user);
+        $user = User::create($user);
+        ActivityLogger::log('Added a new user', 'User', $user->id);
         return redirect()->back()->with('success', 'User created successfully');
     }
 
@@ -85,6 +87,7 @@ class UserController extends Controller
             $user->picture = $path;
         }
         $user->save();
+        ActivityLogger::log('Updated a user', 'User', $user->id);
         return redirect()->back()->with('success', 'User updated successfully');
     }
 
@@ -98,6 +101,7 @@ class UserController extends Controller
             Storage::delete('public/' . $user->picture);
         }
         $user->delete();
+        ActivityLogger::log('Deleted a user', 'User', $user->id);
         return redirect()->back()->with('succes', 'User deleted with success');
     }
 }

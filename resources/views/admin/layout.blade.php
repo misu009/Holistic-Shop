@@ -10,7 +10,7 @@
     @vite(['resources/css/app.css', 'resources/css/admin.css', 'resources/js/app.js'])
 </head>
 
-<body class="">
+<body>
     @php
         $navLinks = [
             ['name' => 'Home', 'url' => '/admin'],
@@ -27,7 +27,7 @@
 
     <div class="d-flex ">
         <x-admin.sidebar :links="$navLinks" />
-        <div class="flex-grow-1 content">
+        <div id="content" class="flex-grow-1 content content-margin">
             <div class="toggle-sidebar p-2 mb-2 bg-dark text-white">
                 <i class="bi bi-list"></i> Toggle Sidebar
             </div>
@@ -38,8 +38,10 @@
 
 <script>
     const sidebar = document.getElementById('sidebar');
+    const content = document.getElementById('content');
     document.querySelector('.toggle-sidebar').addEventListener('click', () => {
         sidebar.classList.toggle('d-none');
+        content.classList.toggle('content-margin');
     });
 </script>
 

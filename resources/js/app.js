@@ -2,17 +2,23 @@ import $ from "jquery";
 import * as bootstrap from "bootstrap";
 import "./bootstrap";
 import "../images/auth/security-key.jpg";
+import "../images/client/LOGO-NAV-BAR.png";
+import "../images/client/logo-footer.png";
+import "../images/client/navbar-logo-2.png";
+import "../images/client/navbar-logo-2-part2.png";
+import "../images/client/hero-background.png";
 import "../images/email-1-svgrepo-com.svg";
 import "../images/lock.svg";
 import "../css/app.css";
-import "../css/admin.css";
+// import "../css/admin.css";
+// import "../css/client.css";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 window.$ = window.jQuery = $;
 window.bootstrap = bootstrap;
 
-import "select2"; // Select2 comes AFTER jQuery
+import "select2";
 import "/node_modules/select2/dist/css/select2.css";
 import select2 from "select2";
 select2();
