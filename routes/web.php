@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ClientColloboratorController;
+use App\Http\Controllers\ClientPostController;
 use App\Http\Controllers\CollaboratorController;
 use App\Http\Controllers\EventsController;
 use App\Http\Controllers\HomeController;
@@ -9,8 +11,8 @@ use App\Http\Controllers\PostCategoryController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
-use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +33,8 @@ Route::post('/login', [LoginController::class, 'login'])->name('sign.in');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get("/", [HomeController::class, 'index'])->name('home');
+Route::get('/posts', [ClientPostController::class, 'index'])->name('client.posts.index');
+Route::get('/collaborators', [ClientColloboratorController::class, 'index'])->name('client.collaborators.index');
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
@@ -93,6 +97,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/events/{event}', [EventsController::class, 'edit'])->name('admin.events.edit');
     Route::put('/events/{event}', [EventsController::class, 'update'])->name('admin.events.update');
     Route::delete('/events/{event}', [EventsController::class, 'destroy'])->name('admin.events.destroy');
+
+    Route::get('/settings', [SettingController::class, 'index'])->name('admin.settings.index');
+    Route::post('/settings', [SettingController::class, 'update'])->name('admin.settings.update');
 });
 
 Route::get('/test', function () {

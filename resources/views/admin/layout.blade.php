@@ -22,6 +22,7 @@
             ['name' => 'Products', 'url' => '/admin/products'],
             ['name' => 'Collaborators', 'url' => '/admin/collaborators'],
             ['name' => 'Events', 'url' => '/admin/events'],
+            ['name' => 'Settings', 'url' => '/admin/settings'],
         ];
     @endphp
 

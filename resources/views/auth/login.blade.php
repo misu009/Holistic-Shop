@@ -13,8 +13,7 @@
     <div class="d-flex justify-content-center bg-white align-items-center vh-100">
         <div class="p-2 border bg-light rounded d-flex shadow-lg col-lg-6 col m-4">
             <div class="col-lg-6 p-lg-3 p-1 d-lg-flex justify-content-center align-items-center d-none">
-                <img src="{{ Vite::asset('resources/images/auth/security-key.jpg') }}" style="width: 70%"
-                    alt="Security Key">
+                <img src="{{ asset('images/auth/security-key.jpg') }}" style="width: 70%" alt="Security Key">
             </div>
             <div class="col-lg-6 col">
                 <x-alert-notification />
@@ -25,8 +24,7 @@
                     {{-- <input class="rounded" type="email" name="email" id="email" placeholder="email"> --}}
                     <div class="input-group mt-4 p-3">
                         <div class="d-flex align-items-center justify-content-center me-2">
-                            <img height="30px" src="{{ Vite::asset('resources/images/email-1-svgrepo-com.svg') }}"
-                                alt="email">
+                            <img height="30px" src="{{ asset('images/email-1-svgrepo-com.svg') }}" alt="email">
                         </div>
                         <input type="email" name="email" id="email"
                             style="background-color: rgb(224,
@@ -35,7 +33,7 @@
                     </div>
                     <div class="input-group mb-3 p-3">
                         <div class="d-flex align-items-center justify-content-center me-2">
-                            <img height="25px" src="{{ Vite::asset('resources/images/lock.svg') }}" alt="password">
+                            <img height="25px" src="{{ asset('images/lock.svg') }}" alt="password">
                         </div>
                         <input type="password" name="password" id="password"
                             style="background-color: rgb(224, 224, 224)" class="form-control"

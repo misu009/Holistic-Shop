@@ -20,8 +20,6 @@
     <footer>
         @include('components.client.footer')
     </footer>
-
-    <script src="{{ asset('js/app.js') }}"></script>
 </body>
 
 </html>

@@ -8,8 +8,8 @@
         <form action="{{ route('admin.posts.update', ['post' => $post->id]) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
-            <x-admin.input label-name="Post Title" attributes-param="type=text id=title value={{ $post->title }} required"
-                name="title" />
+            <x-admin.input label-name="Post Title" attributes-param="type=text id=title required"
+                value="{!! old('title') ? old('title') : $post->title !!}" name="title" />
 
             <div>
                 <label for="post_category">Post Categories</label>

@@ -10,6 +10,10 @@ body {
     background-color: black;
 }
 
+main {
+    margin-top: 65px;
+}
+
 .navbar {
     font-size: 16px;
     height: 65px !important;
@@ -86,6 +90,17 @@ footer {
     height: 75vh;
 }
 
+/* Fade-in effect */
+.fade-in {
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+}
+
+/* When the element is in the viewport, the opacity changes to 1 */
+.fade-in.visible {
+    opacity: 1;
+}
+
 ul.info-list {
     list-style: none; /* Remove default bullets */
     padding: 0;
@@ -144,14 +159,17 @@ ul.info-list-left li::after {
     background-size: cover;
     width: 100%;
     padding: 50px 0;
-}
-
-.about-us-content {
-    height: 100vh;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1s ease, transform 1s ease;
 }
 
 .about-us-images {
     position: relative;
+}
+
+.about-us-images img {
+    height: 80vh;
 }
 
 .scrollable-paragraph {
@@ -274,12 +292,12 @@ ul.info-list-left li::after {
     color: var(--col1) !important;
 }
 
-.product-bg {
+/* .product-bg {
     background: rgba(255, 255, 255, 0.1);
     padding: 20px;
     border-radius: 105px;
     border-color: black !important;
-}
+} */
 
 .border-golden {
     border: black;
@@ -359,6 +377,9 @@ ul.info-list-left li::after {
     .hero-text-2 {
         font-size: 28px;
     }
+    .about-us-images img {
+        height: 60vh;
+    }
 }
 
 @media (max-width: 768px) {
@@ -389,6 +410,9 @@ ul.info-list-left li::after {
     }
     .blog-images-2 {
         height: 300px;
+    }
+    .about-us-images img {
+        height: 53vh;
     }
 }
 
@@ -432,5 +456,10 @@ ul.info-list-left li::after {
     .blog-images-2 {
         height: 150px;
         left: -15%;
+    }
+
+    .about-us-images img {
+        height: 30vh;
+        width: auto;
     }
 }

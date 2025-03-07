@@ -13,13 +13,13 @@
             <x-admin.input label-name="Collaborator Name" attributes-param="type=text id=name required"
                 value="{{ old('name') ? old('name') : $collaborator->name }}" name="name" />
             <div>
-                <label for="description">Category short description</label>
+                <label for="description">Collaborator short description</label>
                 <br>
                 <textarea name="short_description" id="short_description" rows="4" class="form-textarea ckeditor">{{ old('short_description') ? old('short_description') : $collaborator->short_description }}</textarea>
             </div>
             <br>
             <div>
-                <label for="description">Category description</label>
+                <label for="description">Collaborator description</label>
                 <br>
                 <textarea name="long_description" id="long_description" rows="4" class="form-textarea ckeditor">{{ old('long_description') ? old('long_description') : $collaborator->long_description }}</textarea>
             </div>

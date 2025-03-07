@@ -2,7 +2,7 @@
     <div class="d-md-block col-md-1 d-none"></div>
     <div class="col-md-5 col-sm-6">
         <div>
-            <img src="{{ Vite::asset('resources/images/client/logo-footer.png') }}" alt="LOTUS RETREAT">
+            <img src="{{ asset('images/client/logo-footer.png') }}" alt="LOTUS RETREAT">
         </div>
         <p class="w-lg-50 mt-4 d-sm-block d-none" style="font-size: 20px">Lorem ipsum dolor sit amet consectetur
             adipisicing
@@ -12,7 +12,7 @@
             quos necessitatibus quam voluptates quasi? Vero, magnam!</p>
     </div>
     <div class="col-sm-3 col-6">
-        <a class="d-block text-decoration-none text-white mt-3" href="">
+        <a class="d-block text-decoration-none text-white mt-3" href="{{ route('home') }}">
             ACASA
         </a>
         <a class="d-block text-decoration-none text-white mt-3" href="">

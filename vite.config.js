@@ -10,7 +10,7 @@ export default defineConfig({
                 "resources/css/admin.css",
                 "resources/css/client.css",
             ],
-            // refresh: true,
+            refresh: ["resources/views/**/*.blade.php"],
         }),
     ],
 });

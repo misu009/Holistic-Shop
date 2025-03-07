@@ -25,8 +25,8 @@
         <div class="dropdown">
             <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
                 data-bs-toggle="dropdown">
-                <img src="{{ asset(Auth::user()->profile_picture ?? 'images/default-user.png') }}" alt="User Image"
-                    width="32" height="32" class="rounded-circle me-2">
+                <img src="{{ Auth::user()->picture ? asset('storage/' . Auth::user()->picture) : asset('images/default-user.png') }}"
+                    alt="User Image" width="50" height="50" class="rounded-circle me-2">
                 <strong>{{ Auth::user()->name }}</strong>
             </a>
             <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
@@ -35,7 +35,7 @@
                     <hr class="dropdown-divider">
                 </li>
                 <li>
-                    <form method="POST" action="{{ route('logout') }}">
+                    <form action="{{ route('logout') }}">
                         @csrf
                         <button class="dropdown-item" type="submit">Sign out</button>
                     </form>

@@ -4,7 +4,9 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Faker\Factory as Faker;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -32,7 +34,26 @@ class DatabaseSeeder extends Seeder
         \App\Models\Post::factory(150)->withPostCategory()->create();
         \App\Models\ProductCategory::factory(20)->create();
         \App\Models\Product::factory(150)->withProductCategory()->create();
-        \App\Models\Collaborator::factory(150)->create();
+        \App\Models\Collaborator::factory(20)->create();
         \App\Models\Events::factory(10)->withCollaborators()->create();
+
+        DB::table('settings')->insert([
+            'mission_text' => 'Our mission is to provide the best service to our customers.',
+            'mission_bullets' => json_encode([
+                'Quality products',
+                'Fast delivery',
+                'Customer satisfaction',
+                'Innovative solutions',
+                'Affordable prices',
+                'Eco-friendly options',
+                'Strong customer support',
+                'Continuous improvement'
+            ]),
+            'about_text' => 'We are a company dedicated to innovation and customer service.',
+            'selected_blog_posts' => json_encode([1, 2, 3]), // Example post IDs
+            'selected_products' => json_encode([1, 2, 3, 4]), // Example product IDs
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
     }
 }
