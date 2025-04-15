@@ -57,6 +57,10 @@ form {
     margin-bottom: 2rem;
 }
 
+.hidden-file-input {
+    display: none;
+}
+
 @media (max-width: 768px) {
     #sidebar {
         height: calc(100vh - 10px);

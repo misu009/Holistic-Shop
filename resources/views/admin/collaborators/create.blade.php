@@ -22,15 +22,15 @@
             <x-admin.input label-name="Collaborator Name" attributes-param="type=text id=name required"
                 value="{{ old('name') }}" name="name" />
             <div>
-                <label for="description">Category short description</label>
+                <label for="description">Collaborator short description</label>
                 <br>
-                <textarea name="short_description" id="short_description" rows="4" class="form-textarea ckeditor">{{ old('short_description') }}</textarea>
+                <textarea name="short_description" id="short_description" rows="4" class="form-textarea">{{ old('short_description') }}</textarea>
             </div>
             <br>
             <div>
-                <label for="description">Category description</label>
+                <label for="description">Collaborator description</label>
                 <br>
-                <textarea name="long_description" id="long_description" rows="4" class="form-textarea ckeditor">{{ old('long_description') }}</textarea>
+                <textarea name="long_description" id="long_description" rows="4" class="form-textarea">{{ old('long_description') }}</textarea>
             </div>
             <br>
             <x-admin.input label-name="Collaborator Email <small class='text-danger'>(optional)</small>"

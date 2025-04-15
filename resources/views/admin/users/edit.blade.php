@@ -30,10 +30,8 @@
                 </span>
             </x-admin.input>
 
-            <img id="image-preview" src="{{ Storage::url(Auth::user()->picture) }}" alt="Click to select an image">
-            <input type="file" id="select-picture" name="picture" accept="image/*">
-            <button type="button" class="btn btn-warning"
-                onclick="uploadImageCanvas('select-picture', 'image-preview', 'image-form')">upload image</button>
+            <x-admin.image-uploader imagePreviewId="image-preview" path="{{ Storage::url(Auth::user()->picture) }}"
+                imageInputId="select-picture" imageInputName="picture" buttonText="Upload Image" />
 
             <br><br>
             <div class="d-flex justify-content-start">

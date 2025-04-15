@@ -4,6 +4,7 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
+                <th scope="col">Slug</th>
                 <th scope="col">Price</th>
                 <th scope="col">Added by</th>
                 <th scope="col">Categories</th>
@@ -17,6 +18,7 @@
                 <tr>
                     <td>{{ $products->firstItem() + $index }}</td>
                     <td>{{ $product->name }}</td>
+                    <td>{{ $product->slug }}</td>
                     <td>{{ $product->price }}</td>
                     <td>{{ $product->user->name }}</td>
                     <td style="max-width: 600px; overflow: hidden;text-overflow: ellipsis">
@@ -32,7 +34,7 @@
                         </div>
                     </td>
                     <td
-                        style="max-width: 600px; /* Set the max width you desire */
+                        style="max-width: 400px; /* Set the max width you desire */
     overflow: hidden; /* Prevents overflow of text */
     text-overflow: ellipsis">
                         <div style="max-height: 100px; overflow: auto;display: block;">

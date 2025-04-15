@@ -29,7 +29,8 @@
                 @foreach ($collaborators as $index => $collaborator)
                     <div class="carousel-item  {{ $index == 0 ? 'active' : '' }} text-center"
                         style="background-color: #043248; padding: 20px; border-radius: 10px;">
-                        <img src="{{ Storage::url($collaborator->picture) }}" class="img-fluid mb-3">
+                        <img src="{{ Storage::url($collaborator->picture) }}" class="img-fluid mb-3"
+                            style="max-width: 70vw">
                         <h2 class="fw-bold text-white mt-5">{{ $collaborator->name }}</h2>
                         <p class="text-white">
                             {{ $collaborator->long_description }}

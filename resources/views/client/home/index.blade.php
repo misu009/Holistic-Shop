@@ -7,18 +7,21 @@
         <div class="hero-section  fade show">
             <div class="hero-left">
                 <div class="rounded-container">
-                    <div class="d-flex">
-                        <p class="text-white mt-5 hero-text-1">Lorem ipsum dolor sit amet consectetur
-                            adipisicing
-                            elit.
-                            Sapiente harum totam autem
-                            sit recusandae quas temporibus voluptas voluptates nulla nisi.</p>
+                    <div class="d-flex algin justify-content-between">
+                        <div>
+                            <p class="text-white mt-5 hero-text-1">
+                                {{ $settings->hero_text_1 }}<br>
+                            </p>
+                            <p class="text-white hero-text-2">
+                                {{ $settings->hero_text_2 }}
+                            </p>
+                        </div>
                         <img height="220px" class="hero-lotus" src="{{ asset('images/client/ellipse-hero.svg') }}"
                             alt="">
                     </div>
                     <div>
                         <p class="hero-text-2">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit aut nam asperiores odio natus fuga.
+                            {{ $settings->hero_text_3 }}
                         </p>
                     </div>
                 </div>
@@ -26,7 +29,7 @@
             <div class="hero-right"></div>
         </div>
 
-        <div class="our-mision mt-5 fade-in">
+        <div class="our-mision mt-5 fade-in mb-5">
             <div class="our-mision-texts p-5 w-100 d-flex align-items-center contianer" style="flex-direction: column">
                 <h2 class="our-mision-title" style="letter-spacing: 2px">MISIUNEA NOASTRA</h2>
                 <p class="mt-3" style="font-size: 13px; text-align: center;">
@@ -38,9 +41,10 @@
                     <div class="d-md-block d-none col-md-4 text-end col-6" style="height: inherit">
                         <ul class="info-list-left p-1 d-flex align-items-center justify-content-around"
                             style="height: inherit; flex-direction: column;">
-                            @foreach ($settings->mission_bullets as $index => $mission_bullet)
+                            @foreach ($settings->mission_bullets as $mission_bullet)
                                 @if ($loop->index % 2 == 0)
-                                    <li>{{ $mission_bullet }}</li>
+                                    <li class="our-mission-text mt-5">
+                                        {{ $mission_bullet }}</li>
                                 @endif
                             @endforeach
                         </ul>
@@ -51,7 +55,8 @@
                             style="height: inherit; flex-direction: column;">
                             @foreach ($settings->mission_bullets as $index => $mission_bullet)
                                 @if ($loop->index % 2 == 1)
-                                    <li>{{ $mission_bullet }}</li>
+                                    <li class="our-mission-text mt-5">
+                                        {{ $mission_bullet }}</li>
                                 @endif
                             @endforeach
                         </ul>
@@ -63,7 +68,8 @@
                     <div class="d-block d-md-none text-start">
                         <ul class="info-list d-flex flex-wrap list-unstyled">
                             @foreach ($settings->mission_bullets as $mission_bullet)
-                                <li class="w-50 p-2">{{ $mission_bullet }}</li>
+                                <li class="w-50 p-2 our-mission-text mt-5">
+                                    {{ $mission_bullet }}</li>
                             @endforeach
                         </ul>
                     </div>
@@ -78,10 +84,13 @@
                 </div>
                 <div class="col-md-5 col-12 p-5 flex-column text-white d-flex justify-content-center align-items-start">
                     <h2>CINE SUNTEM NOI?!</h2>
-                    <div class="mt-5 scrollable-paragraph">
-                        <p>{{ $settings->about_text }}</p>
+                    <div class="mt-5 about-us-text">
+                        <p>{!! $settings->about_text !!}</p>
                     </div>
-                    <button class="btn btn-custom mt-5">CITEȘTE MAI MULTE PE BLOG</button>
+                    <a class="btn btn-custom mt-5 text-decoration-none text-reset" href="{{ route('client.posts.index') }}">
+                        CITEȘTE MAI MULTE PE BLOG
+                    </a>
+
                 </div>
             </div>
         </div>
@@ -133,11 +142,10 @@
             </div>
         </div>
 
-        <div
-            class="container-fluid product-section py-5 d-flex justify-content-center align-items-center flex-direction-column">
-            <div class="container product-container text-white p-5 rounded-4 d-flex flex-column">
+        <div class="product-section py-5 d-flex  align-items-center flex-direction-column">
+            <div class="container product-container text-white  rounded-4 d-flex flex-column">
                 <h2 class="text-uppercase fw-bold mb-4 text-center">
-                    <a href="#" class="text-decoration-none">
+                    <a href="{{ route('client.shop.index') }}" class="text-decoration-none">
                         Descoperă Produse
                     </a>
                 </h2>
@@ -148,17 +156,19 @@
                         ->get();
                 @endphp
 
-                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 text-center">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 text-center mt-4">
                     @foreach ($selectedProducts as $product)
                         <div class="col d-flex">
-                            <a href="#" class="text-decoration-none w-100 h-100">
+                            <a href="{{ route('client.shop.show', ['slug' => $product->slug]) }}"
+                                class="text-decoration-none w-100">
                                 <div class="card my-gradient-card border-0 bg-transparent d-flex flex-column h-100">
-                                    <div class="flex-grow-1 d-flex align-items-center justify-content-center">
-                                        <img class="img-fluid h-100 w-100"
-                                            src="{{ !empty($product->media) && isset($product->media[0]) ? asset('storage/' . $product->media[0]->path) : asset('images/client/image-' . ($loop->index + 1) . '.png') }}"
-                                            alt="Product Image">
+                                    <div class="position-relative">
+                                        <img class="img-fluid w-100"
+                                            src="{{ !empty($product->media) && isset($product->media[0]) ? asset('storage/' . $product->media[0]->path) : asset('images/client/product-' . ($loop->index + 1) . '.png') }}"
+                                            alt="Product Image"
+                                            style="aspect-ratio: 1/1; object-fit: cover; border-radius: 15px;">
                                     </div>
-                                    <div class="card-body d-flex flex-column">
+                                    <div class="card-body d-flex flex-column justify-content-end">
                                         <h5 class="mt-3 text-white">{{ $product->name }}</h5>
                                     </div>
                                 </div>
@@ -166,15 +176,11 @@
                         </div>
                     @endforeach
                 </div>
-
                 <p class="text-center mt-4">
-                    Office ipsum you must be muted. Hill join social harvest old protocol need emails spaces not.
+                    Orice produs se creeaza personalizat pe vibratia si energia fiecaruia
                 </p>
             </div>
         </div>
-
-
-
     </div>
 @endsection
 
@@ -218,3 +224,5 @@
         checkVisibility(); // Check on page load in case it's already in view
     });
 </script>
+<style>
+</style>

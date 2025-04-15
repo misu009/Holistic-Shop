@@ -41,7 +41,8 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|unique:product_categories,name',
+            'name' => 'required|string|max:255|unique:products,name',
+            'slug' => 'required|string|max:255|unique:products,slug|regex:/^[a-z0-9-]+$/',
             'description' => 'required|max:20050|string',
             'price' => 'decimal:0,2|required',
             'product_category' => 'required|array',
@@ -51,6 +52,7 @@ class ProductController extends Controller
 
         $product = Product::create([
             'name' => $request->name,
+            'slug' => $request->slug,
             'description' => $request->description,
             'user_id' => auth()->id(),
             'price' => $request->price,
@@ -95,7 +97,8 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', Rule::unique('products', 'name')->ignore($product->id),],
+            'name' => ['required', 'string', 'max:255', Rule::unique('products', 'name')->ignore($product->id)],
+            'slug' => ['required', 'string', 'max:255', Rule::unique('products', 'name')->ignore($product->id), 'regex:/^[a-z0-9-]+$/'],
             'description' => 'required|max:20050|string',
             'product_category' => 'required|array',
             'product_category.*' => 'required|exists:product_categories,id',
@@ -105,6 +108,7 @@ class ProductController extends Controller
 
         $product->update([
             'name' => $request->name,
+            'slug' => $request->slug,
             'description' => $request->description,
             'price' => $request->price,
         ]);

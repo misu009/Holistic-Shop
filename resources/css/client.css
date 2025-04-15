@@ -68,11 +68,11 @@ footer {
 }
 
 .hero-text-1 {
-    font-size: 22px;
+    font-size: 48px;
 }
 
 .hero-text-2 {
-    font-size: 40px;
+    font-size: 26px;
 }
 
 .our-mision {
@@ -87,7 +87,13 @@ footer {
     background: url("/images/client/our-mision-bg.png") no-repeat center center;
     background-size: cover;
     width: 100%;
-    height: 75vh;
+    height: 80vh;
+}
+
+.our-mission-text {
+    font-size: 20px !important;
+    max-height: 20vh;
+    overflow-y: auto;
 }
 
 /* Fade-in effect */
@@ -102,55 +108,55 @@ footer {
 }
 
 ul.info-list {
-    list-style: none; /* Remove default bullets */
+    list-style: none;
     padding: 0;
     margin: 0;
 }
 
 ul.info-list li {
     display: flex;
-    align-items: flex-start; /* Aligns items to the top */
-    gap: 10px; /* Space between bullet and text */
+    align-items: flex-start;
+    gap: 10px;
     color: white;
     font-size: 16px;
 }
 
 ul.info-list li::before {
     content: "";
-    width: 16px; /* Adjust bullet size */
+    width: 16px;
     height: 16px;
-    border: 2px solid var(--col1); /* Blue outline */
-    border-radius: 50%; /* Makes it circular */
+    border: 2px solid var(--col1);
+    border-radius: 50%;
     display: inline-block;
-    flex-shrink: 0; /* Prevents resizing */
-    margin-top: 4px; /* Adjusts bullet alignment */
+    flex-shrink: 0;
+    margin-top: 4px;
 }
 
 ul.info-list-left {
-    list-style: none; /* Remove default bullets */
+    list-style: none;
     padding: 0;
     margin: 0;
 }
 
 ul.info-list-left li {
     display: flex;
-    align-items: flex-start; /* Align bullet with top of text */
-    gap: 10px; /* Space between text and bullet */
-    flex-direction: row; /* Moves bullet to the right */
+    align-items: flex-start;
+    gap: 10px;
+    flex-direction: row;
     color: white;
     font-size: 16px;
-    text-align: right; /* Align text to the right */
+    text-align: right;
 }
 
 ul.info-list-left li::after {
     content: "";
-    width: 16px; /* Adjust bullet size */
+    width: 16px;
     height: 16px;
-    border: 2px solid var(--col1); /* Blue outline */
-    border-radius: 50%; /* Makes it circular */
+    border: 2px solid var(--col1);
+    border-radius: 50%;
     display: inline-block;
-    flex-shrink: 0; /* Prevents resizing */
-    margin-top: 4px; /* Adjusts bullet alignment */
+    flex-shrink: 0;
+    margin-top: 4px;
 }
 
 .about-us {
@@ -172,8 +178,9 @@ ul.info-list-left li::after {
     height: 80vh;
 }
 
-.scrollable-paragraph {
-    max-height: 40vh;
+.about-us-text {
+    font-size: 20px !important;
+    max-height: 80vh;
     overflow-y: auto;
 }
 
@@ -304,40 +311,11 @@ ul.info-list-left li::after {
     border-width: 10px;
 }
 
-/* .card {
-    position: relative;
-    background: transparent;
-    border-radius: 15px;
-    padding: 2px; 
-}
-
-.card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 15px;
-    padding: 2px; 
-    background: linear-gradient(
-        to right,
-        #6b2d14,
-        #8c5125,
-        #a56a34,
-        #d1a269,
-        #e0c08e
-    );
-    -webkit-mask: linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-} */
-
 .my-gradient-card {
     position: relative;
     background: transparent;
     border-radius: 15px;
-    padding: 2px; /* To make space for the border */
+    padding: 2px;
 }
 
 .my-gradient-card::before {
@@ -345,7 +323,7 @@ ul.info-list-left li::after {
     position: absolute;
     inset: 0;
     border-radius: 15px;
-    padding: 2px; /* Adjust the border thickness */
+    padding: 2px;
     background: linear-gradient(
         to right,
         #6b2d14,
@@ -360,6 +338,90 @@ ul.info-list-left li::after {
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     pointer-events: none;
+}
+
+.shop-section {
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    z-index: 3;
+}
+
+.shop-background img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+.img-uniques-orgonites {
+    max-width: 100%;
+}
+
+.hero-shop {
+    position: relative;
+    height: 96vh;
+    overflow: hidden;
+    background: url("/images/client/shop-banner.png") no-repeat center center;
+    background-size: cover;
+}
+
+.shop-product {
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+    padding: 15px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.shop-product:hover {
+    transform: scale(1.05);
+}
+
+.product-image img {
+    border-radius: 10px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}
+
+.product-description {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.hero-shop-section {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: url("/images/client/shop-banner.png") no-repeat center center;
+    background-size: cover;
+    /* background-position: right; */
+}
+
+.hero-shop-button {
+    width: fit-content;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: white;
+    border: 2px solid rgba(255, 153, 51, 0.8);
+    border-radius: 30px;
+    padding: 10px 30px;
+    background-color: transparent;
+    transition: all 0.3s ease-in-out;
+}
+
+.hero-shop-button:hover {
+    background-color: rgba(255, 128, 0, 0.87);
+    color: white;
+}
+
+.hero-shop-text {
+    font-size: 40px;
+    font-weight: 400;
 }
 
 @media (max-width: 1024px) {
@@ -371,11 +433,11 @@ ul.info-list-left li::after {
         padding-left: 1rem;
     }
     .hero-text-1 {
-        font-size: 16px;
+        font-size: 30px;
     }
 
     .hero-text-2 {
-        font-size: 28px;
+        font-size: 18px;
     }
     .about-us-images img {
         height: 60vh;
@@ -384,7 +446,7 @@ ul.info-list-left li::after {
 
 @media (max-width: 768px) {
     .hero-text-1 {
-        font-size: 12px;
+        font-size: 35px;
     }
     .hero-text-2 {
         font-size: 18px;
@@ -413,6 +475,29 @@ ul.info-list-left li::after {
     }
     .about-us-images img {
         height: 53vh;
+    }
+    .shop-section {
+        text-align: center;
+        padding: 50px 20px;
+    }
+    .shop-section h1 {
+        font-size: 1.8rem;
+    }
+    .shop-section p {
+        font-size: 1.2rem;
+    }
+    .hero-shop-content {
+        height: inherit;
+    }
+    .hero-shop-section {
+        height: 80vh;
+    }
+    .hero-shop-text {
+        font-size: 22px;
+        font-weight: 400;
+    }
+    .hero-shop-button {
+        font-size: 1rem;
     }
 }
 

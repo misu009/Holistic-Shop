@@ -9,6 +9,7 @@
         <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <x-admin.input label-name="Name" attributes-param="type=text id=name required" name="name" />
+            <x-admin.input label-name="Slug" attributes-param="type=text id=slug required" name="slug" />
             <div>
                 <label for="product_category">Product Category</label>
                 <select class="form-control select2" name="product_category[]" id="product_category" multiple="multiple"

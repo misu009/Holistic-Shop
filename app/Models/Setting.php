@@ -10,6 +10,16 @@ class Setting extends Model
     use HasFactory;
 
     protected $fillable = [
+        'hero_text_1',
+        'hero_text_2',
+        'hero_text_3',
+        'shop_text_1',
+        'shop_text_2',
+        'shop_text_3',
+        'shop_img_1',
+        'shop_img_2',
+        'shop_img_3',
+        'shop_img_4',
         'mission_text',
         'mission_bullets',
         'about_text',

@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@lotus.com',
             'password' => bcrypt('12345'),
-            // 'picture' => '/users/dlsanjkd.jpeg',
+            'picture' => '/users/dlsanjkd.jpeg',
         ]);
 
         \App\Models\User::factory()->create([
@@ -30,14 +30,20 @@ class DatabaseSeeder extends Seeder
         ]);
 
         \App\Models\User::factory(15)->create();
-        \App\Models\PostCategory::factory(20)->create();
-        \App\Models\Post::factory(150)->withPostCategory()->create();
-        \App\Models\ProductCategory::factory(20)->create();
-        \App\Models\Product::factory(150)->withProductCategory()->create();
-        \App\Models\Collaborator::factory(20)->create();
-        \App\Models\Events::factory(10)->withCollaborators()->create();
+        \App\Models\PostCategory::factory(2)->create();
+        \App\Models\Post::factory(30)->withPostCategory()->create();
+        \App\Models\ProductCategory::factory(2)->create();
+        \App\Models\Product::factory(4)->withProductCategory()->create();
+        \App\Models\Collaborator::factory(3)->create();
+        \App\Models\Events::factory(5)->withCollaborators()->create();
 
         DB::table('settings')->insert([
+            'hero_text_1' => 'Welcome to Lotus',
+            'hero_text_2' => 'Your one-stop solution for all needs',
+            'hero_text_3' => 'Quality, Service, and Innovation',
+            'shop_text_1' => 'Shop with us for the best products',
+            'shop_text_2' => 'Discover our wide range of offerings',
+            'shop_text_3' => 'Personalizeaza-ti energia acum!',
             'mission_text' => 'Our mission is to provide the best service to our customers.',
             'mission_bullets' => json_encode([
                 'Quality products',

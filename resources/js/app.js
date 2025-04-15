@@ -52,11 +52,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 window.uploadImageCanvas = uploadImageCanvas;
 
-function uploadImageCanvas(id, image_preview_id, image_form_id) {
+function uploadImageCanvas(id, image_preview_id) {
     const fileInput = document.getElementById(id);
     fileInput.click();
     const imagePreview = document.getElementById(image_preview_id);
-    const form = document.getElementById(image_form_id);
 
     fileInput.addEventListener("change", (event) => {
         const file = event.target.files[0];

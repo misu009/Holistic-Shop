@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ClientColloboratorController;
 use App\Http\Controllers\ClientPostController;
+use App\Http\Controllers\ClientShopController;
 use App\Http\Controllers\CollaboratorController;
 use App\Http\Controllers\EventsController;
 use App\Http\Controllers\HomeController;
@@ -35,6 +36,8 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get("/", [HomeController::class, 'index'])->name('home');
 Route::get('/posts', [ClientPostController::class, 'index'])->name('client.posts.index');
 Route::get('/collaborators', [ClientColloboratorController::class, 'index'])->name('client.collaborators.index');
+Route::get('/shop', [ClientShopController::class, 'index'])->name('client.shop.index');
+Route::get('/shop/{slug}', [ClientShopController::class, 'show'])->name('client.shop.show');
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');

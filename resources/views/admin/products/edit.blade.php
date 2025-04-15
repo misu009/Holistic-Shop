@@ -12,6 +12,8 @@
             @method('PUT')
             <x-admin.input label-name="Name" attributes-param='type=text id=name required' value="{!! old('name') ? old('name') : $product->name !!}"
                 name="name" />
+            <x-admin.input label-name="Slug" attributes-param='type=text id=slug required' value="{!! old('slug') ? old('slug') : $product->slug !!}"
+                name="slug" />
             <div>
                 <label for="product_category">Product Category</label>
                 <select class="form-control select2" name="product_category[]" id="product_category" multiple="multiple"
@@ -20,7 +22,7 @@
                     @foreach ($categories as $category)
                         <option value="{{ $category->id }}" @if (
                             (old('product_category') && in_array($category->id, old('product_category'))) ||
-                            (!old('product_category') && in_array($category->id, $product->categories->pluck('id')->toArray()))) selected @endif>
+                                (!old('product_category') && in_array($category->id, $product->categories->pluck('id')->toArray()))) selected @endif>
                             {{ $category->name }}</option>
                     @endforeach
                 </select>

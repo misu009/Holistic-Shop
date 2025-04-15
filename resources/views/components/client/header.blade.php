@@ -17,7 +17,8 @@
                         href="{{ route('home') }}">ACASA</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link ms-2 me-2" href="">SHOP</a>
+                    <a class="nav-link {{ request()->routeIs('client.shop.index') ? 'active' : '' }} ms-2 me-2"
+                        aria-current="page" href="{{ route('client.shop.index') }}">SHOP</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('client.posts.index') ? 'active' : '' }} ms-2 me-2"
