@@ -37,26 +37,26 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:events,name',
             'description' => 'required|string',
             'starts_at' => 'required|date',
             'ends_at' => 'required|date|after:starts_at',
-            'media' => 'nullable|array',
-            'media.*' => 'mimes:jpeg,png,jpg,gifjpeg,png,jpg,gif,mp4,mov,avi|max:40480',
+            'media' => 'required|mimes:jpeg,png,jpg,gifjpeg,png,jpg|max:40480',
             'price' => 'decimal:0,2|required',
             'primary_collaborators' => 'required|array',
             'primary_collaborators.*' => 'required|exists:collaborators,id',
             'secondary_collaborators' => 'nullable|array',
             'secondary_collaborators.*' => 'nullable|exists:collaborators,id',
         ]);
-
         $event = Events::create([
             'name' => $request->name,
             'description' => $request->description,
             'starts_at' => $request->starts_at,
             'ends_at' => $request->ends_at,
             'price' => $request->price,
+            'disabled' => $request->has('disabled') ? 1 : 0,
         ]);
         ActivityLogger::log('Added a new event', 'Event', $event->id);
 
@@ -71,13 +71,11 @@ class EventsController extends Controller
         }
 
         if ($request->hasFile('media')) {
-            foreach ($request->file('media') as $media) {
-                $path = $media->store('events', 'public');
-                $event->media()->create([
-                    'path' => $path,
-                    'order' => $event->media()->count() + 1,
-                ]);
-            }
+            $path = $request->media->store('events', 'public');
+            $event->media()->create([
+                'path' => $path,
+                'order' => $event->media()->count() + 1,
+            ]);
         }
 
         return redirect()->route('admin.events.index')->with('success', 'Event created successfully.');
@@ -110,24 +108,13 @@ class EventsController extends Controller
             'description' => 'required|string',
             'starts_at' => 'required|date',
             'ends_at' => 'required|date|after:starts_at',
-            'media' => 'nullable|array',
-            'media.*' => 'mimes:jpeg,png,jpg,gifjpeg,png,jpg,gif,mp4,mov,avi|max:40480',
+            'image' => 'mimes:jpeg,png,jpg,png,jpg|max:40480',
             'price' => 'decimal:0,2|required',
             'primary_collaborators' => 'required|array',
             'primary_collaborators.*' => 'required|exists:collaborators,id',
             'secondary_collaborators' => 'nullable|array',
             'secondary_collaborators.*' => 'nullable|exists:collaborators,id',
         ]);
-
-        $event->update([
-            'name' => $request->name,
-            'description' => $request->description,
-            'starts_at' => $request->starts_at,
-            'ends_at' => $request->ends_at,
-            'price' => $request->price,
-        ]);
-        ActivityLogger::log('Updated an event', 'Event', $event->id);
-
         $event->collaborators()->detach();
         foreach ($request->primary_collaborators as $collaboratorId) {
             $event->collaborators()->attach($collaboratorId, ['is_primary' => true]);
@@ -139,15 +126,27 @@ class EventsController extends Controller
             }
         }
 
-        if ($request->hasFile('media')) {
-            foreach ($request->file('media') as $media) {
-                $path = $media->store('events', 'public');
-                $event->media()->create([
-                    'path' => $path,
-                    'order' => $event->media()->count() + 1,
-                ]);
+        if ($request->hasFile('image')) {
+            foreach ($event->media as $media) {
+                $this->deleteImage($event->id, $media->id, Events::class);
             }
+            $path = $request->file('image')->store('events', 'public');
+            $event->media()->create([
+                'path' => $path,
+                'order' => $event->media()->count() + 1,
+            ]);
         }
+
+
+        $event->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'starts_at' => $request->starts_at,
+            'ends_at' => $request->ends_at,
+            'disabled' => $request->has('disabled') ? 1 : 0,
+            'price' => $request->price,
+        ]);
+        ActivityLogger::log('Updated an event', 'Event', $event->id);
 
         return redirect()->route('admin.events.edit', $event->id)->with('success', 'Event updated successfully.');
     }
@@ -163,7 +162,7 @@ class EventsController extends Controller
             }
         }
         $event->delete();
-        ActivityLogger::log('Deleted an event', 'Event', $event->id);
+        ActivityLogger::log('Deleted an event', 'Event', $event->name);
         return back()->with('success', 'Event deleted successfully');
     }
 

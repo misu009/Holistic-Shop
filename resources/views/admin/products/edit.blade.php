@@ -12,7 +12,7 @@
             @method('PUT')
             <x-admin.input label-name="Name" attributes-param='type=text id=name required' value="{!! old('name') ? old('name') : $product->name !!}"
                 name="name" />
-            <x-admin.input label-name="Slug" attributes-param='type=text id=slug required' value="{!! old('slug') ? old('slug') : $product->slug !!}"
+            <x-admin.input label-name="Slug (optional)" attributes-param='type=text id=slug' value="{!! old('slug') ? old('slug') : $product->slug !!}"
                 name="slug" />
             <div>
                 <label for="product_category">Product Category</label>

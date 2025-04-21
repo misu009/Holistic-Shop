@@ -1,11 +1,11 @@
 import $ from "jquery";
 import * as bootstrap from "bootstrap";
-import "./bootstrap";
 import "../css/app.css";
-// import "../css/admin.css";
+import "../css/admin.css";
 import "../css/client.css";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import GLightbox from "glightbox";
+import "glightbox/dist/css/glightbox.min.css";
 
 window.$ = window.jQuery = $;
 window.bootstrap = bootstrap;
@@ -72,13 +72,128 @@ function uploadImageCanvas(id, image_preview_id) {
     });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    const editors = document.querySelectorAll(".ckeditor");
-    editors.forEach((textarea) => {
-        ClassicEditor.create(textarea).catch((error) => {
-            console.error(error);
-        });
+document.addEventListener("DOMContentLoaded", async () => {
+    const { default: ClassicEditor } = await import(
+        "@ckeditor/ckeditor5-build-classic"
+    );
+
+    // Basic editor (no media)
+    document.querySelectorAll("textarea.ckeditor").forEach((textarea) => {
+        ClassicEditor.create(textarea)
+            .then((editor) => {
+                console.log("Basic CKEditor initialized", editor);
+            })
+            .catch((error) => {
+                console.error("Basic CKEditor init error:", error);
+            });
     });
+
+    // Media editor
+    document.querySelectorAll("textarea.ckeditor-media").forEach((textarea) => {
+        ClassicEditor.create(textarea, {
+            extraPlugins: [MyCustomUploadAdapterPlugin],
+            mediaEmbed: { previewsInData: true },
+        })
+            .then((editor) => {
+                let knownImages = getImageSrcs(editor.getData());
+
+                // Keep knownImages in sync when content changes
+                let debounceTimer;
+                editor.model.document.on("change:data", () => {
+                    clearTimeout(debounceTimer);
+                    debounceTimer = setTimeout(() => {
+                        const currentImages = getImageSrcs(editor.getData());
+                        const removed = knownImages.filter(
+                            (src) => !currentImages.includes(src)
+                        );
+
+                        if (removed.length > 0) {
+                            removed.forEach((url) =>
+                                deleteImageFromServer(url)
+                            );
+                        }
+
+                        knownImages = currentImages;
+                    }, 300);
+                });
+
+                // Add listener for manual image insertion too (e.g., drag-drop or upload)
+                editor.plugins
+                    .get("FileRepository")
+                    .on("uploadComplete", () => {
+                        knownImages = getImageSrcs(editor.getData());
+                    });
+            })
+            .catch((error) => {
+                console.error("Media CKEditor init error:", error);
+            });
+    });
+
+    // Extract all <img src="..."> URLs from editor data
+    function getImageSrcs(html) {
+        const matches = html.matchAll(/<img[^>]+src="([^">]+)"/g);
+        return Array.from(matches, (m) => m[1]);
+    }
+
+    // Call backend to delete image
+    function deleteImageFromServer(url) {
+        fetch("/admin/ckeditor/delete-image", {
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": document.querySelector(
+                    'meta[name="csrf-token"]'
+                ).content,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ url }),
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                console.log("Image deleted from server:", url, res);
+            })
+            .catch((err) => {
+                console.error("Image deletion failed:", url, err);
+            });
+    }
+
+    // Upload adapter with support for Laravel backend
+    function MyCustomUploadAdapterPlugin(editor) {
+        editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+            return new MyUploadAdapter(loader);
+        };
+    }
+
+    class MyUploadAdapter {
+        constructor(loader) {
+            this.loader = loader;
+        }
+
+        upload() {
+            return this.loader.file.then((file) => {
+                const data = new FormData();
+                data.append("upload", file);
+
+                return fetch("/admin/ckeditor/upload", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": document.querySelector(
+                            'meta[name="csrf-token"]'
+                        ).content,
+                    },
+                    body: data,
+                })
+                    .then((res) => res.json())
+                    .then((res) => {
+                        if (!res.url) throw new Error("Upload failed");
+                        return { default: res.url };
+                    });
+            });
+        }
+
+        abort() {
+            // Optional: handle aborts if needed
+        }
+    }
 });
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -88,4 +203,20 @@ document.addEventListener("DOMContentLoaded", () => {
             placeholder: "",
         });
     }
+});
+
+const lightbox = GLightbox({
+    selector: ".glightbox", // CSS selector for the elements
+    skin: "clean", // Skin type ('clean' or 'minimal')
+    closeButton: true, // Show close button
+    startAt: 0, // Index to start at in the group
+    loop: true, // Loop through images/videos
+    zoomable: true, // Allow zoom on images
+    draggable: true, // Allow dragging on desktop
+    touchNavigation: true, // Swipe to navigate on mobile
+    keyboardNavigation: true, // Navigate using arrow keys
+    autoplayVideos: true, // Auto-play embedded videos
+    openEffect: "zoom", // Animation on open ('zoom', 'fade', 'none')
+    closeEffect: "fade", // Animation on close
+    slideEffect: "slide", // Animation when navigating slides
 });

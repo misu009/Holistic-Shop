@@ -22,6 +22,8 @@ class PostFactory extends Factory
     {
         return [
             'title' => fake()->name(),
+            'slug' => fake()->slug(),
+            'excerpt' => fake()->sentence(),
             'description' => fake()->paragraph(),
             'created_by' => User::query()->orderByRaw('RAND()')->value('name'),
         ];

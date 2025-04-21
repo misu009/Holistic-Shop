@@ -7,39 +7,27 @@
         <h2 class="text-center text-white mb-4">Our Blog</h2>
         <div class="row g-4">
             @foreach ($posts as $index => $post)
-                @if ($posts->currentPage() == 1 && $index < 3)
-                    <!-- Special layout for first 4 posts on first page -->
-                    @php
-                        $cols = '4';
-                        if ($index == 0) {
-                            $cols = 'col-12';
-                        } elseif ($index == 1) {
-                            $cols = 'col-6';
-                        } elseif ($index == 2) {
-                            $cols = 'col-6';
-                        }
-                    @endphp
-                    <div class="{{ $cols }}">
-                        <div class="card h-100 text-white bg-dark border-light">
-                            <img src="{{ !empty($post->media) && isset($post->media[0]) ? asset('storage/' . $post->media[0]->path) : asset('images/client/image-3.png') }}"
-                                class="card-img-top" alt="{{ $post->title }}" height="330px">
-                            <div class="card-img-overlay d-flex flex-column justify-content-end">
-                                <h5 class="card-title fw-bold">{{ $post->title }}</h5>
-                            </div>
+                @php
+                    $ind = $posts->firstItem() + $index;
+                    $cols = 'col-md-4';
+                    if ($ind == 1) {
+                        $cols = 'col-12';
+                    } elseif ($ind == 2) {
+                        $cols = 'col-6';
+                    } elseif ($ind == 3) {
+                        $cols = 'col-6';
+                    }
+                @endphp
+                <div class="{{ $cols }}">
+                    <div class="card h-100 text-white bg-dark border-light">
+                        <img src="{{ !empty($post->media) && isset($post->media[0]) ? asset('storage/' . $post->media[0]->path) : asset('images/client/image-3.png') }}"
+                            class="card-img-top" alt="{{ $post->title }}" height="330px">
+                        <div class="card-img-overlay d-flex flex-column justify-content-end">
+                            <h5 class="card-title fw-bold">{{ $post->title }}</h5>
+                            <p class="card-content">{!! $post->excerpt !!}</p>
                         </div>
                     </div>
-                @else
-                    <!-- Standard 3-column layout for other pages -->
-                    <div class="col-md-4">
-                        <div class="card h-100 text-white bg-dark border-light">
-                            <img src="{{ !empty($post->media) && isset($post->media[0]) ? asset('storage/' . $post->media[0]->path) : asset('images/client/image-3.png') }}"
-                                class="card-img-top" alt="{{ $post->title }}" height="330px">
-                            <div class="card-img-overlay d-flex flex-column justify-content-end">
-                                <h5 class="card-title fw-bold">{{ $post->title }}</h5>
-                            </div>
-                        </div>
-                    </div>
-                @endif
+                </div>
             @endforeach
         </div>
         <x-client.pagination :paginator="$posts" />

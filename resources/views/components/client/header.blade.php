@@ -25,15 +25,16 @@
                         href="{{ route('client.posts.index') }}">BLOG</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('client.collaborators.index') ? 'active' : '' }} ms-2 me-2"
-                        href="{{ route('client.collaborators.index') }}">EVENIMENTE</a>
+                    <a class="nav-link {{ request()->routeIs('client.events.index') ? 'active' : '' }} ms-2 me-2"
+                        href="{{ route('client.events.index') }}">EVENIMENTE</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('client.collaborators.index') ? 'active' : '' }} ms-2 me-2"
                         href="{{ route('client.collaborators.index') }}">ECHIPA NOASTRA</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link ms-2 me-2" href="#">CONTACT</a>
+                    <a class="nav-link {{ request()->routeIs('client.contact.index') ? 'active' : '' }} ms-2 me-2"
+                        href="{{ route('client.contact.index') }}">CONTACT</a>
                 </li>
             </ul>
         </div>

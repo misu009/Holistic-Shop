@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ActivityLogger;
 use App\Models\Post;
 use App\Models\Product;
 use App\Models\Setting;
@@ -24,13 +25,15 @@ class SettingController extends Controller
             'hero_text_1' => 'required|string|max:30',
             'hero_text_2' => 'required|string|max:90',
             'hero_text_3' => 'required|string|max:110',
-            'shop_text_1' => 'required|string|max:90',
-            'shop_text_2' => 'required|string|max:90',
+            'shop_text_1' => 'required|string',
+            'shop_text_2' => 'required|string',
             'shop_text_3' => 'required|string|max:90',
             'shop_img_1' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'shop_img_2' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'shop_img_3' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'shop_img_4' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'event_text_1' => 'required|string',
+            'event_img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'mission_text' => 'required|string',
             'mission_bullets' => 'required|array|min:8|max:8',
             'about_text' => 'required|string',
@@ -43,7 +46,7 @@ class SettingController extends Controller
         // }));
 
         $settings = Setting::first() ?? new Setting();
-        foreach (['shop_img_1', 'shop_img_2', 'shop_img_3', 'shop_img_4'] as $key) {
+        foreach (['shop_img_1', 'shop_img_2', 'shop_img_3', 'shop_img_4', 'event_img'] as $key) {
             if ($request->hasFile($key)) {
                 if ($settings->$key) {
                     Storage::disk('public')->delete($settings->$key);
@@ -61,6 +64,7 @@ class SettingController extends Controller
             'shop_text_1' => $request->shop_text_1,
             'shop_text_2' => $request->shop_text_2,
             'shop_text_3' => $request->shop_text_3,
+            'event_text_1' => $request->event_text_1,
             'mission_text' => $request->mission_text,
             'mission_bullets' => $request->mission_bullets,
             'about_text' => $request->about_text,
@@ -68,6 +72,8 @@ class SettingController extends Controller
             'selected_products' => $request->selected_products,
         ]);
         $settings->save();
+
+        ActivityLogger::log('Updated settings');
 
         return redirect()->route('admin.settings.index')->with('success', 'Settings updated successfully.');
     }

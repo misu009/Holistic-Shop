@@ -18,6 +18,7 @@ class Events extends Model
         'starts_at',
         'ends_at',
         'price',
+        'disabled'
     ];
 
     protected $casts = [

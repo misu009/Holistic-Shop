@@ -19,10 +19,12 @@ return new class extends Migration
             $table->string('shop_text_1');
             $table->string('shop_text_2');
             $table->string('shop_text_3');
+            $table->string('event_text_1');
             $table->string('shop_img_1')->nullable();
             $table->string('shop_img_2')->nullable();
             $table->string('shop_img_3')->nullable();
             $table->string('shop_img_4')->nullable();
+            $table->string('event_img')->nullable();
             $table->text('mission_text');
             $table->json('mission_bullets');
             $table->text('about_text');

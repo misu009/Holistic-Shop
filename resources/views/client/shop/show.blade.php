@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css"> --}}
 
     <div class="container py-5">
         <div class="row d-flex">
@@ -22,10 +22,16 @@
                             <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
                                 <div class="ratio ratio-1x1">
                                     @if (strpos($media->path, '.mp4') !== false)
-                                        <video class="w-100 h-100" controls>
-                                            <source src="{{ asset('storage/' . $media->path) }}" type="video/mp4">
-                                            Your browser does not support the video tag.
-                                        </video>
+                                        <a href="{{ asset('storage/' . $media->path) }}" class="glightbox">
+                                            <video class="w-100 h-100" controls>
+                                                <source src="{{ asset('storage/' . $media->path) }}" type="video/mp4">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        </a>
+                                        {{-- <a href="{{ asset('storage/' . $media->path) }}" class="glightbox" data-type="video"
+                                            data-gallery="product-gallery">
+                                            <img src="{{ asset('images/your-placeholder.jpg') }}" alt="Video">
+                                        </a> --}}
                                     @else
                                         <a href="{{ asset('storage/' . $media->path) }}" class="glightbox"
                                             data-gallery="product-gallery">
@@ -143,22 +149,6 @@
 
             adjustDescription();
             window.addEventListener("resize", adjustDescription);
-        });
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
-
-    <script>
-        // Initialize GLightbox after DOM is ready
-        document.addEventListener("DOMContentLoaded", function() {
-            GLightbox({
-                selector: '.glightbox',
-                touchNavigation: true,
-                loop: true,
-                zoomable: true,
-                width: '90%',
-                height: 'auto',
-            });
         });
     </script>
 @endsection

@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
@@ -42,17 +43,18 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:products,name',
-            'slug' => 'required|string|max:255|unique:products,slug|regex:/^[a-z0-9-]+$/',
+            'slug' => 'nullable|string|max:255|unique:products,slug|regex:/^[a-z0-9-]+$/',
             'description' => 'required|max:20050|string',
             'price' => 'decimal:0,2|required',
             'product_category' => 'required|array',
             'product_category.*' => 'required|exists:product_categories,id',
             'media.*' => 'nullable|mimes:jpeg,png,jpg,gifjpeg,png,jpg,gif,mp4,mov,avi|max:40480',
         ]);
+        $validated['slug'] = $validated['slug'] ?? Str::slug($validated['name']) . '-' . uniqid();
 
         $product = Product::create([
             'name' => $request->name,
-            'slug' => $request->slug,
+            'slug' => $validated['slug'],
             'description' => $request->description,
             'user_id' => auth()->id(),
             'price' => $request->price,
@@ -98,17 +100,18 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255', Rule::unique('products', 'name')->ignore($product->id)],
-            'slug' => ['required', 'string', 'max:255', Rule::unique('products', 'name')->ignore($product->id), 'regex:/^[a-z0-9-]+$/'],
+            'slug' => ['nullable', 'string', 'max:255', Rule::unique('products', 'name')->ignore($product->id), 'regex:/^[a-z0-9-]+$/'],
             'description' => 'required|max:20050|string',
             'product_category' => 'required|array',
             'product_category.*' => 'required|exists:product_categories,id',
             'price' => 'decimal:0,2|required',
             'media.*' => 'nullable|mimes:jpeg,png,jpg,gifjpeg,png,jpg,gif,mp4,mov,avi|max:40480',
         ]);
+        $validated['slug'] = $validated['slug'] ?? Str::slug($validated['name']) . '-' . uniqid();
 
         $product->update([
             'name' => $request->name,
-            'slug' => $request->slug,
+            'slug' => $validated['slug'],
             'description' => $request->description,
             'price' => $request->price,
         ]);
@@ -263,5 +266,33 @@ class ProductController extends Controller
         $this->changeImageOrder($productId, $imageId, Product::class);
         ActivityLogger::log('Image order changed', 'Product', $productId);
         return redirect()->route('admin.products.edit', $productId)->with('success', 'Image order updated successfully');
+    }
+
+    public function preview(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:products,name',
+            'slug' => 'nullable|string|max:255|unique:products,slug|regex:/^[a-z0-9-]+$/',
+            'description' => 'required|max:20050|string',
+            'price' => 'decimal:0,2|required',
+            'product_category' => 'required|array',
+            'product_category.*' => 'required|exists:product_categories,id',
+            'media.*' => 'nullable|mimes:jpeg,png,jpg,gifjpeg,png,jpg,gif,mp4,mov,avi|max:40480',
+        ]);
+        $validated['slug'] = $validated['slug'] ?? Str::slug($validated['name']) . '-' . uniqid();
+
+        // Create a dummy product-like object
+        $product = new Product($validated);
+
+        // You can also fake relationships like:
+        $product->setRelation('categories', ProductCategory::whereIn('id', $validated['product_category'])->get());
+
+        $firstCategory = $product->categories->first();
+        $selectedProducts = $firstCategory->products()
+            ->where('name', '!=', $product->title)
+            ->take(4)
+            ->get();
+
+        return view('client.shop.show', compact('product', 'selectedProducts'));
     }
 }

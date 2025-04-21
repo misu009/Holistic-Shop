@@ -2,7 +2,10 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\CKEditorController;
 use App\Http\Controllers\ClientColloboratorController;
+use App\Http\Controllers\ClientContactController;
+use App\Http\Controllers\ClientEventController;
 use App\Http\Controllers\ClientPostController;
 use App\Http\Controllers\ClientShopController;
 use App\Http\Controllers\CollaboratorController;
@@ -14,8 +17,7 @@ use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
+use App\Livewire\AdminPostBuilder;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,10 +36,19 @@ Route::post('/login', [LoginController::class, 'login'])->name('sign.in');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get("/", [HomeController::class, 'index'])->name('home');
+
 Route::get('/posts', [ClientPostController::class, 'index'])->name('client.posts.index');
+Route::get('/posts/{slug}', [ClientPostController::class, 'show'])->name('client.posts.show');
+
 Route::get('/collaborators', [ClientColloboratorController::class, 'index'])->name('client.collaborators.index');
+
 Route::get('/shop', [ClientShopController::class, 'index'])->name('client.shop.index');
 Route::get('/shop/{slug}', [ClientShopController::class, 'show'])->name('client.shop.show');
+
+Route::get('/contact-us', [ClientContactController::class, 'index'])->name('client.contact.index');
+Route::post('/contact-us', [ClientContactController::class, 'store'])->name('client.contact.store');
+
+Route::get('/events', [ClientEventController::class, 'index'])->name('client.events.index');
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
@@ -83,6 +94,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::put('/products/{product}', [ProductController::class, 'update'])->name('admin.products.update');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
     Route::post('/products/update-select2', [ProductController::class, 'loadSearchOptions']);
+    Route::post('/admin/products/preview', [ProductController::class, 'preview'])->name('admin.products.preview');
 
     Route::get('/collaborators', [CollaboratorController::class, 'index'])->name('admin.collaborators.index');
     Route::get('/collaborators/create', [CollaboratorController::class, 'create'])->name('admin.collaborators.create');
@@ -103,9 +115,10 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::get('/settings', [SettingController::class, 'index'])->name('admin.settings.index');
     Route::post('/settings', [SettingController::class, 'update'])->name('admin.settings.update');
-});
 
-Route::get('/test', function () {
-    dd(2);
-    return view('admin.test');
-})->name('products.search');
+    Route::get('/contact', [ClientContactController::class, 'adminIndex'])->name('admin.contact.index');
+    Route::delete('/contact/{contact}', [ClientContactController::class, 'destroy'])->name('admin.contact.destroy');
+
+    Route::post('/ckeditor/upload', [CKEditorController::class, 'upload'])->name('admin.ckeditor.upload');
+    Route::post('/ckeditor/delete-image', [CKEditorController::class, 'deleteImage'])->name('admin.ckeditor.delete-image');
+});

@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title')</title>
+
     @vite(['resources/css/app.css', 'resources/css/admin.css', 'resources/js/app.js'])
 </head>
 
@@ -23,6 +24,7 @@
             ['name' => 'Collaborators', 'url' => '/admin/collaborators'],
             ['name' => 'Events', 'url' => '/admin/events'],
             ['name' => 'Settings', 'url' => '/admin/settings'],
+            ['name' => 'Contact', 'url' => '/admin/contact'],
         ];
     @endphp
 

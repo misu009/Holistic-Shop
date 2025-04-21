@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Traits\admin\MediaContentTrait;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -41,14 +42,25 @@ class PostController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|unique:posts,title',
             'description' => 'required|string',
+            'slug' => 'nullable|string|regex:/^[a-z0-9-]+$/|unique:posts,slug',
+            'excerpt' => 'nullable|string|max:255',
             'post_category' => 'required|array',
             'post_category.*' => 'required|exists:post_categories,id',
             'media.*' => 'nullable|mimes:jpeg,png,jpg,gifjpeg,png,jpg,gif,mp4,mov,avi|max:40480',
         ]);
 
+        $slug = $validated['slug'] ?? Str::slug($validated['title']) . '-' . uniqid();
+        $excerpt = $validated['excerpt'];
+        if (!$excerpt) {
+            $words = str_word_count(strip_tags($validated['description']), 1);
+            $excerpt = implode(' ', array_slice($words, 0, 5));
+        }
+
         $post = Post::create([
             'title' => $request->title,
             'description' => $request->description,
+            'slug' => $slug,
+            'excerpt' => $excerpt,
             'created_by' => auth()->user()->name,
         ]);
 
@@ -93,17 +105,22 @@ class PostController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|unique:posts,title,' . $post->id,
+            'slug' => 'nullable|string|regex:/^[a-z0-9-]+$/|unique:posts,slug,' . $post->id,
+            'excerpt' => 'nullable|string|max:255',
             'description' => 'required|string',
             'post_category' => 'required|array',
             'post_category.*' => 'required|exists:post_categories,id',
             'media.*' => 'nullable|mimes:jpeg,png,jpg,gifjpeg,png,jpg,gif,mp4,mov,avi|max:40480',
         ]);
 
+        $validated['slug'] = $validated['slug'] ?? Str::slug($validated['title']) . '-' . uniqid();
+        if (!$validated['excerpt']) {
+            $words = str_word_count(strip_tags($validated['description']), 1);
+            $excerpt = implode(' ', array_slice($words, 0, 5));
+            $validated['excerpt'] = count($words) > 5 ? $excerpt . '...' : implode(' ', $words);
+        }
 
-        $post->update([
-            'title' => $request->title,
-            'description' => $request->description,
-        ]);
+        $post->update($validated);
 
         $post->categories()->sync($request->post_category);
 
@@ -129,6 +146,17 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        $content = $post->description; // assuming 'description' holds CKEditor HTML
+
+        preg_match_all('/<img[^>]+src="([^">]+)"/i', $content, $matches);
+        $imageUrls = $matches[1]; // List of src values
+        foreach ($imageUrls as $url) {
+            // Step 3: Convert URL to storage path (if public disk used)
+            $filePath = str_replace(asset('storage/'), '', $url);
+            if (Storage::disk('public')->exists($filePath)) {
+                Storage::disk('public')->delete($filePath);
+            }
+        }
         foreach ($post->media as $media) {
             if (Storage::exists('public/' . $media->path)) {
                 Storage::delete('public/' . $media->path);

@@ -44,6 +44,7 @@ class DatabaseSeeder extends Seeder
             'shop_text_1' => 'Shop with us for the best products',
             'shop_text_2' => 'Discover our wide range of offerings',
             'shop_text_3' => 'Personalizeaza-ti energia acum!',
+            'event_text_1' => 'Join us for exciting events and offers',
             'mission_text' => 'Our mission is to provide the best service to our customers.',
             'mission_bullets' => json_encode([
                 'Quality products',

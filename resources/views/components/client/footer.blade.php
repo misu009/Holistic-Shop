@@ -38,7 +38,7 @@
         <a class="d-sm-none d-block text-decoration-none text-white mt-3" href="">
             CONTACT
         </a>
-        <a class="d-block text-decoration-none text-white mt-3" href="">
+        <a class="d-block text-decoration-none text-white mt-3" href="https://linktr.ee/Mihail0912">
             FOLLOW US
         </a>
     </div>

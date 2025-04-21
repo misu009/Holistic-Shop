@@ -100,10 +100,14 @@
                 <div class="card-body">
                     <div class="mb-3">
                         <label class="form-label">Texte Shop Hero</label>
-                        <input type="text" class="form-control shadow mb-2" name="shop_text_1" maxlength="90"
-                            value="{{ old('shop_text_1', $settings->shop_text_1) }}" required>
-                        <input type="text" class="form-control shadow mb-2" name="shop_text_2" maxlength="90"
-                            value="{{ old('shop_text_2', $settings->shop_text_2) }}" required>
+                        <textarea name="shop_text_1" id="shop_text_1" class="ckeditor form-control" rows="3" required>
+                            {!! old('shop_text_1', $settings->shop_text_1) !!}
+                        </textarea>
+                        <br>
+                        <textarea name="shop_text_2" id="shop_text_2" class="ckeditor form-control" rows="3" required>
+                            {!! old('shop_text_2', $settings->shop_text_2) !!}
+                        </textarea>
+                        <br>
                         <label class="form-label">Text button hero shop</label>
                         <input type="text" class="form-control shadow mb-2" name="shop_text_3" maxlength="40"
                             value="{{ old('shop_text_3', $settings->shop_text_3) }}" required>
@@ -138,6 +142,26 @@
 
                 </div>
             </div>
+
+            <div class="card shadow-sm border-0 mt-5">
+                <div class="card-header bg-danger text-white">Events Page Settings</div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Text Event Hero</label>
+                        <textarea name="event_text_1" id="event_text_1" class="ckeditor form-control" rows="3" required>
+                            {!! old('event_text_1', $settings->event_text_1) !!}
+                        </textarea>
+                    </div>
+                    <div class="mb-3 mt-5">
+                        <label class="form-label">Poze Event Hero</label>
+                        <br>
+                        <x-admin.image-uploader imagePreviewId="image-preview-event"
+                            path="{{ Storage::url($settings->event_img) }}" imageInputId="select-event-img"
+                            imageInputName="event_img" buttonText="Upload Event Hero Image" />
+                    </div>
+                </div>
+            </div>
+
 
             <button type="submit" class="btn btn-success mt-5">Save Settings</button>
         </form>

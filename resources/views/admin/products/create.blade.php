@@ -9,7 +9,7 @@
         <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <x-admin.input label-name="Name" attributes-param="type=text id=name required" name="name" />
-            <x-admin.input label-name="Slug" attributes-param="type=text id=slug required" name="slug" />
+            <x-admin.input label-name="Slug (optional)" attributes-param="type=text id=slug" name="slug" />
             <div>
                 <label for="product_category">Product Category</label>
                 <select class="form-control select2" name="product_category[]" id="product_category" multiple="multiple"
@@ -33,6 +33,13 @@
                 <label for="media">Add media for product</label>
                 <br>
                 <input type="file" id="media" name="media[]" accept="image/*,video/*" multiple>
+            </div>
+            <br>
+            <div>
+                <button formaction="{{ route('admin.products.preview') }}" formmethod="POST" formtarget="_blank"
+                    class="btn btn-outline-warning">
+                    Preview Product
+                </button>
             </div>
             <br>
             <button type="submit" class="btn btn-primary">Add Product</button>

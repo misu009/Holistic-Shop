@@ -49,23 +49,29 @@
                     @endforeach
                 </select>
             </div>
-            <x-admin.input label-name="Event Start Date" attributes-param="type=date id=starts_at required"
+            <x-admin.input label-name="Event Start Date" attributes-param="type=date max=9999-12-31 id=starts_at required"
                 value="{{ old('starts_at') ? old('starts_at') : \Carbon\Carbon::parse($event->starts_at)->format('Y-m-d') }}"
                 name="starts_at" />
-            <x-admin.input label-name="Event End Date" attributes-param="type=date id=ends_at required"
+            <x-admin.input label-name="Event End Date" attributes-param="type=date max=9999-12-31 id=ends_at required"
                 value="{{ old('ends_at') ? old('ends_at') : \Carbon\Carbon::parse($event->ends_at)->format('Y-m-d') }}"
                 name="ends_at" />
             <x-admin.input label-name="Price" value="{{ old('price', $event->price) }}"
                 attributes-param="type=number id=price required step=0.01 min=0 max=10000000000" name="price" />
+            @php
+                $imageUrl = optional($event->media->first())->path;
+            @endphp
+            <x-admin.image-uploader imagePreviewId="image-preview" path="{{ $imageUrl ? Storage::url($imageUrl) : '' }}"
+                imageInputId="select-picture" imageInputName="image" buttonText="Upload Image" />
+
+            <br> <br>
             <div>
-                <label for="media">Add media for event</label>
-                <br>
-                <input type="file" id="media" name="media[]" accept="image/*,video/*" multiple>
+                <label for="disabled">Dezactiveaza eveniment (check pentru a dezactiva)</label>
+                <input type="checkbox" name="disabled" id="disabled" value="1"
+                    @if (old('disabled') == 1) checked @elseif ($event->disabled == 1) checked @endif>
             </div>
             <br>
             <button type="submit" class="btn btn-primary">Update Event</button>
         </form>
         <br>
-        <x-admin.media-content :objectId="$event->id" :media="$event->media" route="admin.event.image." objectName="eventId" />
     </div>
 @endsection

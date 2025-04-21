@@ -6,7 +6,7 @@
     <section class="hero-shop-section">
         <div class="container p-4 d-flex flex-column justify-content-md-around" style="height: inherit">
             <div class="hero-shop-content d-md-block d-flex flex-column justify-content-between">
-                @php
+                {{-- @php
                     use Illuminate\Support\Str;
 
                     $firstPart = Str::words($settings->shop_text_1, 2, '');
@@ -16,15 +16,22 @@
                     $splitPosition = strpos($settings->shop_text_2, ' ', $halfLength);
                     $firstPart2 = trim(substr($settings->shop_text_2, 0, $splitPosition));
                     $secondPart2 = trim(substr($settings->shop_text_2, $splitPosition));
-                @endphp
+                @endphp --}}
 
                 <div>
-                    <p class="text-md-start text-center text-white hero-shop-text">{!! '<b>' . $firstPart . '</b>' . '<br>' . $secondPart !!}</p>
+                    <div class="text-md-start text-center text-white hero-shop-text">
+                        {!! $settings->shop_text_1 !!}
+                    </div>
+                    {{-- <p class="text-md-start text-center text-white hero-shop-text">{!! '<b>' . $firstPart . '</b>' . '<br>' . $secondPart !!}</p> --}}
                 </div>
                 <br>
                 <br>
                 <div>
-                    <p class="text-md-start text-center text-white hero-shop-text">{!! $firstPart2 . '<br>' . $secondPart2 !!}</p>
+                    <div class="text-md-start text-center text-white hero-shop-text">
+                        {!! $settings->shop_text_2 !!}
+                    </div>
+
+                    {{-- <p class="text-md-start text-center text-white hero-shop-text">{!! $firstPart2 . '<br>' . $secondPart2 !!}</p> --}}
                     <a href="#unique-orgonites"
                         class="d-md-none ms-auto me-auto d-block hero-shop-button text-decoration-none">{{ $settings->shop_text_3 }}</a>
                 </div>
@@ -49,7 +56,7 @@
                             alt="Shop {{ $i }}">
                     </div>
                 @endforeach
-                
+
             </div>
 
         </div>
@@ -72,8 +79,8 @@
 
                             <div class="mt-3 flex-grow-1">
                                 {{-- <h4 class="product-name fw-bold">{{ $product->name }}</h4> --}}
-                                <p class="product-description">
-                                    {!! Str::words($product->description, 10, ' ..') !!}
+                                <p class="product-description " st>
+                                    {{ Str::words(strip_tags(html_entity_decode($product->description)), 5, ' ..') }}
                                 </p>
                             </div>
 

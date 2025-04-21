@@ -10,6 +10,8 @@
             @method('PUT')
             <x-admin.input label-name="Post Title" attributes-param="type=text id=title required"
                 value="{!! old('title') ? old('title') : $post->title !!}" name="title" />
+            <x-admin.input label-name="Post Slug(optional)" attributes-param="type=text id=slug"
+                value="{!! old('slug') ? old('slug') : $post->slug !!}" name="slug" />
 
             <div>
                 <label for="post_category">Post Categories</label>
@@ -24,11 +26,14 @@
                 </select>
             </div>
             <br>
-
+            <div>
+                <label for="excerpt">Excerpt</label>
+                <textarea name="excerpt" id="excerpt" rows="4" class="form-textarea ckeditor">{!! old('excerpt') ? old('excerpt') : $post->excerpt !!}</textarea>
+            </div>
+            <br>
             <div>
                 <label for="description">Post content</label>
-                <br>
-                <textarea name="description" id="description" rows="4" class="form-textarea ckeditor">{!! old('description') ? old('description') : $post->description !!}</textarea>
+                <textarea name="description" id="description" rows="4" class="form-textarea ckeditor-media">{!! old('description') ? old('description') : $post->description !!}</textarea>
             </div>
             <br>
 

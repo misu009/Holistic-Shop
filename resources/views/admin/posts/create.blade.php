@@ -10,6 +10,8 @@
             @csrf
             <x-admin.input label-name="Post title" attributes-param="type=text id=title required" name="title"
                 value="{{ old('title') }}" />
+            <x-admin.input label-name="Post slug (optional)" attributes-param="type=text id=slug" name="slug"
+                value="{{ old('slug') }}" />
             <div>
                 <label for="post_category">Post Categories</label>
                 <select class="form-control select2" name="post_category[]" id="post_category" multiple="multiple" required>
@@ -22,9 +24,13 @@
             </div>
             <br>
             <div>
+                <label for="excerpt">Excerpt (optional)</label>
+                <textarea name="excerpt" id="excerpt" rows="4" class="form-textarea ckeditor">{!! old('excerpt') !!}</textarea>
+            </div>
+            <br>
+            <div>
                 <label for="description">Post description</label>
-                <br>
-                <textarea name="description" id="description" rows="4" class="form-textarea ckeditor">{!! old('description') !!}</textarea>
+                <textarea name="description" id="description" rows="4" class="form-textarea ckeditor-media">{!! old('description') !!}</textarea>
             </div>
             <br>
             <div>
@@ -33,6 +39,7 @@
                 <input type="file" id="media" name="media[]" accept="image/*,video/*" multiple>
             </div>
             <br>
+            
             <button type="submit" class="btn btn-primary">Add Post</button>
         </form>
     </div>

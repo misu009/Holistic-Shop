@@ -306,6 +306,12 @@ ul.info-list-left li::after {
     border-color: black !important;
 } */
 
+.product-description {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
 .border-golden {
     border: black;
     border-width: 10px;
@@ -422,6 +428,36 @@ ul.info-list-left li::after {
 .hero-shop-text {
     font-size: 40px;
     font-weight: 400;
+}
+
+.contact-section {
+    background-image: url("/images/client/contact-us-bg.png");
+    background-size: cover;
+    background-position: center;
+    min-height: 70vh;
+    padding: 60px 15px;
+}
+
+.glass-input {
+    position: relative;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 10px;
+    color: white;
+}
+
+.glass-input::placeholder {
+    color: #eee;
+}
+
+.glass-input:focus {
+    background: rgba(255, 255, 255, 0.2);
+    outline: none;
+    box-shadow: 0 0 5px 2px rgba(255, 255, 255, 0.3);
+    border-color: #b96f2e81;
+    color: white;
 }
 
 @media (max-width: 1024px) {
