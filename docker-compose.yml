@@ -17,6 +17,7 @@ services:
             - mysql
         networks:
             - sail
+        entrypoint: /bin/bash -c "php artisan migrate:fresh --seed && php-fpm"  # Run migration and seed before starting PHP-FPM
 
     mysql:
         image: "mysql/mysql-server:8.0"
