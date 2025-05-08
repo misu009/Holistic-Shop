@@ -5,12 +5,11 @@ RUN apt-get update && apt-get install -y \
     git curl zip unzip cron supervisor libpng-dev libonig-dev libxml2-dev \
     libzip-dev libcurl4-openssl-dev pkg-config libssl-dev \
     nodejs npm \
+    lsb-release apt-transport-https ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Add PHP repository for PHP 8.3 extensions
-RUN apt-get update && apt-get install -y \
-    lsb-release apt-transport-https ca-certificates \
-    && curl -sSL https://packages.sury.org/php/apt.gpg | tee /etc/apt/trusted.gpg.d/sury.asc \
+# Add PHP repository for PHP 8.3 extensions and import GPG key
+RUN curl -sSL https://packages.sury.org/php/apt.gpg | tee /etc/apt/trusted.gpg.d/sury.asc \
     && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury.list \
     && apt-get update
 
