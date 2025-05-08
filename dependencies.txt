@@ -1,7 +1,0 @@
-php artisan storage:link
-npm
-bootstrap?
-npm ckeditor
-select2 ?
-npm glightbox
-npm install --save @ckeditor/ckeditor5-upload
