@@ -3,12 +3,12 @@
         <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
+                <th scope="col">Nume</th>
                 <th scope="col">Email</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Message</th>
+                <th scope="col">Telegon</th>
+                <th scope="col">Mesaj</th>
                 <th scope="col">Date</th>
-                <th scope="col">Actions</th>
+                <th scope="col">Actiuni</th>
             </tr>
         </thead>
         <tbody>
@@ -44,4 +44,3 @@
     </div>
 
 </div>
-

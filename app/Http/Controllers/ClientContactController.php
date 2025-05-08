@@ -10,7 +10,8 @@ class ClientContactController extends Controller
 {
     public function index()
     {
-        return view('client.contact.index');
+        $settings = \App\Models\Setting::first() ?? null;
+        return view('client.contact.index', compact('settings'));
     }
 
     public function store(Request $request)

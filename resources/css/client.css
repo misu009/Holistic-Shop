@@ -459,6 +459,27 @@ ul.info-list-left li::after {
     border-color: #b96f2e81;
     color: white;
 }
+.custom-swiper-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    color: white;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* subtle dark bg */
+    padding: 8px 12px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.custom-prev {
+    left: 10px;
+}
+
+.custom-next {
+    right: 10px;
+}
 
 @media (max-width: 1024px) {
     .hero-section {

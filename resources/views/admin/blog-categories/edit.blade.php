@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title', 'Edit Category')
+@section('title', 'Editeaza Categorie')
 
 @section('content')
     <div class="content p-lg-5 ml-5">
@@ -9,13 +9,13 @@
             enctype="multipart/form-data">
             @csrf
             @method('PUT')
-            <x-admin.input label-name="Category Name" attributes-param='type=text id=name required'
+            <x-admin.input label-name="Nume Categorie" attributes-param='type=text id=name required'
                 value="{{ old('name') ? old('name') : $postCategory->name }}" name="name" />
-            <x-admin.input label-name="Slug Name" attributes-param='type=text id=slug required'
+            <x-admin.input label-name="Slug Categorie" attributes-param='type=text id=slug required'
                 value="{{ old('slug') ? old('slug') : $postCategory->slug }}" name="slug" />
 
             <div>
-                <label for="description">Category description</label>
+                <label for="description">Descrierea Categoriei</label>
                 <br>
                 <textarea name="description" id="description" rows="4" class="form-textarea ckeditor">{{ old('description') ? old('description') : $postCategory->description }}</textarea>
             </div>
@@ -31,7 +31,7 @@
                 onclick="uploadImageCanvas('select-picture', 'image-preview', 'image-form')">upload image</button>
             <br><br>
             <div class="d-flex justify-content-start">
-                <button type="submit" class="btn btn-primary">Save User</button>
+                <button type="submit" class="btn btn-primary">Actualizeaza Categorie</button>
             </div>
 
 

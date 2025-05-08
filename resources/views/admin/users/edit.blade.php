@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title', 'Edit Profile')
+@section('title', 'Actualizeaza profil')
 
 @section('content')
     <div class="content p-lg-5 ml-5">
@@ -14,14 +14,14 @@
             <x-admin.input label-name="Email"
                 attributes-param="type=email id=editEmail value={{ old('email') ? old('email') : $user->email }} required"
                 name="editEmail" />
-            <x-admin.input label-name="Pasword <small class='text-danger'>(passwords must match)</small>"
+            <x-admin.input label-name="Parola <small class='text-danger'>(parolele trebuie sa coincida)</small>"
                 attributes-param="type=password id=edit_password" name="password">
                 <span class="position-absolute end-0 translate-middle-y pe-3"
                     onclick="togglePasswordVisibility('edit_password')" style="cursor: pointer; margin-top:-20px;">
                     <i class="bi bi-eye" id="toggleIcon"></i>
                 </span>
             </x-admin.input>
-            <x-admin.input label-name="Confirm pasword" attributes-param="type=password id=edit_password_confirmation"
+            <x-admin.input label-name="Confirma parola" attributes-param="type=password id=edit_password_confirmation"
                 name="password_confirmation">
                 <span class="position-absolute end-0 translate-middle-y pe-3"
                     onclick="togglePasswordVisibility('edit_password_confirmation')"
@@ -35,7 +35,7 @@
 
             <br><br>
             <div class="d-flex justify-content-start">
-                <button type="submit" class="btn btn-primary">Save User</button>
+                <button type="submit" class="btn btn-primary">Actualizeaza profilul</button>
             </div>
 
 

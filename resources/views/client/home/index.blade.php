@@ -102,7 +102,8 @@
 
                 <div class="d-flex justify-content-center align-items-center mb-3 blog-images-1">
                     @foreach ($selectedPosts->take(2) as $post)
-                        <a href="#" class="" style="height: inherit">
+                        <a href="{{ route('client.posts.show', ['slug' => $post->slug]) }}" class=""
+                            style="height: inherit">
                             <div class="image-box me-3" @if ($loop->first) style="width: 40vw;" @endif>
                                 <img src="{{ !empty($post->media) && isset($post->media[0]) ? asset('storage/' . $post->media[0]->path) : asset('images/client/image-' . ($loop->index + 1) . '.png') }}"
                                     alt="Post Image">
@@ -115,7 +116,8 @@
                 <div class="d-flex justify-content-center align-items-center blog-images-2">
                     @if ($selectedPosts->count() >= 3)
                         @php $thirdPost = $selectedPosts[2]; @endphp
-                        <a href="#" class="" style="height: inherit">
+                        <a href="{{ route('client.posts.show', ['slug' => $post->slug]) }}" class=""
+                            style="height: inherit">
                             <div class="image-box me-3">
                                 <img src="{{ !empty($thirdPost->media) && isset($thirdPost->media[0]) ? asset('storage/' . $thirdPost->media[0]->path) : asset('images/client/image-3.png') }}"
                                     alt="Post Image">

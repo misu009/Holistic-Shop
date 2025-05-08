@@ -1,16 +1,16 @@
 @extends('admin.layout')
 
-@section('title', 'Add Product Categories')
+@section('title', 'Adauga categorii produse')
 
 @section('content')
     <div class="container my-5">
-        <h2 class="text-center">Add a new Product Category</h2>
+        <h2 class="text-center">Adauga categorie produse</h2>
         <x-alert-notification />
         <form action="{{ route('admin.shop-categories.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <x-admin.input label-name="Category Name" attributes-param="type=text id=name required" name="name" />
+            <x-admin.input label-name="Nume categorie" attributes-param="type=text id=name required" name="name" />
             <div>
-                <label for="description">Category description</label>
+                <label for="description">Descriere categorie</label>
                 <br>
                 <textarea name="description" id="description" rows="4" class="form-textarea ckeditor">{!! old('description') !!}</textarea>
             </div>
@@ -18,10 +18,10 @@
             <img id="image-preview">
             <input type="file" id="select-picture" name="picture" accept="image/*">
             <button type="button" class="btn btn-warning"
-                onclick="uploadImageCanvas('select-picture', 'image-preview', 'image-form')">upload image</button>
+                onclick="uploadImageCanvas('select-picture', 'image-preview', 'image-form')">Adauga media</button>
             <br><br>
             {{-- <div class="d-flex justify-content-start"> --}}
-            <button type="submit" class="btn btn-primary">Add Category</button>
+            <button type="submit" class="btn btn-primary">Adauga categorie</button>
             {{-- </div> --}}
         </form>
     </div>

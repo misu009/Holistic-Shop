@@ -7,7 +7,7 @@
         <div class="d-none d-lg-block">
             <div class="row justify-content-center">
                 @foreach ($paginatedCollaborators as $collaborator)
-                    <div class="col-md-8 mb-5">
+                    <div class="col-12 mb-5">
                         <div class="row">
                             <div class="col-md-3">
                                 <img src="{{ Storage::url($collaborator->picture) }}" class="img-fluid">
@@ -17,12 +17,35 @@
                                 <p class="text-white">
                                     {{ $collaborator->long_description }}
                                 </p>
+                                @if ($collaborator->email || $collaborator->phone_number)
+                                    <div class="text-white fs-5">
+                                        <p class="text-white">
+                                            Date de contact: <br>
+                                        </p>
+                                        @if ($collaborator->email)
+                                            <p>
+                                                <strong>Email:</strong>
+                                                <a href="mailto:{{ $collaborator->email }}"
+                                                    class="text-decoration-none text-white">{{ $collaborator->email ?? 'N/A' }}
+                                                </a>
+                                            </p>
+                                        @endif
+                                        @if ($collaborator->phone_number)
+                                            <p>
+                                                <strong>Telefon:</strong>
+                                                <a href="tel:{{ $collaborator->phone_number }}"
+                                                    class="text-decoration-none text-white">{{ $collaborator->phone_number ?? 'N/A' }}
+                                                </a>
+                                            </p>
+                                        @endif
+                                @endif
                             </div>
                         </div>
                     </div>
-                @endforeach
-                <x-client.pagination :paginator="$paginatedCollaborators" />
             </div>
+            @endforeach
+            <x-client.pagination :paginator="$paginatedCollaborators" />
+        </div>
         </div>
         <div id="teamCarousel" class="carousel slide d-lg-none position-relative" data-bs-ride="carousel">
             <div class="carousel-inner">

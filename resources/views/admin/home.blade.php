@@ -9,7 +9,7 @@
             <div class="col-md-4">
                 <div class="card shadow-sm border-0">
                     <div class="card-body text-center">
-                        <h5 class="card-title">Total Users</h5>
+                        <h5 class="card-title">Total Useri</h5>
                         <p class="display-6 fw-bold">{{ $userCount }}</p>
                     </div>
                 </div>
@@ -17,7 +17,7 @@
             <div class="col-md-4">
                 <div class="card shadow-sm border-0">
                     <div class="card-body text-center">
-                        <h5 class="card-title">Blog Posts</h5>
+                        <h5 class="card-title">Total postari</h5>
                         <p class="display-6 fw-bold">{{ $postCount }}</p>
                     </div>
                 </div>
@@ -25,7 +25,7 @@
             <div class="col-md-4">
                 <div class="card shadow-sm border-0">
                     <div class="card-body text-center">
-                        <h5 class="card-title">Total Products</h5>
+                        <h5 class="card-title">Total Produse</h5>
                         <p class="display-6 fw-bold">{{ $productCount }}</p>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
             <!-- Recent Blog Posts -->
             <div class="col-md-6">
                 <div class="card shadow-sm border-0">
-                    <div class="card-header bg-primary text-white">Recent Blog Posts</div>
+                    <div class="card-header bg-primary text-white">Postari recente</div>
                     <div class="card-body">
                         <ul class="list-group list-group-flush">
                             @foreach ($posts as $post)
@@ -53,7 +53,7 @@
             <!-- Recent Events -->
             <div class="col-md-6">
                 <div class="card shadow-sm border-0">
-                    <div class="card-header bg-info text-white">Upcoming Events</div>
+                    <div class="card-header bg-info text-white">Evenimente care urmeaza sa inceapa</div>
                     <div class="card-body">
                         <ul class="list-group list-group-flush">
                             @foreach ($events as $event)
@@ -71,7 +71,7 @@
             <!-- Collaborators Section -->
             <div class="col-md-6">
                 <div class="card shadow-sm border-0">
-                    <div class="card-header bg-secondary text-white">Recent Collaborators</div>
+                    <div class="card-header bg-secondary text-white">Colaboratori recenti</div>
                     <div class="card-body">
                         <ul class="list-group list-group-flush">
                             @foreach ($collaborators as $collaborator)
@@ -87,7 +87,7 @@
             <!-- Admin Notes Section -->
             <div class="col-md-6">
                 <div class="card shadow-sm border-0">
-                    <div class="card-header bg-warning text-dark">Admin Notes</div>
+                    <div class="card-header bg-warning text-dark">Note admin</div>
                     <div class="card-body">
                         <textarea class="form-control" rows="5" placeholder="Write your notes here..."></textarea>
                     </div>
@@ -98,19 +98,19 @@
         <div class="row mt-4">
             <div class="col-md-6">
                 <div class="card shadow-sm border-0">
-                    <div class="card-header bg-danger text-white">Quick Actions</div>
+                    <div class="card-header bg-danger text-white">Actiuni rapide</div>
                     <div class="card-body text-center">
-                        <a href="{{ route('admin.posts.create') }}" class="btn btn-primary m-2">➕ New Blog Post</a>
-                        <a href="{{ route('admin.products.create') }}" class="btn btn-success m-2">🛒 Add Product</a>
-                        <a href="{{ route('admin.events.create') }}" class="btn btn-warning m-2">📅 Create Event</a>
-                        <a href="{{ route('admin.users.index') }}" class="btn btn-secondary m-2">👤 Manage Users</a>
+                        <a href="{{ route('admin.posts.create') }}" class="btn btn-primary m-2">➕ Postare noua blog</a>
+                        <a href="{{ route('admin.products.create') }}" class="btn btn-success m-2">🛒 Adauga produs</a>
+                        <a href="{{ route('admin.events.create') }}" class="btn btn-warning m-2">📅 Creaza eveniment</a>
+                        <a href="{{ route('admin.users.index') }}" class="btn btn-secondary m-2">👤 Gestioneaza useri</a>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-6">
                 <div class="card shadow-sm border-0">
-                    <div class="card-header bg-success text-white">Recent Admin Activity</div>
+                    <div class="card-header bg-success text-white">Activitate recenta admin</div>
                     <div class="card-body">
                         <ul class="list-group list-group-flush">
                             @foreach ($logs as $log)

@@ -3,14 +3,14 @@
         <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Slug</th>
-                <th scope="col">Price</th>
-                <th scope="col">Added by</th>
-                <th scope="col">Categories</th>
-                <th scope="col">Description</th>
-                <th scope="col">Updated_at</th>
-                <th scope="col">Actions</th>
+                <th scope="col">Nume</th>
+                <th scope="col">Pret</th>
+                <th scope="col">Adaugat de</th>
+                <th scope="col">Categorii</th>
+                <th scope="col">Descriere</th>
+                <th scope="col">Actualizat la</th>
+                <th scope="col">Pozitie</th>
+                <th scope="col">Actiuni</th>
             </tr>
         </thead>
         <tbody>
@@ -18,7 +18,6 @@
                 <tr>
                     <td>{{ $products->firstItem() + $index }}</td>
                     <td>{{ $product->name }}</td>
-                    <td>{{ $product->slug }}</td>
                     <td>{{ $product->price }}</td>
                     <td>{{ $product->user->name }}</td>
                     <td style="max-width: 600px; overflow: hidden;text-overflow: ellipsis">
@@ -42,6 +41,7 @@
                         </div>
                     </td>
                     <td>{{ $product->updated_at }}</td>
+                    <td>{{ $product->order }}</td>
                     <td>
                         <div class="d-flex justify-content-center">
                             <form class="m-1" action="{{ route('admin.products.edit', $product->id) }}">

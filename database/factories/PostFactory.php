@@ -32,7 +32,7 @@ class PostFactory extends Factory
     public function withPostCategory()
     {
         return $this->afterCreating(function (Post $post) {
-            $postCategories = PostCategory::inRandomOrder()->take(rand(1, 3))->pluck('id'); // Get 1 to 3 random collaborator IDs
+            $postCategories = PostCategory::inRandomOrder()->take(rand(15, 20))->pluck('id'); // Get 1 to 3 random collaborator IDs
             foreach ($postCategories as $postCategory) {
                 $post->categories()->attach($postCategory);
             }

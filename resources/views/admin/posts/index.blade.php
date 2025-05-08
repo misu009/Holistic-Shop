@@ -1,15 +1,15 @@
 @extends('admin.layout')
 
-@section('title', 'Blog Posts')
+@section('title', 'Postari Blog')
 
 @section('content')
     <div class="container my-5">
         <x-alert-notification />
         <div class="d-flex justify-content-between align-items-center py-3">
-            <h2 class="mx-auto">Posts</h2>
+            <h2 class="mx-auto">Postari</h2>
             <form action="{{ route('admin.posts.create') }}" method="GET">
                 <button type="submit" class="btn btn-primary">
-                    Add Post
+                    Adauga postare
                 </button>
             </form>
         </div>
@@ -18,7 +18,7 @@
                 @php
                     $searchFilter = [
                         ['value' => 1, 'option' => 'Ambele'],
-                        ['value' => 2, 'option' => 'Produse'],
+                        ['value' => 2, 'option' => 'Postari'],
                         ['value' => 3, 'option' => 'Categorii'],
                     ];
                 @endphp

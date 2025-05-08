@@ -6,6 +6,7 @@ use App\Http\Controllers\CKEditorController;
 use App\Http\Controllers\ClientColloboratorController;
 use App\Http\Controllers\ClientContactController;
 use App\Http\Controllers\ClientEventController;
+use App\Http\Controllers\ClientPostCategoryController;
 use App\Http\Controllers\ClientPostController;
 use App\Http\Controllers\ClientShopController;
 use App\Http\Controllers\CollaboratorController;
@@ -17,7 +18,6 @@ use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
-use App\Livewire\AdminPostBuilder;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,6 +39,7 @@ Route::get("/", [HomeController::class, 'index'])->name('home');
 
 Route::get('/posts', [ClientPostController::class, 'index'])->name('client.posts.index');
 Route::get('/posts/{slug}', [ClientPostController::class, 'show'])->name('client.posts.show');
+Route::get('/categories/{category}', [ClientPostCategoryController::class, 'show'])->name('client.categories.show');
 
 Route::get('/collaborators', [ClientColloboratorController::class, 'index'])->name('client.collaborators.index');
 
@@ -49,6 +50,7 @@ Route::get('/contact-us', [ClientContactController::class, 'index'])->name('clie
 Route::post('/contact-us', [ClientContactController::class, 'store'])->name('client.contact.store');
 
 Route::get('/events', [ClientEventController::class, 'index'])->name('client.events.index');
+Route::get('/events/{id}', [ClientEventController::class, 'show'])->name('client.events.show');
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');

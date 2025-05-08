@@ -3,10 +3,10 @@
         <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
+                <th scope="col">Nume</th>
                 <th scope="col">Email</th>
-                <th scope="col">Photo</th>
-                <th scope="col">Actions</th>
+                <th scope="col">Imagine</th>
+                <th scope="col">Actiuni</th>
             </tr>
         </thead>
         <tbody>

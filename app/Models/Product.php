@@ -16,6 +16,7 @@ class Product extends Model
         "email",
         "phone_number",
         'user_id',
+        'order',
     ];
 
 

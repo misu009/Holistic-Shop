@@ -3,14 +3,14 @@
         <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Description</th>
-                <th scope="col">Available between</th>
-                <th scope="col">Primary Collaboratos</th>
-                <th scope="col">Collaboratos</th>
-                <th scope="col">Price</th>
-                <th scope="col">Availabilty</th>
-                <th scope="col">Actions</th>
+                <th scope="col">Nume</th>
+                <th scope="col">Descriere</th>
+                <th scope="col">Disponibilitate</th>
+                <th scope="col">Colaboratori principali</th>
+                <th scope="col">Colaboratori secundari</th>
+                <th scope="col">Pret</th>
+                <th scope="col">Disponibilitate</th>
+                <th scope="col">Actiuni</th>
             </tr>
         </thead>
         <tbody>

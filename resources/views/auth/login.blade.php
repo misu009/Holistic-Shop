@@ -29,15 +29,15 @@
                         <input type="email" name="email" id="email"
                             style="background-color: rgb(224,
                             224, 224)"
-                            class="form-control" placeholder="Enter your email" aria-label="Email" required autofocus>
+                            class="form-control" placeholder="Email" aria-label="Email" required autofocus>
                     </div>
                     <div class="input-group mb-3 p-3">
                         <div class="d-flex align-items-center justify-content-center me-2">
                             <img height="25px" src="{{ asset('images/lock.svg') }}" alt="password">
                         </div>
                         <input type="password" name="password" id="password"
-                            style="background-color: rgb(224, 224, 224)" class="form-control"
-                            placeholder="Enter your password" aria-label="Email" required>
+                            style="background-color: rgb(224, 224, 224)" class="form-control" placeholder="Parola"
+                            aria-label="Email" required>
                     </div>
                     @error('email')
                         <span class="text-danger">{{ $message }}</span>
@@ -50,7 +50,7 @@
                     <div class="w-100 p-3 d-flex justify-content-between">
                         <div>
                             <input type="checkbox" name="remember" id="remember" class="form-check-input" checked>
-                            <label for="remember" class="form-check-label">Remember me</label>
+                            <label for="remember" class="form-check-label">Tine-ma minte</label>
                         </div>
                         <button class="btn btn-primary flex-end" type="submit">Submit</button>
                     </div>

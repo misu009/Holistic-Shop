@@ -29,13 +29,13 @@ class DatabaseSeeder extends Seeder
             'picture' => '/users/dasfasfa.jpeg',
         ]);
 
-        \App\Models\User::factory(15)->create();
+        \App\Models\User::factory(2)->create();
         \App\Models\PostCategory::factory(2)->create();
-        \App\Models\Post::factory(30)->withPostCategory()->create();
+        \App\Models\Post::factory(4)->withPostCategory()->create();
         \App\Models\ProductCategory::factory(2)->create();
         \App\Models\Product::factory(4)->withProductCategory()->create();
-        \App\Models\Collaborator::factory(3)->create();
-        \App\Models\Events::factory(5)->withCollaborators()->create();
+        \App\Models\Collaborator::factory(1)->create();
+        \App\Models\Events::factory(1)->withCollaborators()->create();
 
         DB::table('settings')->insert([
             'hero_text_1' => 'Welcome to Lotus',
@@ -61,6 +61,7 @@ class DatabaseSeeder extends Seeder
             'selected_products' => json_encode([1, 2, 3, 4]), // Example product IDs
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
+            'footer_text' => '© 2025 Lotus. All rights reserved.',
         ]);
     }
 }

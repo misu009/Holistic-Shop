@@ -1,44 +1,31 @@
 <div class="row text-white pe-5 ps-5 pt-2 pb-2">
-    <div class="d-md-block col-md-1 d-none"></div>
-    <div class="col-md-5 col-sm-6">
+    <div class="col-sm-6 col-12 d-flex flex-column align-items-center">
         <div>
             <img src="{{ asset('images/client/logo-footer.png') }}" alt="LOTUS RETREAT">
         </div>
-        <p class="w-lg-50 mt-4 d-sm-block d-none" style="font-size: 20px">Lorem ipsum dolor sit amet consectetur
-            adipisicing
-            elit. Delectus
-            nihil perspiciatis iste
-            nisi
-            quos necessitatibus quam voluptates quasi? Vero, magnam!</p>
+        <div class="w-lg-50 mt-4 fs-5">
+            {!! $settings->footer_text ?? '' !!}</div>
     </div>
-    <div class="col-sm-3 col-6">
+    <div class="col-sm-6 col-12 d-flex flex-column align-items-center text-center">
         <a class="d-block text-decoration-none text-white mt-3" href="{{ route('home') }}">
             ACASA
         </a>
-        <a class="d-block text-decoration-none text-white mt-3" href="">
+        <a class="d-block text-decoration-none text-white mt-3" href="{{ route('client.posts.index') }}">
             BLOG
         </a>
-        <a class="d-block text-decoration-none text-white mt-3" href="">
+        <a class="d-block text-decoration-none text-white mt-3" href="{{ route('client.shop.index') }}">
             SHOP
         </a>
-        <a class="d-block text-decoration-none text-white mt-3" href="">
+        <a class="d-block text-decoration-none text-white mt-3" href="{{ route('client.collaborators.index') }}">
             ECHIPA NOASTRA
         </a>
-        <a class="d-sm-block d-none text-decoration-none text-white mt-3" href="">
+        <a class="d-sm-block d-none text-decoration-none text-white mt-3" href="{{ route('client.events.index') }}">
             EVENIMENTE
         </a>
-        <a class="d-sm-block d-none text-decoration-none text-white mt-3" href="">
+        <a class="d-sm-block d-none text-decoration-none text-white mt-3" href="{{ route('client.contact.index') }}">
             CONTACT
         </a>
-    </div>
-    <div class="col-sm-3 col-6">
-        <a class="d-sm-none d-block text-decoration-none text-white mt-3" href="">
-            EVENIMENTE
-        </a>
-        <a class="d-sm-none d-block text-decoration-none text-white mt-3" href="">
-            CONTACT
-        </a>
-        <a class="d-block text-decoration-none text-white mt-3" href="https://linktr.ee/Mihail0912">
+        <a class="d-block text-decoration-none text-white mt-3 mb-3" href="{{ $settings->footer_follow_us }}">
             FOLLOW US
         </a>
     </div>

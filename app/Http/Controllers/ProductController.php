@@ -6,6 +6,7 @@ use App\Helpers\ActivityLogger;
 use App\Models\CategoryProduct;
 use App\Models\Product;
 use App\Models\ProductCategory;
+use App\Models\Setting;
 use App\Traits\admin\MediaContentTrait;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -22,7 +23,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate(15);
+        $products = Product::orderBy('order')->paginate(15);
         $searchItems = $this->getSearchItems();
         return view('admin.products.index', ['products' => $products, 'searchItems' => $searchItems]);
     }
@@ -46,6 +47,7 @@ class ProductController extends Controller
             'slug' => 'nullable|string|max:255|unique:products,slug|regex:/^[a-z0-9-]+$/',
             'description' => 'required|max:20050|string',
             'price' => 'decimal:0,2|required',
+            'order' => 'nullable|integer',
             'product_category' => 'required|array',
             'product_category.*' => 'required|exists:product_categories,id',
             'media.*' => 'nullable|mimes:jpeg,png,jpg,gifjpeg,png,jpg,gif,mp4,mov,avi|max:40480',
@@ -57,9 +59,10 @@ class ProductController extends Controller
             'slug' => $validated['slug'],
             'description' => $request->description,
             'user_id' => auth()->id(),
+            'order' => $request->order ?? 99999,
             'price' => $request->price,
         ]);
-        ActivityLogger::log('Added a new product', 'Product', $product->id);
+        ActivityLogger::log('S a adaugat un produs', 'Product', $product->id);
 
         $product->categories()->attach($request->product_category);
 
@@ -105,6 +108,7 @@ class ProductController extends Controller
             'product_category' => 'required|array',
             'product_category.*' => 'required|exists:product_categories,id',
             'price' => 'decimal:0,2|required',
+            'order' => 'nullable|integer',
             'media.*' => 'nullable|mimes:jpeg,png,jpg,gifjpeg,png,jpg,gif,mp4,mov,avi|max:40480',
         ]);
         $validated['slug'] = $validated['slug'] ?? Str::slug($validated['name']) . '-' . uniqid();
@@ -113,9 +117,10 @@ class ProductController extends Controller
             'name' => $request->name,
             'slug' => $validated['slug'],
             'description' => $request->description,
+            'order' => $request->order ?? 99999,
             'price' => $request->price,
         ]);
-        ActivityLogger::log('Updated a product', 'Product', $product->id);
+        ActivityLogger::log('S a actualizat un produs', 'Product', $product->id);
 
         $product->categories()->detach();
         $product->categories()->attach($request->product_category);
@@ -133,7 +138,7 @@ class ProductController extends Controller
             }
         }
 
-        return redirect()->route('admin.products.edit', ['product' => $product->id])->with('success', 'Product updated successfully');
+        return redirect()->route('admin.products.edit', ['product' => $product->id])->with('success', 'Produs actualizat cu succes');
     }
 
     /**
@@ -147,8 +152,8 @@ class ProductController extends Controller
             }
         }
         $product->delete();
-        ActivityLogger::log('Deleted a product', 'Product', $product->id);
-        return back()->with('success', 'Product deleted successfully');
+        ActivityLogger::log('A fost sters un produs', 'Product', $product->id);
+        return back()->with('success', 'Produs sters cu succes');
     }
 
     public function addProductSearch(Collection $products, Collection $searchItems)
@@ -181,10 +186,10 @@ class ProductController extends Controller
             $categories = ProductCategory::get();
             $this->addProductCategorySearch($categories, $searchItems);
 
-            $products = Product::get();
+            $products = Product::orderBy('order')->get();
             $this->addProductSearch($products, $searchItems);
         } elseif ($value === 2) {
-            $products = Product::get();
+            $products = Product::orderBy('order')->get();
             $this->addProductSearch($products, $searchItems);
         } else {
             $categories = ProductCategory::get();
@@ -243,7 +248,7 @@ class ProductController extends Controller
 
     public function getSearchItems()
     {
-        $allProducts = Product::get()->map(function ($product) {
+        $allProducts = Product::orderBy('order')->get()->map(function ($product) {
             $product->class = 'App\Models\Product';
             return $product;
         });
@@ -251,7 +256,7 @@ class ProductController extends Controller
             $productCategory->class = 'App\Models\ProductCategory';
             return $productCategory;
         });
-        $mergedResult = $allProducts->merge($allCategories);
+        $mergedResult = $allProducts->concat($allCategories);
         return $mergedResult;
     }
     public function destroyImage($productId, $imageId)
@@ -293,6 +298,7 @@ class ProductController extends Controller
             ->take(4)
             ->get();
 
-        return view('client.shop.show', compact('product', 'selectedProducts'));
+        $settings = Setting::first() ?? new Setting();
+        return view('client.shop.show', compact('product', 'selectedProducts', 'settings'));
     }
 }

@@ -54,7 +54,7 @@
             <x-admin.input label-name="Pret"
                 attributes-param="type=number id=price required step=0.01 min=0 max=10000000000" name="price" />
             <div>
-                <label for="media">Adauga media pentru produs</label>
+                <label for="media">Adauga media pentru eveniment</label>
                 <br>
                 <input type="file" id="media" name="media" accept="image/*" required>
             </div>

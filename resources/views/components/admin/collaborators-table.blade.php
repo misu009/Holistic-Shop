@@ -3,13 +3,11 @@
         <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Short Description</th>
-                <th scope="col">Description</th>
+                <th scope="col">nume</th>
+                <th scope="col">Scurta Descriere</th>
                 <th scope="col">Email</th>
-                <th scope="col">Phone number</th>
-                <th scope="col">Image</th>
-                <th scope="col">Updated at</th>
+                <th scope="col">Telefon</th>
+                <th scope="col">Actualizat la</th>
                 <th scope="col">Actions</th>
             </tr>
         </thead>
@@ -26,19 +24,8 @@
                             {!! $collaborator->short_description !!}
                         </div>
                     </td>
-                    <td
-                        style="max-width: 600px; /* Set the max width you desire */
-    overflow: hidden; /* Prevents overflow of text */
-    text-overflow: ellipsis">
-                        <div style="max-height: 100px; overflow: auto;display: block;">
-                            {!! $collaborator->long_description !!}
-                        </div>
-                    </td>
                     <td>{{ isset($collaborator->email) ? $collaborator->email : 'No email set..' }}</td>
                     <td>{{ isset($collaborator->phone_number) ? $collaborator->phone_number : 'No phone number set..' }}
-                    </td>
-                    <td> <img src="{{ Storage::url($collaborator->picture) }}" alt="No img.." height="100px"
-                            width="100px">
                     </td>
                     <td>{{ $collaborator->updated_at }}</td>
                     <td>

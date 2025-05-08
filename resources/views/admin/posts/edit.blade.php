@@ -1,20 +1,21 @@
 @extends('admin.layout')
 
-@section('title', 'Edit Post')
+@section('title', 'Actualizare postare')
 
 @section('content')
     <div class="content p-lg-5 ml-5">
         <x-alert-notification />
+        <h2 class="text-center">Actualizeaza postare</h2>
         <form action="{{ route('admin.posts.update', ['post' => $post->id]) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
-            <x-admin.input label-name="Post Title" attributes-param="type=text id=title required"
+            <x-admin.input label-name="Titlu postare" attributes-param="type=text id=title required"
                 value="{!! old('title') ? old('title') : $post->title !!}" name="title" />
-            <x-admin.input label-name="Post Slug(optional)" attributes-param="type=text id=slug"
+            <x-admin.input label-name="Slug postare(optional)" attributes-param="type=text id=slug"
                 value="{!! old('slug') ? old('slug') : $post->slug !!}" name="slug" />
 
             <div>
-                <label for="post_category">Post Categories</label>
+                <label for="post_category">Categorii de postari</label>
                 <select class="form-control select2" name="post_category[]" id="post_category" multiple="multiple" required>
                     <option value=""></option>
                     @foreach ($categories as $category)
@@ -32,20 +33,23 @@
             </div>
             <br>
             <div>
-                <label for="description">Post content</label>
+                <label for="description">Continut postare</label>
                 <textarea name="description" id="description" rows="4" class="form-textarea ckeditor-media">{!! old('description') ? old('description') : $post->description !!}</textarea>
             </div>
             <br>
+            <x-admin.input label-name="Pozitie postare (optional)" attributes-param="type=text id=order"
+                value="{!! old('order') ? old('order') : $post->order !!}" name="order" />
 
             <div>
-                <label for="media">Add new media for post</label>
+                <label for="media">Adauga media pentru postare</label>
                 <br>
                 <input type="file" id="media" name="media[]" accept="image/*,video/*" multiple>
             </div>
             <br>
 
             <div class="d-flex justify-content-start">
-                <button type="submit" class="btn btn-primary">Save Post</button>
+                <button type="submit" name="action" value="save" class="btn btn-primary">Actualizeaza postarea</button>
+                <button type="submit" name="action" value="preview" class="btn btn-warning ms-1">Preview</button>
             </div>
         </form>
         <br>

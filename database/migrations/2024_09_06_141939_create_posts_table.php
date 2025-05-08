@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('excerpt')->nullable();
             $table->text('description');
+            $table->unsignedInteger('order')->default(99999);
             $table->string('created_by');
             $table->timestamps();
         });

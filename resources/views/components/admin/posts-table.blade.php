@@ -3,12 +3,13 @@
         <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Title</th>
-                <th scope="col">Categories</th>
-                <th scope="col">Description</th>
-                <th scope="col">Created by</th>
-                <th scope="col">Updated_at</th>
-                <th scope="col">Actions</th>
+                <th scope="col">Titlu</th>
+                <th scope="col">Categorii</th>
+                <th scope="col">Descriere</th>
+                <th scope="col">Creat de</th>
+                <th scope="col">Actualizat la</th>
+                <th scope="col">Pozitie</th>
+                <th scope="col">Actiuni</th>
             </tr>
         </thead>
         <tbody>
@@ -29,15 +30,17 @@
                         </div>
                     </td>
                     <td
-                        style="max-width: 600px; /* Set the max width you desire */
+                        style="max-width: 400px; /* Set the max width you desire */
     overflow: hidden; /* Prevents overflow of text */
     text-overflow: ellipsis">
                         <div style="max-height: 100px; overflow: auto;display: block;">
                             {!! $post->description !!}
                         </div>
                     </td>
+
                     <td>{{ $post->created_by }}</td>
                     <td>{{ $post->updated_at }}</td>
+                    <td>{{ $post->order }}</td>
                     <td>
                         <div class="d-flex justify-content-center">
                             <form class="m-1" action="{{ route('admin.posts.edit', $post->id) }}">
