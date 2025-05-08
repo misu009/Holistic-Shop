@@ -41,24 +41,28 @@
                     <div class="d-md-block d-none col-md-4 text-end col-6" style="height: inherit">
                         <ul class="info-list-left p-1 d-flex align-items-center justify-content-around"
                             style="height: inherit; flex-direction: column;">
-                            @foreach ($settings->mission_bullets as $mission_bullet)
-                                @if ($loop->index % 2 == 0)
-                                    <li class="our-mission-text mt-5">
-                                        {{ $mission_bullet }}</li>
-                                @endif
-                            @endforeach
+                            @if ($settings->mission_bullets)
+                                @foreach ($settings->mission_bullets as $index => $mission_bullet)
+                                    @if ($loop->index % 2 == 0)
+                                        <li class="our-mission-text mt-5">
+                                            {{ $mission_bullet }}</li>
+                                    @endif
+                                @endforeach
+                            @endif
                         </ul>
                     </div>
                     <div class="d-none d-md-block col-md-4"></div>
                     <div class="d-md-block d-none col-6 col-md-4 text-start p-1" style="height: inherit">
                         <ul class="info-list d-flex justify-content-around align-items-center"
                             style="height: inherit; flex-direction: column;">
-                            @foreach ($settings->mission_bullets as $index => $mission_bullet)
-                                @if ($loop->index % 2 == 1)
-                                    <li class="our-mission-text mt-5">
-                                        {{ $mission_bullet }}</li>
-                                @endif
-                            @endforeach
+                            @if ($settings->mission_bullets)
+                                @foreach ($settings->mission_bullets as $index => $mission_bullet)
+                                    @if ($loop->index % 2 == 1)
+                                        <li class="our-mission-text mt-5">
+                                            {{ $mission_bullet }}</li>
+                                    @endif
+                                @endforeach
+                            @endif
                         </ul>
                     </div>
                 </div>
@@ -67,10 +71,12 @@
                 <div class="row">
                     <div class="d-block d-md-none text-start">
                         <ul class="info-list d-flex flex-wrap list-unstyled">
-                            @foreach ($settings->mission_bullets as $mission_bullet)
-                                <li class="w-50 p-2 our-mission-text mt-5">
-                                    {{ $mission_bullet }}</li>
-                            @endforeach
+                            @if ($settings->mission_bullets)
+                                @foreach ($settings->mission_bullets as $mission_bullet)
+                                    <li class="w-50 p-2 our-mission-text mt-5">
+                                        {{ $mission_bullet }}</li>
+                                @endforeach
+                            @endif
                         </ul>
                     </div>
                 </div>
@@ -97,7 +103,13 @@
         <div class="blog-section">
             <div class="container mt-4 mb-4" style="overflow: hidden">
                 @php
-                    $selectedPosts = \App\Models\Post::whereIn('id', $settings->selected_blog_posts)->take(3)->get();
+                    if ($settings->selected_blog_posts != null) {
+                        $selectedPosts = \App\Models\Post::whereIn('id', $settings->selected_blog_posts)
+                            ->take(3)
+                            ->get();
+                    } else {
+                        $selectedPosts = \App\Models\Post::take(3)->get();
+                    }
                 @endphp
 
                 <div class="d-flex justify-content-center align-items-center mb-3 blog-images-1">
@@ -153,9 +165,13 @@
                 </h2>
 
                 @php
-                    $selectedProducts = \App\Models\Product::whereIn('id', $settings->selected_products)
-                        ->take(4)
-                        ->get();
+                    if ($settings->selected_products != null) {
+                        $selectedProducts = \App\Models\Product::whereIn('id', $settings->selected_products)
+                            ->take(4)
+                            ->get();
+                    } else {
+                        $selectedProducts = \App\Models\Product::take(4)->get();
+                    }
                 @endphp
 
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 text-center mt-4">

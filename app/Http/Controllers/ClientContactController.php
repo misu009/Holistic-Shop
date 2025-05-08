@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ContactUs;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
@@ -10,7 +11,7 @@ class ClientContactController extends Controller
 {
     public function index()
     {
-        $settings = \App\Models\Setting::first() ?? null;
+        $settings = Setting::first() ?? new Setting();
         return view('client.contact.index', compact('settings'));
     }
 
