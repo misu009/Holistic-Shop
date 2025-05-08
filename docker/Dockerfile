@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get update && apt-get install -y lsb-release
 
 # Add PHP repository for PHP 8.3 extensions and import GPG key
-RUN curl -sSL https://packages.sury.org/php/apt.gpg | tee /etc/apt/trusted.gpg.d/sury.asc \
+RUN curl -fsSL https://packages.sury.org/php/apt.gpg | tee /etc/apt/trusted.gpg.d/sury.asc \
     && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury.list \
     && apt-get update
 
