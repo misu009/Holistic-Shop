@@ -4,7 +4,8 @@ FROM php:8.3-fpm
 RUN apt-get update && apt-get install -y \
     git curl zip unzip cron supervisor libpng-dev libonig-dev libxml2-dev \
     libzip-dev libcurl4-openssl-dev pkg-config libssl-dev \
-    php8.3-mysql php8.3-mbstring php8.3-xml php8.3-bcmath php8.3-gd php8.3-soap php8.3-intl
+    php8.3-mysql php8.3-mbstring php8.3-xml php8.3-bcmath php8.3-gd php8.3-soap php8.3-intl \
+    nodejs npm
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php && \
@@ -18,6 +19,9 @@ COPY . .
 
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
+
+# Install npm dependencies and build assets
+RUN npm install && npm run build
 
 # Set proper permissions
 RUN chown -R www-data:www-data /var/www/html && \
