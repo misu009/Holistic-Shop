@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-    laravel.test:
+    laravel-app:
         build:
             context: .
             dockerfile: docker/Dockerfile
@@ -17,7 +17,7 @@ services:
             - mysql
         networks:
             - sail
-        entrypoint: /bin/bash -c "php artisan migrate:fresh --seed && php-fpm"  # Run migration and seed before starting PHP-FPM
+        entrypoint: /bin/bash -c "php artisan migrate:fresh --seed && php-fpm"  # Runs migrate:fresh and then php-fpm
 
     mysql:
         image: "mysql/mysql-server:8.0"
