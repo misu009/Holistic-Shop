@@ -30,3 +30,8 @@ de adaugat inclusiv pozele la product preview
 de facut preview ul cu modala sau iframe
 
 template uri de pagini cu gdpr etc care vor fi adaugate in footer
+
+de facut pagini 
+
+de spus lui david ca folosesc faker si ca am modificat AppserviceProvider
+de spus lui david ca folosesc un cronjob

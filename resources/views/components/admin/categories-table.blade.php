@@ -3,12 +3,10 @@
         <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
+                <th scope="col">Nume</th>
                 <th scope="col">Slug</th>
-                <th scope="col">Description</th>
-                <th scope="col">Updated_at</th>
-                <th scope="col">Image</th>
-                <th scope="col">Actions</th>
+                <th scope="col">Actualizat la</th>
+                <th scope="col">Actiuni</th>
             </tr>
         </thead>
         <tbody>
@@ -17,14 +15,7 @@
                     <td>{{ $categories->firstItem() + $index }}</td>
                     <td>{{ $category->name }}</td>
                     <td>{{ $category->slug }}</td>
-                    <td style="max-width: 600px; overflow: hidden; text-overflow: ellipsis">
-                        <div style="max-height: 100px; overflow: auto;display: block;">
-                            {!! $category->description !!}
-                        </div>
-                    </td>
                     <td>{{ $category->updated_at }}</td>
-                    <td> <img src="{{ Storage::url($category->picture) }}" alt="No img.." height="100px" width="100px">
-                    </td>
                     <td>
                         <div class="d-flex justify-content-center">
                             <form class="m-1" action="{{ route('admin.blog-categories.edit', $category->id) }}">

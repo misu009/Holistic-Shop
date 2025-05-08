@@ -1,15 +1,15 @@
 @extends('admin.layout')
 
-@section('title', 'Add Collaborator')
+@section('title', 'Adauga Colaborator')
 
 @section('content')
     <div class="container my-5">
-        <h2 class="text-center">Add a new Collaborator</h2>
+        <h2 class="text-center">Adauga un Colaborator nou</h2>
         <x-alert-notification />
         <form action="{{ route('admin.collaborators.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div>
-                <label for="user">Load a user as collaborator (or complete the data below..)</label>
+                <label for="user">Preia datele unui user(sau adauga datele manual mai jos..)</label>
                 <select class="form-control select2" name="user" id="user">
                     <option value=""></option>
                     @foreach ($users as $user)
@@ -19,23 +19,23 @@
                     @endforeach
                 </select>
             </div>
-            <x-admin.input label-name="Collaborator Name" attributes-param="type=text id=name required"
+            <x-admin.input label-name="Nume Colaborator" attributes-param="type=text id=name required"
                 value="{{ old('name') }}" name="name" />
             <div>
-                <label for="description">Collaborator short description</label>
+                <label for="description">Scurta descriere Colaborator </label>
                 <br>
                 <textarea name="short_description" id="short_description" rows="4" class="form-textarea">{{ old('short_description') }}</textarea>
             </div>
             <br>
             <div>
-                <label for="description">Collaborator description</label>
+                <label for="description">Descrierea Colaboratorului</label>
                 <br>
                 <textarea name="long_description" id="long_description" rows="4" class="form-textarea">{{ old('long_description') }}</textarea>
             </div>
             <br>
-            <x-admin.input label-name="Collaborator Email <small class='text-danger'>(optional)</small>"
+            <x-admin.input label-name="Email Collaborator <small class='text-danger'>(optional)</small>"
                 attributes-param="type=text id=email" value="{{ old('email') }}" name="email" />
-            <x-admin.input label-name="Collaborator Phone Number <small class='text-danger'>(optional)</small>"
+            <x-admin.input label-name="Numar de telefon Colaborator <small class='text-danger'>(optional)</small>"
                 attributes-param="type=tel id=phone_number" value="{{ old('phone_number') }}" name="phone_number" />
             <br>
             <img id="image-preview" src="{{ old('user-picture') ? '/storage/' . old('user-picture') : '' }}">
@@ -45,7 +45,7 @@
                 onclick="uploadImageCanvas('select-picture', 'image-preview', 'image-form')">upload image</button>
             <br><br>
             <div class="d-flex justify-content-start">
-                <button type="submit" class="btn btn-primary">Add Collaborator</button>
+                <button type="submit" class="btn btn-primary">Adauga colaborator</button>
             </div>
         </form>
     </div>

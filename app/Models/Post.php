@@ -15,6 +15,7 @@ class Post extends Model
         'excerpt',
         'description',
         'created_by',
+        'order',
     ];
 
     public function categories()

@@ -2,7 +2,7 @@
     <!-- Logo / Title -->
     <a href="{{ route('admin.index') }}"
         class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-        <span class="fs-5 fw-bold">Admin Panel</span>
+        <span class="fs-5 fw-bold">Panel Admin</span>
     </a>
 
     <hr>
@@ -30,14 +30,14 @@
                 <strong>{{ Auth::user()->name }}</strong>
             </a>
             <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                <li><a class="dropdown-item" href="{{ route('admin.users.edit') }}">Profile</a></li>
+                <li><a class="dropdown-item" href="{{ route('admin.users.edit') }}">Profil</a></li>
                 <li>
                     <hr class="dropdown-divider">
                 </li>
                 <li>
                     <form action="{{ route('logout') }}">
                         @csrf
-                        <button class="dropdown-item" type="submit">Sign out</button>
+                        <button class="dropdown-item" type="submit">Delogare</button>
                     </form>
                 </li>
             </ul>

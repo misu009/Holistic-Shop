@@ -96,7 +96,7 @@
                 </div>
             </div>
             <div class="card shadow-sm border-0 mt-5">
-                <div class="card-header bg-warning text-white">Shop Page Settings</div>
+                <div class="card-header bg-success text-white">Shop Page Settings</div>
                 <div class="card-body">
                     <div class="mb-3">
                         <label class="form-label">Texte Shop Hero</label>
@@ -144,7 +144,7 @@
             </div>
 
             <div class="card shadow-sm border-0 mt-5">
-                <div class="card-header bg-danger text-white">Events Page Settings</div>
+                <div class="card-header bg-warning text-white">Events Page Settings</div>
                 <div class="card-body">
                     <div class="mb-3">
                         <label class="form-label">Text Event Hero</label>
@@ -162,8 +162,61 @@
                 </div>
             </div>
 
+            <div class="card shadow-sm border-0 mt-5">
+                <div class="card-header bg-info text-white">Donati date</div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">IBAN</label>
+                        <input type="text" class="form-control shadow mb-2" name="iban"
+                            value="{{ old('iban', $settings->iban) }}">
+                    </div>
+
+                    <div class="mb-3 mt-5">
+                        <label class="form-label">Nume cont</label>
+                        <input type="text" class="form-control shadow mb-2" name="data"
+                            value="{{ old('data', $settings->data) }}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0 mt-5">
+                <div class="card-header bg-danger text-white">Date Contact</div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Numar de telefon</label>
+                        <input type="text" class="form-control shadow mb-2" name="phone_number"
+                            value="{{ old('phone_number', $settings->phone_number) }}">
+                    </div>
+
+                    <div class="mb-3 mt-5">
+                        <label class="form-label">Email</label>
+                        <input type="text" class="form-control shadow mb-2" name="email"
+                            value="{{ old('email', $settings->email) }}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0 mt-5">
+                <div class="card-header bg-secondary text-white">Footer</div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Text</label>
+                        <textarea name="footer_text" id="footer_text" class="ckeditor form-control" rows="3" required>
+                            {!! old('footer_text', $settings->footer_text) !!}
+                        </textarea>
+                    </div>
+
+                    <div class="mb-3 mt-5">
+                        <label class="form-label">Link follow us</label>
+                        <input type="text" class="form-control shadow mb-2" name="footer_follow_us"
+                            value="{{ old('footer_follow_us', $settings->footer_follow_us) }}">
+                    </div>
+                </div>
+            </div>
+
 
             <button type="submit" class="btn btn-success mt-5">Save Settings</button>
         </form>
     </div>
+
 @endsection

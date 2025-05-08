@@ -20,6 +20,10 @@ return new class extends Migration
             $table->string('shop_text_2');
             $table->string('shop_text_3');
             $table->string('event_text_1');
+            $table->string('iban')->nullable();
+            $table->string('data')->nullable();
+            $table->string('phone_number')->nullable();
+            $table->string('email')->nullable();
             $table->string('shop_img_1')->nullable();
             $table->string('shop_img_2')->nullable();
             $table->string('shop_img_3')->nullable();
@@ -30,6 +34,8 @@ return new class extends Migration
             $table->text('about_text');
             $table->json('selected_blog_posts');
             $table->json('selected_products');
+            $table->text('footer_text')->nullable();
+            $table->string('footer_follow_us')->nullable();
             $table->timestamps();
         });
     }

@@ -5,8 +5,6 @@
 @endsection
 
 @section('content')
-    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css"> --}}
-
     <div class="container py-5">
         <div class="row d-flex">
             <!-- Product Media Carousel (col-4 on lg screens) -->
@@ -21,24 +19,18 @@
                         @foreach ($product->media as $key => $media)
                             <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
                                 <div class="ratio ratio-1x1">
-                                    @if (strpos($media->path, '.mp4') !== false)
-                                        <a href="{{ asset('storage/' . $media->path) }}" class="glightbox">
-                                            <video class="w-100 h-100" controls>
-                                                <source src="{{ asset('storage/' . $media->path) }}" type="video/mp4">
-                                                Your browser does not support the video tag.
+                                    <a href="{{ asset('storage/' . $media->path) }}" class="glightbox"
+                                        data-gallery="product-gallery"
+                                        data-type="{{ Str::endsWith($media->path, ['.mp4', '.webm']) ? 'video' : 'image' }}">
+                                        @if (Str::endsWith($media->path, ['.mp4', '.webm']))
+                                            <video class="w-100 h-100 object-fit-cover" muted>
+                                                <source src="{{ asset('storage/' . $media->path) }}">
                                             </video>
-                                        </a>
-                                        {{-- <a href="{{ asset('storage/' . $media->path) }}" class="glightbox" data-type="video"
-                                            data-gallery="product-gallery">
-                                            <img src="{{ asset('images/your-placeholder.jpg') }}" alt="Video">
-                                        </a> --}}
-                                    @else
-                                        <a href="{{ asset('storage/' . $media->path) }}" class="glightbox"
-                                            data-gallery="product-gallery">
+                                        @else
                                             <img src="{{ asset('storage/' . $media->path) }}"
-                                                class="w-100 h-100 object-fit-cover" alt="Product Image">
-                                        </a>
-                                    @endif
+                                                class="w-100 h-100 object-fit-cover" alt="">
+                                        @endif
+                                    </a>
                                 </div>
                             </div>
                         @endforeach
@@ -61,6 +53,8 @@
                 <div id="productDescription">
                     {!! $product->description !!}
                 </div>
+                <h3 class="fw-bold">{{ number_format($product->price, 2) }} LEI</h3>
+                (pretul este orientativ, pentru mai multe informatii contactati-ne la {{ $product->user->email }})
             </div>
 
 

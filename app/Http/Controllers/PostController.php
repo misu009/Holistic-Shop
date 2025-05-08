@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Helpers\ActivityLogger;
 use App\Models\Post;
 use App\Models\PostCategory;
+use App\Models\PostMedia;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Traits\admin\MediaContentTrait;
@@ -20,7 +22,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::paginate(15);
+        $posts = Post::orderBy('order')->paginate(15);
         $searchItems = $this->getSearchItems();
         return view('admin.posts.index', ['posts' => $posts, 'searchItems' => $searchItems]);
     }
@@ -37,12 +39,61 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    protected function previewPost(Request $request, ?Post $existingPost = null)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|unique:posts,title' . ($existingPost ? ',' . $existingPost->id : ''),
+            'slug' => 'nullable|string|regex:/^[a-z0-9-]+$/|unique:posts,slug' . ($existingPost ? ',' . $existingPost->id : ''),
+            'excerpt' => 'nullable|string|max:255',
+            'order' => 'nullable|integer',
+            'description' => 'required|string',
+            'post_category' => 'required|array',
+            'post_category.*' => 'required|exists:post_categories,id',
+            'media.*' => 'nullable|mimes:jpeg,png,jpg,gif,mp4,mov,avi|max:40480',
+        ]);
+
+        $validated['slug'] = $validated['slug'] ?? Str::slug($validated['title']) . '-' . uniqid();
+
+        if (!$validated['excerpt']) {
+            $words = str_word_count(strip_tags($validated['description']), 1);
+            $excerpt = implode(' ', array_slice($words, 0, 5));
+            $validated['excerpt'] = count($words) > 5 ? $excerpt . '...' : implode(' ', $words);
+        }
+
+        $validated['created_by'] = auth()->user()->name;
+
+        $mediaPreview = [];
+        if ($request->hasFile('media')) {
+            foreach ($request->file('media') as $index => $file) {
+                $tempPath = $file->store('temp', 'public'); // store in storage/app/public/temp
+                $mediaPreview[] = (object)[
+                    'path' => $tempPath,
+                    'order' => $index + 1,
+                ];
+            }
+        }
+        // Fake a Post instance to reuse the existing Blade view
+        $post = $existingPost ?? new Post();
+        $post->fill($validated);
+        $post->id = $existingPost->id ?? 0; // Prevent null ID errors in view logic
+
+        return view('client.posts.show', [
+            'post' => $post,
+            'settings' => Setting::first() ?? new Setting(),
+            'prevPost' => Post::first(),
+            'nextPost' => Post::latest()->first(),
+            'previewMedia' => $mediaPreview,
+            'preview' => true,
+        ]);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
             'title' => 'required|string|unique:posts,title',
             'description' => 'required|string',
             'slug' => 'nullable|string|regex:/^[a-z0-9-]+$/|unique:posts,slug',
+            'order' => 'nullable|integer',
             'excerpt' => 'nullable|string|max:255',
             'post_category' => 'required|array',
             'post_category.*' => 'required|exists:post_categories,id',
@@ -56,11 +107,16 @@ class PostController extends Controller
             $excerpt = implode(' ', array_slice($words, 0, 5));
         }
 
+        if ($request->input('action') === 'preview') {
+            return $this->previewPost($request);
+        }
+
         $post = Post::create([
             'title' => $request->title,
             'description' => $request->description,
             'slug' => $slug,
             'excerpt' => $excerpt,
+            'order' => $request->order ?? 99999,
             'created_by' => auth()->user()->name,
         ]);
 
@@ -107,6 +163,7 @@ class PostController extends Controller
             'title' => 'required|string|unique:posts,title,' . $post->id,
             'slug' => 'nullable|string|regex:/^[a-z0-9-]+$/|unique:posts,slug,' . $post->id,
             'excerpt' => 'nullable|string|max:255',
+            'order' => 'nullable|integer',
             'description' => 'required|string',
             'post_category' => 'required|array',
             'post_category.*' => 'required|exists:post_categories,id',
@@ -119,6 +176,12 @@ class PostController extends Controller
             $excerpt = implode(' ', array_slice($words, 0, 5));
             $validated['excerpt'] = count($words) > 5 ? $excerpt . '...' : implode(' ', $words);
         }
+        $validated['created_by'] = auth()->user()->name;
+
+        if ($request->input('action') === 'preview') {
+            return $this->previewPost($request, $post);
+        }
+
 
         $post->update($validated);
 
@@ -181,16 +244,16 @@ class PostController extends Controller
 
     public function getSearchItems()
     {
-        $allPosts = Post::get()->map(function ($post) {
-            $post->class = 'App\Models\Post';
-            $post->name = $post->title; // This is the name that will be displayed in the search
-            return $post;
-        });
         $allCategories = PostCategory::get()->map(function ($postCategory) {
             $postCategory->class = 'App\Models\PostCategory';
             return $postCategory;
         });
-        $mergedResult = $allPosts->merge($allCategories);
+        $allPosts = Post::orderBy('order')->get()->map(function ($post) {
+            $post->class = 'App\Models\Post';
+            $post->name = $post->title; // This is the name that will be displayed in the search
+            return $post;
+        });
+        $mergedResult = $allPosts->concat($allCategories);
         return $mergedResult;
     }
 
@@ -223,10 +286,10 @@ class PostController extends Controller
         if ($value === 1) {
             $categories = PostCategory::get();
             $this->addPostCategorySearch($categories, $searchItems);
-            $products = Post::get();
+            $products = Post::orderBy('order')->get();
             $this->addPostSearch($products, $searchItems);
         } elseif ($value === 2) {
-            $products = Post::get();
+            $products = Post::orderBy('order')->get();
             $this->addPostSearch($products, $searchItems);
         } else {
             $categories = PostCategory::get();

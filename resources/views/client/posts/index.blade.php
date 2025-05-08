@@ -4,29 +4,33 @@
 
 @section('content')
     <div class="container my-5">
-        <h2 class="text-center text-white mb-4">Our Blog</h2>
+        <h2 class="text-center text-white mb-4" style="margin-top: 100px !important">{{ $heading ?? 'Toate articolele' }}</h2>
         <div class="row g-4">
             @foreach ($posts as $index => $post)
                 @php
                     $ind = $posts->firstItem() + $index;
                     $cols = 'col-md-4';
-                    if ($ind == 1) {
-                        $cols = 'col-12';
-                    } elseif ($ind == 2) {
-                        $cols = 'col-6';
-                    } elseif ($ind == 3) {
-                        $cols = 'col-6';
+                    if (!isset($heading)) {
+                        if ($ind == 1) {
+                            $cols = 'col-12';
+                        } elseif ($ind == 2) {
+                            $cols = 'col-6';
+                        } elseif ($ind == 3) {
+                            $cols = 'col-6';
+                        }
                     }
                 @endphp
                 <div class="{{ $cols }}">
-                    <div class="card h-100 text-white bg-dark border-light">
-                        <img src="{{ !empty($post->media) && isset($post->media[0]) ? asset('storage/' . $post->media[0]->path) : asset('images/client/image-3.png') }}"
-                            class="card-img-top" alt="{{ $post->title }}" height="330px">
-                        <div class="card-img-overlay d-flex flex-column justify-content-end">
-                            <h5 class="card-title fw-bold">{{ $post->title }}</h5>
-                            <p class="card-content">{!! $post->excerpt !!}</p>
+                    <a href="{{ route('client.posts.show', $post->slug) }}">
+                        <div class="card h-100 text-white bg-dark border-light">
+                            <img src="{{ !empty($post->media) && isset($post->media[0]) ? asset('storage/' . $post->media[0]->path) : asset('images/client/image-3.png') }}"
+                                class="card-img-top" alt="{{ $post->title }}" height="330px">
+                            <div class="card-img-overlay d-flex flex-column justify-content-end">
+                                <h5 class="card-title fw-bold">{{ $post->title }}</h5>
+                                <p class="card-content">{!! $post->excerpt !!}</p>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             @endforeach
         </div>

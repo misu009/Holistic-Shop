@@ -3,11 +3,9 @@
         <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Description</th>
-                <th scope="col">Updated_at</th>
-                <th scope="col">Image</th>
-                <th scope="col">Actions</th>
+                <th scope="col">Nume</th>
+                <th scope="col">Actualizat la</th>
+                <th scope="col">Actiuni</th>
             </tr>
         </thead>
         <tbody>
@@ -15,16 +13,7 @@
                 <tr>
                     <td>{{ $categories->firstItem() + $index }}</td>
                     <td>{{ $category->name }}</td>
-                    <td
-                        style="max-width: 600px; /* Set the max width you desire */
-    overflow: hidden; /* Prevents overflow of text */
-    text-overflow: ellipsis">
-                        <div style="max-height: 100px; overflow: auto;display: block;">
-                            {!! $category->description !!}
-                        </div>
-                    </td>
                     <td>{{ $category->updated_at }}</td>
-                    <td> <img src="{{ Storage::url($category->picture) }}" alt="No img.." height="100px" width="100px">
                     </td>
                     <td>
                         <div class="d-flex justify-content-center">

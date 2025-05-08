@@ -1,5 +1,5 @@
 <nav class="navbar dark navbar-expand-lg border-bottom border-body fixed-top" data-bs-theme="dark">
-    <div class="container-fluid ">
+    <div class="container-fluid" style="padding-left: 0px !important">
         <a class="navbar-brand ms-5 d-none d-sm-block" href="{{ route('home') }}"><img
                 src="{{ asset('images/client/LOGO-NAV-BAR.png') }}" alt="LOTUS RETREAT"></a>
         <a class="navbar-brand ms-5 d-block d-sm-none" href="#">
@@ -36,7 +36,36 @@
                     <a class="nav-link {{ request()->routeIs('client.contact.index') ? 'active' : '' }} ms-2 me-2"
                         href="{{ route('client.contact.index') }}">CONTACT</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link ms-2 me-2" href="#" data-bs-toggle="modal" data-bs-target="#donatiiModal">
+                        DONAȚII
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
+
+<div class="modal fade" id="donatiiModal" tabindex="-1" aria-labelledby="donatiiModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-white text-dark">
+            <div class="modal-header">
+                <h5 class="modal-title" id="donatiiModalLabel">Informații pentru donații</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Închide"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Nume cont:</strong> {{ $settings->data ?? 'N/A' }}</p>
+                <p><strong>IBAN:</strong> {{ $settings->iban ?? 'N/A' }}</p>
+                <p><strong>Email:</strong>
+                    <a href="mailto:{{ $settings->email }}"
+                        class="text-decoration-none text-dark">{{ $settings->email ?? 'N/A' }}</a>
+                </p>
+                <p><strong>Telefon:</strong>
+                    <a href="tel:{{ $settings->phone_number }}"
+                        class="text-decoration-none text-dark">{{ $settings->phone_number ?? 'N/A' }}</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

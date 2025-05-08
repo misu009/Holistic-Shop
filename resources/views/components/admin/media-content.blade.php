@@ -1,7 +1,7 @@
 <div>
-    <p>Edit current media</p>
+    <p>Editeaza media</p>
     @if ($media->isEmpty())
-        <p class="text-warning"><i>No media uploaded yet..</i></p>
+        <p class="text-warning"><i>Nu s-a adaugat nimic..</i></p>
     @endif
     <div class="row">
         @foreach ($media as $item)
@@ -35,13 +35,13 @@
                     <input class="form-control" onfocus="focused(this)" onfocusout="defocused(this)" type="number"
                         min="1" max="10000" id="order" name="order"
                         value="{{ old('order', $item->order) }}">
-                    <button type="submit" class="btn btn-warning w-100">Change order</button>
+                    <button type="submit" class="btn btn-warning w-100">Schimba ordinea</button>
                 </form>
                 <form action="{{ route($route . 'destroy', [$objectName => $objectId, 'imageId' => $item->id]) }}"
                     method="POST" class="mt-0" onclick="return confirm('Are you sure you delete this image?')">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger w-100">Delete Image</button>
+                    <button type="submit" class="btn btn-danger w-100">Sterge imaginea</button>
                 </form>
             </div>
         @endforeach

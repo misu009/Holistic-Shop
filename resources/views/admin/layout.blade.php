@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title')</title>
-
+    <link rel="icon" href="{{ asset('images/client/navbar-logo-2.png') }}" type="image/png">
     @vite(['resources/css/app.css', 'resources/css/admin.css', 'resources/js/app.js'])
 </head>
 
@@ -15,15 +15,15 @@
     @php
         $navLinks = [
             ['name' => 'Home', 'url' => '/admin'],
-            ['name' => 'Users', 'url' => '/admin/users'],
-            ['name' => 'Profile', 'url' => '/admin/profile'],
-            ['name' => 'Post Categories', 'url' => '/admin/blog-categories'],
-            ['name' => 'Posts Blog', 'url' => '/admin/posts'],
-            ['name' => 'Product Categories', 'url' => '/admin/shop-categories'],
-            ['name' => 'Products', 'url' => '/admin/products'],
-            ['name' => 'Collaborators', 'url' => '/admin/collaborators'],
-            ['name' => 'Events', 'url' => '/admin/events'],
-            ['name' => 'Settings', 'url' => '/admin/settings'],
+            ['name' => 'Utilizatori', 'url' => '/admin/users'],
+            ['name' => 'Profil', 'url' => '/admin/profile'],
+            ['name' => 'Categorii postari', 'url' => '/admin/blog-categories'],
+            ['name' => 'Postari', 'url' => '/admin/posts'],
+            ['name' => 'Categorii Produse', 'url' => '/admin/shop-categories'],
+            ['name' => 'Produse', 'url' => '/admin/products'],
+            ['name' => 'Colaboratori', 'url' => '/admin/collaborators'],
+            ['name' => 'Evenimente', 'url' => '/admin/events'],
+            ['name' => 'Setari', 'url' => '/admin/settings'],
             ['name' => 'Contact', 'url' => '/admin/contact'],
         ];
     @endphp

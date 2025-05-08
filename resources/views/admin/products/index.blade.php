@@ -1,15 +1,15 @@
 @extends('admin.layout')
 
-@section('title', 'Products')
+@section('title', 'Produse')
 
 @section('content')
     <div class="container my-5">
         <x-alert-notification />
         <div class="d-flex justify-content-between align-items-center py-3">
-            <h2 class="mx-auto">Products</h2>
+            <h2 class="mx-auto">Produse</h2>
             <form action="{{ route('admin.products.create') }}" method="GET">
                 <button type="submit" class="btn btn-primary">
-                    Add Product
+                    Adauga produs
                 </button>
             </form>
         </div>
@@ -23,7 +23,7 @@
                     ];
                 @endphp
                 <x-admin.search-select2 route="admin.products.search" :searchFilter="$searchFilter" :searchItems="$searchItems" :searchOption="$searchOption ?? null"
-                    :searchRecord="$searchRecord ?? null" ajaxRoute="/admin/products/update-select2"/>
+                    :searchRecord="$searchRecord ?? null" ajaxRoute="/admin/products/update-select2" />
             </div>
         </div>
         <br>

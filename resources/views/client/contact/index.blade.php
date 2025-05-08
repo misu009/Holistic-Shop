@@ -58,7 +58,20 @@
             </div>
         </form>
 
-        <p class="mt-5 small">• Termeni și condiții.<br>Office ipsum you must be muted. Welcome start invite wanted... (edit
-            this part as needed).</p>
+        <p class="mt-5">• Ne gasiti si la linkurile din footer <br>
+            @if ($settings->phone_number || $settings->email)
+                • Ne puteti contacta
+            @endif
+            @if ($settings->phone_number)
+                la numarul de telefon <strong>{{ $settings->phone_number }}</strong><br>
+            @endif
+            @if ($settings->phone_number || $settings->email)
+                sau
+            @endif
+            @if ($settings->email)
+                la adresa de e-mail <a href="mailto:{{ $settings->email }}"
+                    class="text-decoration-none text-white"><strong>{{ $settings->email }}</strong></a>
+            @endif
+        </p>
     </section>
 @endsection

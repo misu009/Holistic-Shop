@@ -6,9 +6,9 @@
     <div class="container my-5">
         <x-alert-notification />
         <div class="d-flex justify-content-between align-items-center py-3">
-            <h2 class="mx-auto">User Management</h2>
+            <h2 class="mx-auto">Useri</h2>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
-                Add User
+                Adauga utilizator
             </button>
         </div>
         <x-admin.users-table :users="$users" />
@@ -20,23 +20,23 @@
             <input type="hidden" name="modalId" id="modalId" value="addUserModal" required>
             <x-admin.input label-name="Username" attributes-param="type=text id=name required" name="name" />
             <x-admin.input label-name="Email" attributes-param="type=email id=email required" name="email" />
-            <x-admin.input label-name="Pasword" attributes-param="type=password id=password required" name="password">
+            <x-admin.input label-name="parola" attributes-param="type=password id=password required" name="password">
                 <span class="position-absolute end-0 translate-middle-y pe-3" onclick="togglePasswordVisibility('password')"
                     style="cursor: pointer; margin-top:-20px;">
                     <i class="bi bi-eye" id="toggleIcon"></i>
                 </span>
             </x-admin.input>
-            <x-admin.input label-name="Confirm pasword" attributes-param="type=password id=password_confirmation required"
+            <x-admin.input label-name="Confirma parola" attributes-param="type=password id=password_confirmation required"
                 name="password_confirmation">
                 <span class="position-absolute end-0 translate-middle-y pe-3"
                     onclick="togglePasswordVisibility('password_confirmation')" style="cursor: pointer; margin-top:-20px;">
                     <i class="bi bi-eye" id="toggleIcon"></i>
                 </span>
             </x-admin.input>
-            <x-admin.input label-name="User Image <small class='text-danger'>(optional)</small>"
+            <x-admin.input label-name="Imagine utilizator <small class='text-danger'>(optional)</small>"
                 attributes-param="type=file id=picture accept=image/*" name="picture" />
             <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-primary">Save User</button>
+                <button type="submit" class="btn btn-primary">Actualizeaza user</button>
             </div>
         </form>
     </x-admin.modal>
@@ -49,21 +49,21 @@
             <input type="hidden" name="editUserId" id="editUserId" required>
             <x-admin.input label-name="Username" attributes-param="type=text id=editName required" name="editName" />
             <x-admin.input label-name="Email" attributes-param="type=email id=editEmail required" name="editEmail" />
-            <x-admin.input label-name="Pasword <small class='text-danger'>(optional)</small>"
+            <x-admin.input label-name="Parola <small class='text-danger'>(optional)</small>"
                 attributes-param="type=password id=edit_password" name="password">
                 <span class="position-absolute end-0 translate-middle-y pe-3" onclick="togglePasswordVisibility('password')"
                     style="cursor: pointer; margin-top:-20px;">
                     <i class="bi bi-eye" id="toggleIcon"></i>
                 </span>
             </x-admin.input>
-            <x-admin.input label-name="Confirm pasword" attributes-param="type=password id=edit_password_confirmation"
+            <x-admin.input label-name="Confirma parola" attributes-param="type=password id=edit_password_confirmation"
                 name="password_confirmation">
                 <span class="position-absolute end-0 translate-middle-y pe-3"
                     onclick="togglePasswordVisibility('password_confirmation')" style="cursor: pointer; margin-top:-20px;">
                     <i class="bi bi-eye" id="toggleIcon"></i>
                 </span>
             </x-admin.input>
-            <x-admin.input label-name="User Image <small class='text-danger'>(optional)</small>"
+            <x-admin.input label-name="imagine utlizator <small class='text-danger'>(optional)</small>"
                 attributes-param="type=file id=edit-picture accept=image" name="picture" />
             <div class="d-flex justify-content-end">
                 <button type="submit" class="btn btn-primary">Save User</button>

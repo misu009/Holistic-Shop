@@ -1,17 +1,17 @@
 @extends('admin.layout')
 
-@section('title', 'Add Products')
+@section('title', 'Adauga produs')
 
 @section('content')
     <div class="container my-5">
-        <h2 class="text-center">Add a new Product</h2>
+        <h2 class="text-center">Adauga un produs nou</h2>
         <x-alert-notification />
         <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <x-admin.input label-name="Name" attributes-param="type=text id=name required" name="name" />
-            <x-admin.input label-name="Slug (optional)" attributes-param="type=text id=slug" name="slug" />
+            <x-admin.input label-name="Nume produs" attributes-param="type=text id=name required" name="name" />
+            <x-admin.input label-name="Slug produs (optional)" attributes-param="type=text id=slug" name="slug" />
             <div>
-                <label for="product_category">Product Category</label>
+                <label for="product_category">Categorii produse</label>
                 <select class="form-control select2" name="product_category[]" id="product_category" multiple="multiple"
                     required>
                     <option value=""></option>
@@ -21,8 +21,11 @@
                     @endforeach
                 </select>
             </div>
-            <x-admin.input label-name="Price"
+            <x-admin.input label-name="Pret"
                 attributes-param="type=number id=price required step=0.01 min=0 max=10000000000" name="price" />
+            <x-admin.input label-name="Pozitie produs (default 99999)"
+                attributes-param="type=number id=order step=1 min=0 max=100000000" name="order" />
+
             <div>
                 <label for="description">Product description</label>
                 <br>
@@ -30,7 +33,7 @@
             </div>
             <br>
             <div>
-                <label for="media">Add media for product</label>
+                <label for="media">Adauga media pentru produs</label>
                 <br>
                 <input type="file" id="media" name="media[]" accept="image/*,video/*" multiple>
             </div>
@@ -38,11 +41,11 @@
             <div>
                 <button formaction="{{ route('admin.products.preview') }}" formmethod="POST" formtarget="_blank"
                     class="btn btn-outline-warning">
-                    Preview Product
+                    Preview Produs
                 </button>
             </div>
             <br>
-            <button type="submit" class="btn btn-primary">Add Product</button>
+            <button type="submit" class="btn btn-primary">Adauga produs</button>
         </form>
     </div>
 @endsection

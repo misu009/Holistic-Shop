@@ -24,7 +24,7 @@ class ProductFactory extends Factory
             'description' => fake()->paragraph(),
             'slug' => fake()->slug(),
             'price' => fake()->randomFloat(2, 1, 1000),
-            'user_id' => User::query()->orderByRaw('RAND()')->value('id'),
+            'user_id' => User::inRandomOrder()->value('id'),
         ];
     }
 

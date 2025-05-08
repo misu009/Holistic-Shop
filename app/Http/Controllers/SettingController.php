@@ -28,6 +28,10 @@ class SettingController extends Controller
             'shop_text_1' => 'required|string',
             'shop_text_2' => 'required|string',
             'shop_text_3' => 'required|string|max:90',
+            'iban' => 'nullable|string',
+            'data' => 'nullable|string',
+            'phone_number' => 'nullable|string|max:20',
+            'email' => 'nullable|email|max:255',
             'shop_img_1' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'shop_img_2' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'shop_img_3' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -39,6 +43,8 @@ class SettingController extends Controller
             'about_text' => 'required|string',
             'selected_blog_posts' => 'required|array|min:3|max:3',
             'selected_products' => 'required|array|min:4|max:4',
+            'footer_text' => 'nullable|string',
+            'footer_follow_us' => 'nullable|string',
         ]);
         // Process navbar links (Ensure correct format)
         // $navbarLinks = array_values(array_filter($request->navbar_links, function ($link) {
@@ -64,12 +70,18 @@ class SettingController extends Controller
             'shop_text_1' => $request->shop_text_1,
             'shop_text_2' => $request->shop_text_2,
             'shop_text_3' => $request->shop_text_3,
+            'iban' => $request->iban,
+            'data' => $request->data,
+            'phone_number' => $request->phone_number,
+            'email' => $request->email,
             'event_text_1' => $request->event_text_1,
             'mission_text' => $request->mission_text,
             'mission_bullets' => $request->mission_bullets,
             'about_text' => $request->about_text,
             'selected_blog_posts' => $request->selected_blog_posts,
             'selected_products' => $request->selected_products,
+            'footer_text' => $request->footer_text,
+            'footer_follow_us' => $request->footer_follow_us,
         ]);
         $settings->save();
 

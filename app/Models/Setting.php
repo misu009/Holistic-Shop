@@ -22,11 +22,17 @@ class Setting extends Model
         'shop_img_3',
         'shop_img_4',
         'event_img',
+        'iban',
+        'data',
+        'phone_number',
+        'email',
         'mission_text',
         'mission_bullets',
         'about_text',
         'selected_blog_posts',
         'selected_products',
+        'footer_text',
+        'footer_follow_us',
     ];
 
     protected $casts = [
