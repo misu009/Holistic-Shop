@@ -33,8 +33,8 @@ class DatabaseSeeder extends Seeder
         \App\Models\PostCategory::factory(2)->create();
         \App\Models\Post::factory(4)->withPostCategory()->create();
         \App\Models\ProductCategory::factory(2)->create();
-        \App\Models\Product::factory(4)->withProductCategory()->create();
-        \App\Models\Collaborator::factory(1)->create();
+        \App\Models\Product::factory(15)->withProductCategory()->create();
+        \App\Models\Collaborator::factory(20)->create();
         \App\Models\Events::factory(1)->withCollaborators()->create();
 
         DB::table('settings')->insert([

@@ -1,7 +1,7 @@
 <div class="row text-white pe-5 ps-5 pt-2 pb-2">
     <div class="col-sm-6 col-12 d-flex flex-column align-items-center">
         <div>
-            <img src="{{ asset('images/client/logo-footer.png') }}" alt="LOTUS RETREAT">
+            <a href="{{ route('home') }}"><img src="{{ asset('images/client/logo-footer.png') }}" alt="LOTUS RETREAT"></a>
         </div>
         <div class="w-lg-50 mt-4 fs-5">
             {!! $settings->footer_text ?? '' !!}</div>

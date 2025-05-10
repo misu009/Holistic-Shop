@@ -38,14 +38,9 @@
                 <input type="file" id="media" name="media[]" accept="image/*,video/*" multiple>
             </div>
             <br>
-            <div>
-                <button formaction="{{ route('admin.products.preview') }}" formmethod="POST" formtarget="_blank"
-                    class="btn btn-outline-warning">
-                    Preview Produs
-                </button>
-            </div>
             <br>
-            <button type="submit" class="btn btn-primary">Adauga produs</button>
+            <button type="submit" name="action" value="preview" class="btn btn-outline-warning">Preview</button>
+            <button type="submit" name="action" value="save" class="btn btn-primary">Adauga produs</button>
         </form>
     </div>
 @endsection

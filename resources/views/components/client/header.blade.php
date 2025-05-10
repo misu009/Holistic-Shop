@@ -1,17 +1,20 @@
 <nav class="navbar dark navbar-expand-lg border-bottom border-body fixed-top" data-bs-theme="dark">
-    <div class="container-fluid" style="padding-left: 0px !important">
-        <a class="navbar-brand ms-5 d-none d-sm-block" href="{{ route('home') }}"><img
-                src="{{ asset('images/client/LOGO-NAV-BAR.png') }}" alt="LOTUS RETREAT"></a>
-        <a class="navbar-brand ms-5 d-block d-sm-none" href="#">
-            <img src="{{ asset('images/client/navbar-logo-2.png') }}" alt="LOTUS RETREAT">
-            <img src="{{ asset('images/client/navbar-logo-2-part2.png') }}" alt="LOTUS RETREAT">
-        </a>
+    <div class="container-fluid ps-0">
+        <div class="ps-md-5 ps-3">
+            <a class="navbar-brand  d-none d-sm-block" href="{{ route('home') }}"><img
+                    src="{{ asset('images/client/LOGO-NAV-BAR.png') }}" alt="LOTUS RETREAT"></a>
+            <a class="navbar-brand  d-block d-sm-none" href="#">
+                <img src="{{ asset('images/client/navbar-logo-2.png') }}" alt="LOTUS RETREAT">
+                <img src="{{ asset('images/client/navbar-logo-2-part2.png') }}" alt="LOTUS RETREAT">
+            </a>
+        </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
             aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarColor01" style="background-color: black; margin-right: auto">
-            <ul class="navbar-nav ms-auto me-5 mb-2 mb-lg-0" style="background-color: black;">
+        <div class="ps-md-5 ps-3 collapse navbar-collapse" id="navbarColor01"
+            style="background-color: black; margin-right: auto">
+            <ul class=" navbar-nav ms-auto me-5 mb-2 mb-lg-0" style="background-color: black;">
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }} ms-2 me-2" aria-current="page"
                         href="{{ route('home') }}">ACASA</a>
