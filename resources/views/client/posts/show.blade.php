@@ -11,7 +11,7 @@
                 <i class="bi bi-arrow-left"></i> ÎNAPOI
             </a>
             @if (isset($preview))
-                <h2 class="text-white">!!This is just a preview!!</h2>
+                <h1 class="text-danger text-center">!!Acesta este doar un preview!! Postarea nu a fost salvata inca</h1>
             @endif
             <a href="{{ route('client.posts.show', $nextPost->slug) }}" class="btn btn-outline-info">
                 VEZI URMĂTORUL ART. <i class="bi bi-arrow-right"></i>

@@ -6,7 +6,7 @@
     <div class="homepage">
         <div class="hero-section  fade show">
             <div class="hero-left">
-                <div class="rounded-container">
+                <div class="rounded-container ps-md-5 ps-3">
                     <div class="d-flex algin justify-content-between">
                         <div>
                             <p class="text-white mt-5 hero-text-1">
@@ -30,76 +30,81 @@
         </div>
 
         <div class="our-mision mt-5 fade-in mb-5">
-            <div class="our-mision-texts p-5 w-100 d-flex align-items-center contianer" style="flex-direction: column">
-                <h2 class="our-mision-title" style="letter-spacing: 2px">MISIUNEA NOASTRA</h2>
-                <p class="mt-3" style="font-size: 13px; text-align: center;">
-                    {{ $settings->mission_text }}
-                </p>
-            </div>
-            <div class="our-mision-content container fade-in">
-                <div class="row align-items-center" style="height: inherit">
-                    <div class="d-md-block d-none col-md-4 text-end col-6" style="height: inherit">
-                        <ul class="info-list-left p-1 d-flex align-items-center justify-content-around"
-                            style="height: inherit; flex-direction: column;">
-                            @if ($settings->mission_bullets)
-                                @foreach ($settings->mission_bullets as $index => $mission_bullet)
-                                    @if ($loop->index % 2 == 0)
-                                        <li class="our-mission-text mt-5">
-                                            {{ $mission_bullet }}</li>
-                                    @endif
-                                @endforeach
-                            @endif
-                        </ul>
-                    </div>
-                    <div class="d-none d-md-block col-md-4"></div>
-                    <div class="d-md-block d-none col-6 col-md-4 text-start p-1" style="height: inherit">
-                        <ul class="info-list d-flex justify-content-around align-items-center"
-                            style="height: inherit; flex-direction: column;">
-                            @if ($settings->mission_bullets)
-                                @foreach ($settings->mission_bullets as $index => $mission_bullet)
-                                    @if ($loop->index % 2 == 1)
-                                        <li class="our-mission-text mt-5">
-                                            {{ $mission_bullet }}</li>
-                                    @endif
-                                @endforeach
-                            @endif
-                        </ul>
+            <div class="container">
+                <div class="our-mision-texts p-5 w-100 d-flex align-items-center contianer" style="flex-direction: column">
+                    <h2 class="our-mision-title" style="letter-spacing: 2px">MISIUNEA NOASTRA</h2>
+                    <p class="mt-3 text-center fs-5">
+                        {{ $settings->mission_text }}
+                    </p>
+                </div>
+                <div class="our-mision-content container fade-in">
+                    <div class="row align-items-center" style="height: inherit">
+                        <div class="d-md-block d-none col-md-4 text-end col-6" style="height: inherit">
+                            <ul class="info-list-left p-1 d-flex align-items-center justify-content-around"
+                                style="height: inherit; flex-direction: column;">
+                                @if ($settings->mission_bullets)
+                                    @foreach ($settings->mission_bullets as $index => $mission_bullet)
+                                        @if ($loop->index % 2 == 0)
+                                            <li class="fs-5 mt-5">
+                                                {{ $mission_bullet }}</li>
+                                        @endif
+                                    @endforeach
+                                @endif
+                            </ul>
+                        </div>
+                        <div class="d-none d-md-block col-md-4"></div>
+                        <div class="d-md-block d-none col-6 col-md-4 text-start p-1" style="height: inherit">
+                            <ul class="info-list d-flex justify-content-around align-items-center"
+                                style="height: inherit; flex-direction: column;">
+                                @if ($settings->mission_bullets)
+                                    @foreach ($settings->mission_bullets as $index => $mission_bullet)
+                                        @if ($loop->index % 2 == 1)
+                                            <li class="our-mission-text mt-5">
+                                                {{ $mission_bullet }}</li>
+                                        @endif
+                                    @endforeach
+                                @endif
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="container fade-in">
-                <div class="row">
-                    <div class="d-block d-md-none text-start">
-                        <ul class="info-list d-flex flex-wrap list-unstyled">
-                            @if ($settings->mission_bullets)
-                                @foreach ($settings->mission_bullets as $mission_bullet)
-                                    <li class="w-50 p-2 our-mission-text mt-5">
-                                        {{ $mission_bullet }}</li>
-                                @endforeach
-                            @endif
-                        </ul>
+                <div class="container fade-in">
+                    <div class="row">
+                        <div class="d-block d-md-none text-start">
+                            <ul class="info-list d-flex flex-wrap list-unstyled">
+                                @if ($settings->mission_bullets)
+                                    @foreach ($settings->mission_bullets as $mission_bullet)
+                                        <li class="w-50 p-2 fs-5 mt-5">
+                                            {{ $mission_bullet }}</li>
+                                    @endforeach
+                                @endif
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="about-us">
-            <div class="row about-us-content">
-                <div class="col-md-7 col-12 about-us-images d-flex justify-content-center align-items-center">
-                    <img src="{{ asset('images/client/about-us-clj.svg') }}" alt="">
-                </div>
-                <div class="col-md-5 col-12 p-5 flex-column text-white d-flex justify-content-center align-items-start">
-                    <h2>CINE SUNTEM NOI?!</h2>
-                    <div class="mt-5 about-us-text">
-                        <p>{!! $settings->about_text !!}</p>
+            <div class="container-fluid">
+                <div class="row about-us-content">
+                    <div class="col-md-7 col-12 about-us-images d-flex justify-content-center align-items-center">
+                        <img src="{{ asset('images/client/about-us-clj.svg') }}" alt="">
                     </div>
-                    <a class="btn btn-custom mt-5 text-decoration-none text-reset" href="{{ route('client.posts.index') }}">
-                        CITEȘTE MAI MULTE PE BLOG
-                    </a>
-
+                    <div class="col-md-5 col-12 p-5 flex-column text-white d-flex justify-content-center align-items-start">
+                        <h2>CINE SUNTEM NOI?!</h2>
+                        <div class="mt-5 about-us-text">
+                            <p>{!! $settings->about_text !!}</p>
+                        </div>
+                        <a class="btn btn-custom mt-5 text-decoration-none text-reset"
+                            href="{{ route('client.posts.index') }}">
+                            CITEȘTE MAI MULTE PE BLOG
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
+
         <div class="blog-section">
             <div class="container mt-4 mb-4" style="overflow: hidden">
                 @php
@@ -118,7 +123,7 @@
                             style="height: inherit">
                             <div class="image-box me-3" @if ($loop->first) style="width: 40vw;" @endif>
                                 <img src="{{ !empty($post->media) && isset($post->media[0]) ? asset('storage/' . $post->media[0]->path) : asset('images/client/image-' . ($loop->index + 1) . '.png') }}"
-                                    alt="Post Image">
+                                    alt="Post Image" style="border-radius: 20px">
                                 <p class="text-white d-md-block d-none">{{ $post->title }}</p>
                             </div>
                         </a>
@@ -144,10 +149,10 @@
                             </div>
                         </a>
                     @endif
-                    <a href="#" class="" style="height: inherit">
+                    <a href="{{ route('client.posts.index') }}" class="" style="height: inherit">
                         <div class="image-box">
                             <img src="{{ asset('images/client/image-4.png') }}" alt="">
-                            <h1 class="text-white">Vezi toate articolele pe blog</h1>
+                            <p class="text-white ">Vezi toate articolele pe blog</p>
                         </div>
                     </a>
                 </div>

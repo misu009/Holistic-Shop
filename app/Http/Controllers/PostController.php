@@ -72,6 +72,15 @@ class PostController extends Controller
                 ];
             }
         }
+        if ($existingPost && $existingPost->media) {
+            foreach ($existingPost->media as $index => $media) {
+                $mediaPreview[] = (object)[
+                    'path' => $media->path,
+                    'order' => $index + 1,
+                ];
+            }
+        }
+
         // Fake a Post instance to reuse the existing Blade view
         $post = $existingPost ?? new Post();
         $post->fill($validated);

@@ -19,14 +19,12 @@
     </section>
 
     <div class="container my-4 text-white">
-        <!-- Event Date -->
         <div class="mb-3">
-            <span class="badge bg-primary fs-6">
+            <span class="badge fs-6" style="background-color: #064765">
                 {{ \Carbon\Carbon::parse($event->starts_at)->translatedFormat('d F Y') }}
             </span>
         </div>
 
-        <!-- Event Description -->
         <div class="mb-4">
             <h4 class="fw-bold">Descriere Eveniment</h4>
             <p>{!! $event->description !!}</p>

@@ -45,7 +45,8 @@
                 <input type="file" id="media" name="media[]" accept="image/*,video/*" multiple>
             </div>
             <br>
-            <button type="submit" class="btn btn-primary">Actualizeaza produs</button>
+            <button type="submit" name="action" value="preview" class="btn btn-outline-warning">Preview</button>
+            <button type="submit" name="action" value="save" class="btn btn-primary">Actualizeaza produs</button>
         </form>
         <br>
         <x-admin.media-content :objectId="$product->id" :media="$product->media" route="admin.product.image." objectName="productId" />

@@ -53,7 +53,9 @@ class ProductController extends Controller
             'media.*' => 'nullable|mimes:jpeg,png,jpg,gifjpeg,png,jpg,gif,mp4,mov,avi|max:40480',
         ]);
         $validated['slug'] = $validated['slug'] ?? Str::slug($validated['name']) . '-' . uniqid();
-
+        if ($request->action == 'preview') {
+            return $this->preview($request);
+        }
         $product = Product::create([
             'name' => $request->name,
             'slug' => $validated['slug'],
@@ -112,7 +114,9 @@ class ProductController extends Controller
             'media.*' => 'nullable|mimes:jpeg,png,jpg,gifjpeg,png,jpg,gif,mp4,mov,avi|max:40480',
         ]);
         $validated['slug'] = $validated['slug'] ?? Str::slug($validated['name']) . '-' . uniqid();
-
+        if ($request->action == 'preview') {
+            return $this->preview($request, $product);
+        }
         $product->update([
             'name' => $request->name,
             'slug' => $validated['slug'],
@@ -273,21 +277,55 @@ class ProductController extends Controller
         return redirect()->route('admin.products.edit', $productId)->with('success', 'Image order updated successfully');
     }
 
-    public function preview(Request $request)
+    public function preview(Request $request, ?Product $existingProduct = null)
     {
+        $productId = $existingProduct?->id ?? 'NULL';
+
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:products,name',
-            'slug' => 'nullable|string|max:255|unique:products,slug|regex:/^[a-z0-9-]+$/',
-            'description' => 'required|max:20050|string',
-            'price' => 'decimal:0,2|required',
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('products', 'name')->ignore($productId),
+            ],
+            'slug' => [
+                'nullable',
+                'string',
+                'max:255',
+                'regex:/^[a-z0-9-]+$/',
+                Rule::unique('products', 'slug')->ignore($productId),
+            ],
+            'description' => 'required|string|max:20050',
+            'price' => 'required|decimal:0,2',
             'product_category' => 'required|array',
             'product_category.*' => 'required|exists:product_categories,id',
-            'media.*' => 'nullable|mimes:jpeg,png,jpg,gifjpeg,png,jpg,gif,mp4,mov,avi|max:40480',
+            'media.*' => 'nullable|mimes:jpeg,png,jpg,gif,mp4,mov,avi|max:40480',
         ]);
         $validated['slug'] = $validated['slug'] ?? Str::slug($validated['name']) . '-' . uniqid();
 
+        $mediaPreview = [];
+        if ($request->hasFile('media')) {
+            foreach ($request->file('media') as $index => $file) {
+                $tempPath = $file->store('temp', 'public'); // store in storage/app/public/temp
+                $mediaPreview[] = (object)[
+                    'path' => $tempPath,
+                    'order' => $index + 1,
+                ];
+            }
+        }
+        if ($existingProduct && $existingProduct->media) {
+            foreach ($existingProduct->media as $index => $media) {
+                $mediaPreview[] = (object)[
+                    'path' => $media->path,
+                    'order' => $index + 1,
+                ];
+            }
+        }
+
         // Create a dummy product-like object
-        $product = new Product($validated);
+        $product = $existingProduct ?? new Product($validated);
+        $product->fill($validated);
+        $product->id = $existingProduct->id ?? 0; // Prevent null ID errors in view logic
 
         // You can also fake relationships like:
         $product->setRelation('categories', ProductCategory::whereIn('id', $validated['product_category'])->get());
@@ -299,6 +337,10 @@ class ProductController extends Controller
             ->get();
 
         $settings = Setting::first() ?? new Setting();
-        return view('client.shop.show', compact('product', 'selectedProducts', 'settings'));
+        return view('client.shop.show', compact('product', 'selectedProducts', 'settings'), [
+            'preview' => true,
+            'settings' => Setting::first() ?? new Setting(),
+            'mediaPreview' => $mediaPreview,
+        ]);
     }
 }

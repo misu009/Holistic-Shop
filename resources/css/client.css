@@ -1,5 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
+html,
+body {
+    overflow-x: hidden;
+}
+
 :root {
     --col1: #8afff9;
 }
@@ -60,7 +65,6 @@ footer {
 
 .rounded-container {
     background-color: red;
-    padding-left: 4rem;
     border-radius: 0px 110px 110px 0px;
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
@@ -242,14 +246,11 @@ ul.info-list-left li::after {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 20px;
 }
 
 .image-box p {
-    font-size: 20px;
-}
-
-.image-box p,
-.image-box h1 {
+    font-size: 35px;
     position: absolute;
     bottom: 10px; /* Adjust as needed */
     left: 10px; /* Adjust as needed */
@@ -298,13 +299,6 @@ ul.info-list-left li::after {
 .product-container a {
     color: var(--col1) !important;
 }
-
-/* .product-bg {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 20px;
-    border-radius: 105px;
-    border-color: black !important;
-} */
 
 .product-description {
     word-wrap: break-word;
@@ -405,7 +399,6 @@ ul.info-list-left li::after {
     height: 100vh;
     background: url("/images/client/shop-banner.png") no-repeat center center;
     background-size: cover;
-    /* background-position: right; */
 }
 
 .hero-shop-button {
@@ -428,6 +421,19 @@ ul.info-list-left li::after {
 .hero-shop-text {
     font-size: 40px;
     font-weight: 400;
+}
+#shop-content {
+    background-image: url("/images/client/bg-dark.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#product-show {
+    background-image: url("/images/client/bg-dark.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .contact-section {
@@ -481,13 +487,42 @@ ul.info-list-left li::after {
     right: 10px;
 }
 
+/* #event-content::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("/images/client/bg-dark.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transform: rotate(270deg);
+    z-index: -1;
+} */
+
+#blog-content {
+    background-image: url("/images/client/blog-bg.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#collaborator {
+    background-image: url("/images/client/bg-dark.jpg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-attachment: fixed;
+}
+
 @media (max-width: 1024px) {
     .hero-section {
         height: 80vh;
     }
     .rounded-container {
         margin-top: 50vh;
-        padding-left: 1rem;
     }
     .hero-text-1 {
         font-size: 30px;
@@ -522,6 +557,7 @@ ul.info-list-left li::after {
     }
     .our-mision-content {
         height: 50vh;
+        background-size: 220%;
     }
 
     .blog-images-1 {
@@ -555,6 +591,9 @@ ul.info-list-left li::after {
     }
     .hero-shop-button {
         font-size: 1rem;
+    }
+    .image-box p {
+        font-size: 24px;
     }
 }
 
@@ -601,7 +640,12 @@ ul.info-list-left li::after {
     }
 
     .about-us-images img {
-        height: 30vh;
+        height: 40vh;
         width: auto;
+        max-width: 100%;
+    }
+
+    .image-box p {
+        font-size: 16px;
     }
 }
