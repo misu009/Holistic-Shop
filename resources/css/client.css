@@ -487,21 +487,6 @@ ul.info-list-left li::after {
     right: 10px;
 }
 
-/* #event-content::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url("/images/client/bg-dark.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    transform: rotate(270deg);
-    z-index: -1;
-} */
-
 #blog-content {
     background-image: url("/images/client/blog-bg.jpg");
     background-size: cover;
@@ -512,6 +497,29 @@ ul.info-list-left li::after {
 #collaborator {
     background-image: url("/images/client/bg-dark.jpg");
     background-size: contain;
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-attachment: fixed;
+}
+
+#blog {
+    background-image: url("/images/client/abstract-background.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-attachment: fixed;
+}
+
+#event-content {
+    background-image: url("/images/client/abstract-background.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#event-show {
+    background-image: url("/images/client/abstract-background.png");
+    background-size: cover;
     background-repeat: no-repeat;
     background-position: top center;
     background-attachment: fixed;
