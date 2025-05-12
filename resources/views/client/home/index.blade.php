@@ -126,7 +126,7 @@
                             style="height: inherit">
                             <div class="image-box me-3" @if ($loop->first) style="width: 40vw;" @endif>
                                 <img src="{{ !empty($post->media) && isset($post->media[0]) ? asset('storage/' . $post->media[0]->path) : asset('images/client/image-' . ($loop->index + 1) . '.png') }}"
-                                    alt="Post Image" style="border-radius: 20px">
+                                    alt="Post Image">
                                 <p class="text-white d-md-block d-none">{{ $post->title }}</p>
                             </div>
                         </a>
