@@ -527,7 +527,7 @@ ul.info-list-left li::after {
 
 @media (max-width: 1024px) {
     .hero-section {
-        height: 80vh;
+        height: 85vh;
     }
     .rounded-container {
         margin-top: 50vh;
