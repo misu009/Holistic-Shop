@@ -9,10 +9,10 @@
                 <div class="rounded-container ps-md-5 ps-3">
                     <div class="d-flex algin justify-content-between">
                         <div>
-                            <p class="text-white mt-5 hero-text-1">
+                            <p class="text-white mt-5 fs-1">
                                 {{ $settings->hero_text_1 }}<br>
                             </p>
-                            <p class="text-white hero-text-2">
+                            <p class="text-white hero-text-2 d-md-block d-none">
                                 {{ $settings->hero_text_2 }}
                             </p>
                         </div>
@@ -20,6 +20,9 @@
                             alt="">
                     </div>
                     <div>
+                        <p class="text-white hero-text-2 d-md-none ">
+                            {{ $settings->hero_text_2 }}
+                        </p>
                         <p class="hero-text-2">
                             {{ $settings->hero_text_3 }}
                         </p>
@@ -32,7 +35,7 @@
         <div class="our-mision mt-5 fade-in mb-5">
             <div class="container">
                 <div class="our-mision-texts p-5 w-100 d-flex align-items-center contianer" style="flex-direction: column">
-                    <h2 class="our-mision-title" style="letter-spacing: 2px">MISIUNEA NOASTRA</h2>
+                    <h2 class="our-mision-title text-center" style="letter-spacing: 2px">MISIUNEA NOASTRA</h2>
                     <p class="mt-3 text-center fs-5">
                         {{ $settings->mission_text }}
                     </p>
