@@ -35,6 +35,13 @@
             <br>
             <x-admin.input label-name="Pozitie postare (default 99999)" attributes-param="type=text id=order" name="order"
                 value="{{ old('order') }}" />
+            <div>
+                <label for="preview_image">Adauga imagine preview</label>
+                <br>
+                <x-admin.image-uploader imagePreviewId="preview_image" path="" imageInputId="select-picture"
+                    imageInputName="preview_image" buttonText="Upload Image" />
+            </div>
+            <br><br>
 
             <div>
                 <label for="media">Adauga media pentru postare</label>

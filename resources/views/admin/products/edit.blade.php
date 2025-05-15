@@ -30,9 +30,13 @@
             <x-admin.input label-name="Pret"
                 attributes-param="value={{ old('price') ? old('price') : $product->price }} type=number id=price required step=0.01 min=0 max=10000000000"
                 name="price" />
+            <x-admin.input label-name="Contact tel" attributes-param="type=text id=phone required" name="phone"
+                :value="old('phone') ?? $product->phone" />
+            <x-admin.input label-name="Contact email (optional)" attributes-param="type=email id=email" name="email"
+                :value="old('email') ?? $product->email" />
             <x-admin.input label-name="Pozitie produs (default 99999)"
-                attributes-param="value={{ old('order') ? old('order') : $product->order }} type=number id=order required step=0.01 min=0 max=10000000000"
-                name="order" />
+                attributes-param="type=number id=order required step=1 min=0 max=10000000000" name="order"
+                :value="old('order') ?? $product->order" />
             <div>
                 <label for="description">Descriere produs</label>
                 <br>

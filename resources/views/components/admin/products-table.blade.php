@@ -5,6 +5,8 @@
                 <th scope="col">#</th>
                 <th scope="col">Nume</th>
                 <th scope="col">Pret</th>
+                <th scope="col">Contact tel</th>
+                <th scope="col">Contact email</th>
                 <th scope="col">Adaugat de</th>
                 <th scope="col">Categorii</th>
                 <th scope="col">Descriere</th>
@@ -19,6 +21,8 @@
                     <td>{{ $products->firstItem() + $index }}</td>
                     <td>{{ $product->name }}</td>
                     <td>{{ $product->price }}</td>
+                    <td>{{ $product->phone }}</td>
+                    <td>{{ $product->email }}</td>
                     <td>{{ $product->user->name }}</td>
                     <td style="max-width: 600px; overflow: hidden;text-overflow: ellipsis">
                         @if ($product->categories->count() == 0)

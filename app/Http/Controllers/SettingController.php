@@ -36,7 +36,7 @@ class SettingController extends Controller
             'shop_img_2' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'shop_img_3' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'shop_img_4' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'event_text_1' => 'required|string',
+            'event_text_1' => 'required|text',
             'event_img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'mission_text' => 'required|string',
             'mission_bullets' => 'required|array|min:8|max:8',

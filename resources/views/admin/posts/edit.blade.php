@@ -28,7 +28,7 @@
             </div>
             <br>
             <div>
-                <label for="excerpt">Excerpt</label>
+                <label for="excerpt">Excerpt (optional)</label>
                 <textarea name="excerpt" id="excerpt" rows="4" class="form-textarea ckeditor">{!! old('excerpt') ? old('excerpt') : $post->excerpt !!}</textarea>
             </div>
             <br>
@@ -39,6 +39,13 @@
             <br>
             <x-admin.input label-name="Pozitie postare (optional)" attributes-param="type=text id=order"
                 value="{!! old('order') ? old('order') : $post->order !!}" name="order" />
+            <div>
+                <label for="preview_image">Imagine preview</label>
+                <br>
+                <x-admin.image-uploader imagePreviewId="preview_image" path="{{ Storage::url($post->preview_image) }}"
+                    imageInputId="select-picture" imageInputName="preview_image" buttonText="Upload Image" />
+            </div>
+            <br><br>
 
             <div>
                 <label for="media">Adauga media pentru postare</label>

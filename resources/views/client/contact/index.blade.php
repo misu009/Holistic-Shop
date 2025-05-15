@@ -45,7 +45,8 @@
                 <!-- Right Textarea -->
                 <div class="col-md-6">
                     <div class="form-group">
-                        <textarea name="message" rows="7" placeholder="OBSERVAȚII" class="form-control glass-input">{{ old('message') }}</textarea>
+                        <textarea name="message" rows="7" placeholder="Cu ce te putem susține în această etapă a vieții tale?"
+                            class="form-control glass-input">{{ old('message') }}</textarea>
                         @error('message')
                             <p class="text-danger">{{ $message }}</p>
                         @enderror

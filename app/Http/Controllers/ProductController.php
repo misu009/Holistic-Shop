@@ -47,6 +47,8 @@ class ProductController extends Controller
             'slug' => 'nullable|string|max:255|unique:products,slug|regex:/^[a-z0-9-]+$/',
             'description' => 'required|max:20050|string',
             'price' => 'decimal:0,2|required',
+            'phone' => 'required|string|regex:/^\+?[0-9\s\-]{7,20}$/',
+            'email' => 'nullable|email',
             'order' => 'nullable|integer',
             'product_category' => 'required|array',
             'product_category.*' => 'required|exists:product_categories,id',
@@ -63,6 +65,8 @@ class ProductController extends Controller
             'user_id' => auth()->id(),
             'order' => $request->order ?? 99999,
             'price' => $request->price,
+            'phone' => $request->phone,
+            'email' => $request->email,
         ]);
         ActivityLogger::log('S a adaugat un produs', 'Product', $product->id);
 
@@ -110,6 +114,8 @@ class ProductController extends Controller
             'product_category' => 'required|array',
             'product_category.*' => 'required|exists:product_categories,id',
             'price' => 'decimal:0,2|required',
+            'phone' => 'required|string|regex:/^\+?[0-9\s\-]{7,20}$/',
+            'email' => 'nullable|email',
             'order' => 'nullable|integer',
             'media.*' => 'nullable|mimes:jpeg,png,jpg,gifjpeg,png,jpg,gif,mp4,mov,avi|max:40480',
         ]);
@@ -123,6 +129,8 @@ class ProductController extends Controller
             'description' => $request->description,
             'order' => $request->order ?? 99999,
             'price' => $request->price,
+            'phone' => $request->phone,
+            'email' => $request->email,
         ]);
         ActivityLogger::log('S a actualizat un produs', 'Product', $product->id);
 

@@ -23,6 +23,8 @@
             </div>
             <x-admin.input label-name="Pret"
                 attributes-param="type=number id=price required step=0.01 min=0 max=10000000000" name="price" />
+            <x-admin.input label-name="Contact telefonic" attributes-param="type=text id=phone required" name="phone" />
+            <x-admin.input label-name="Contact Email (optional)" attributes-param="type=email id=email" name="email" />
             <x-admin.input label-name="Pozitie produs (default 99999)"
                 attributes-param="type=number id=order step=1 min=0 max=100000000" name="order" />
 

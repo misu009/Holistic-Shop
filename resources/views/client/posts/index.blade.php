@@ -3,61 +3,51 @@
 @section('title', 'Blog')
 
 @section('content')
-    <div id="blog-content" class="py-5">
-        <div class="container">
-            <h2 class="text-center text-white mb-5">{{ $heading ?? 'Toate articolele' }}
-            </h2>
-            <div class="row g-4">
-                @foreach ($posts as $index => $post)
-                    @php
-                        $ind = $posts->firstItem() + $index;
-                        $cols = 'col-md-4';
-                        if (!isset($heading)) {
-                            if ($ind == 1) {
-                                $cols = 'col-12';
-                            } elseif ($ind == 2) {
-                                $cols = 'col-6';
-                            } elseif ($ind == 3) {
-                                $cols = 'col-6';
-                            }
-                        }
-                    @endphp
-                    <div class="{{ $cols }}">
-                        <a href="{{ route('client.posts.show', $post->slug) }}">
-                            <div class="card h-100 text-white bg-dark border-light">
-                                <img src="{{ !empty($post->media) && isset($post->media[0]) ? asset('storage/' . $post->media[0]->path) : asset('images/client/image-3.png') }}"
-                                    class="card-img-top" alt="{{ $post->title }}" height="330px">
-                                <div class="card-img-overlay d-flex flex-column justify-content-end">
-                                    <h5 class="card-title fw-bold">{{ $post->title }}</h5>
-                                    <p class="card-content">{!! $post->excerpt !!}</p>
-                                </div>
-                            </div>
-                        </a>
+    <div id="blog-content">
+        <div class="container py-5">
+            <h1 class="text-white text-center">Blog</h1>
+            {{-- First Page Custom Layout --}}
+            @if ($posts->currentPage() === 1)
+                <div class="row g-4 align-items-stretch mt-5">
+                    @if ($posts[0])
+                        <div class="col-8">
+                            <x-client.post-card :post="$posts[0]" />
+                        </div>
+                    @endif
+
+                    @if ($posts[1])
+                        <div class="col-4 d-flex">
+                            <x-client.post-card :post="$posts[1]" class="w-100 full-height-wrapper position-relative" />
+                        </div>
+                    @endif
+                </div>
+
+                <div class="row g-4 mt-3">
+                    @if ($posts[2])
+                        <div class="col-6">
+                            <x-client.post-card :post="$posts[2]" aspect="4/3" />
+                        </div>
+                    @endif
+                    @if ($posts[3])
+                        <div class="col-6">
+                            <x-client.post-card :post="$posts[3]" aspect="4/3" />
+                        </div>
+                    @endif
+                </div>
+            @endif
+
+            {{-- Grid for remaining posts --}}
+            <div class="row g-4 mt-1">
+                @foreach ($posts->slice($posts->currentPage() === 1 ? 4 : 0) as $post)
+                    <div class="col-lg-3 col-md-6 col-12 mt-5">
+                        <x-client.post-card :post="$post" aspect="3/4" showExcerpt="1" />
                     </div>
                 @endforeach
             </div>
-            <x-client.pagination :paginator="$posts" />
+
+            <div class="d-flex justify-content-center mt-3">
+                <x-client.pagination :paginator="$posts" />
+            </div>
         </div>
     </div>
 @endsection
-
-<style>
-    .card {
-        position: relative;
-        overflow: hidden;
-        border-radius: 10px;
-    }
-
-    .card img {
-        filter: brightness(50%);
-        transition: all 0.3s ease-in-out;
-    }
-
-    .card:hover img {
-        filter: brightness(80%);
-    }
-
-    .card-title {
-        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
-    }
-</style>

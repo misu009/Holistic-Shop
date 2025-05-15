@@ -41,7 +41,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link ms-2 me-2" href="#" data-bs-toggle="modal" data-bs-target="#donatiiModal">
-                        DONAȚII
+                        SUSTINE
                     </a>
                 </li>
             </ul>

@@ -104,6 +104,7 @@ class PostController extends Controller
             'slug' => 'nullable|string|regex:/^[a-z0-9-]+$/|unique:posts,slug',
             'order' => 'nullable|integer',
             'excerpt' => 'nullable|string|max:255',
+            'preview_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:20048',
             'post_category' => 'required|array',
             'post_category.*' => 'required|exists:post_categories,id',
             'media.*' => 'nullable|mimes:jpeg,png,jpg,gifjpeg,png,jpg,gif,mp4,mov,avi|max:40480',
@@ -120,11 +121,16 @@ class PostController extends Controller
             return $this->previewPost($request);
         }
 
+        if ($request->hasFile('preview_image')) {
+            $validated['preview_image'] = $request->file('preview_image')->store('posts/preview_images', 'public');
+        }
+
         $post = Post::create([
             'title' => $request->title,
             'description' => $request->description,
             'slug' => $slug,
             'excerpt' => $excerpt,
+            'preview_image' => $validated['preview_image'] ?? null,
             'order' => $request->order ?? 99999,
             'created_by' => auth()->user()->name,
         ]);
@@ -172,6 +178,7 @@ class PostController extends Controller
             'title' => 'required|string|unique:posts,title,' . $post->id,
             'slug' => 'nullable|string|regex:/^[a-z0-9-]+$/|unique:posts,slug,' . $post->id,
             'excerpt' => 'nullable|string|max:255',
+            'preview_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:20048',
             'order' => 'nullable|integer',
             'description' => 'required|string',
             'post_category' => 'required|array',
@@ -191,6 +198,13 @@ class PostController extends Controller
             return $this->previewPost($request, $post);
         }
 
+        if ($request->hasFile('preview_image')) {
+            if ($post->preview_image && Storage::disk('public')->exists($post->preview_image)) {
+                Storage::disk('public')->delete($post->preview_image);
+            }
+
+            $validated['preview_image'] = $request->file('preview_image')->store('posts/preview_images', 'public');
+        }
 
         $post->update($validated);
 
@@ -234,6 +248,10 @@ class PostController extends Controller
                 Storage::delete('public/' . $media->path);
             }
         }
+        if ($post->preview_image && Storage::disk('public')->exists($post->preview_image)) {
+            Storage::disk('public')->delete($post->preview_image);
+        }
+
         $post->delete();
         ActivityLogger::log('Created a post', 'Post', $post->id);
         return redirect()->back()->with('success', 'Post deleted with success');

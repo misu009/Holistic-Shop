@@ -162,7 +162,7 @@ class EventsController extends Controller
             }
         }
         $event->delete();
-        ActivityLogger::log('Deleted an event', 'Event', $event->name);
+        ActivityLogger::log('Deleted an event', 'Event', $event->id);
         return back()->with('success', 'Event deleted successfully');
     }
 
