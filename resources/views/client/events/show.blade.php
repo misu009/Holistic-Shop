@@ -48,7 +48,7 @@
                             @endif
                             <div>
                                 <h6 class="mb-1">{{ $collaborator->name }}</h6>
-                                <p class="mb-1">{{ $collaborator->short_description }}</p>
+                                <p class="mb-1">{!! $collaborator->short_description !!}</p>
                                 @if ($collaborator->email)
                                     <div><small><strong>Email:</strong> {{ $collaborator->email }}</small></div>
                                 @endif

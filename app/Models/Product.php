@@ -13,6 +13,7 @@ class Product extends Model
         "slug",
         "description",
         "price",
+        "phone",
         "email",
         "phone_number",
         'user_id',

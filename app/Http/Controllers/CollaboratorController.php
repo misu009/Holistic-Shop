@@ -37,7 +37,7 @@ class CollaboratorController extends Controller
             'name' => 'required|string|max:255',
             'short_description' => 'required|string',
             'long_description' => 'required|string',
-            'email' => 'nullable|email|unique:collaborators,email',
+            'email' => 'nullable|email',
             'phone_number' => 'nullable|string|regex:/^\+?[0-9]\d{1,14}$/|unique:collaborators,phone_number',
             'user-picture' => 'nullable|string|exists:users,picture',
             'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:8048'
@@ -80,7 +80,7 @@ class CollaboratorController extends Controller
             'name' => 'required|string|max:255',
             'short_description' => 'required|string',
             'long_description' => 'required|string',
-            'email' => 'nullable|email|unique:collaborators,email,' . $collaborator->id,
+            'email' => 'nullable|email',
             'phone_number' => 'nullable|string|regex:/^\+?[0-9]\d{1,14}$/|unique:collaborators,phone_number,' . $collaborator->id,
             'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:8048'
         ]);

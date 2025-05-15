@@ -207,33 +207,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// document.addEventListener("DOMContentLoaded", function () {
-//     const swiper = new Swiper(".mySwiper", {
-//         slidesPerView: 1,
-//         spaceBetween: 16,
-//         loop: true, // Ensure loop is enabled
-//         autoplay: {
-//             delay: 3000,
-//             disableOnInteraction: false,
-//         },
-//         breakpoints: {
-//             576: { slidesPerView: 2 },
-//             992: { slidesPerView: 3 },
-//         },
-//     });
-
-//     const prevButton = document.querySelector(".custom-prev");
-//     const nextButton = document.querySelector(".custom-next");
-
-//     prevButton.addEventListener("click", () => {
-//         swiper.slidePrev();
-//     });
-
-//     nextButton.addEventListener("click", () => {
-//         swiper.slideNext();
-//     });
-// });
-
 document.addEventListener("DOMContentLoaded", function () {
     const swiperContainer = document.querySelector(".mySwiper");
     const slides = swiperContainer.querySelectorAll(".swiper-slide");

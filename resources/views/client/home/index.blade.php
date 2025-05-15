@@ -108,59 +108,46 @@
             </div>
         </div>
 
-        <div class="blog-section">
-            <div class="container mt-4 mb-4" style="overflow: hidden">
-                @php
-                    if ($settings->selected_blog_posts != null) {
-                        $selectedPosts = \App\Models\Post::whereIn('id', $settings->selected_blog_posts)
-                            ->take(3)
-                            ->get();
-                    } else {
-                        $selectedPosts = \App\Models\Post::take(3)->get();
-                    }
-                @endphp
+        @php
+            $selectedPosts = \App\Models\Post::whereIn('id', $settings->selected_blog_posts)->take(3)->get();
+        @endphp
 
-                <div class="d-flex justify-content-center align-items-center mb-3 blog-images-1">
-                    @foreach ($selectedPosts->take(2) as $post)
-                        <a href="{{ route('client.posts.show', ['slug' => $post->slug]) }}" class=""
-                            style="height: inherit">
-                            <div class="image-box me-3" @if ($loop->first) style="width: 40vw;" @endif>
-                                <img src="{{ !empty($post->media) && isset($post->media[0]) ? asset('storage/' . $post->media[0]->path) : asset('images/client/image-' . ($loop->index + 1) . '.png') }}"
-                                    alt="Post Image">
-                                <p class="text-white d-md-block d-none">{{ $post->title }}</p>
-                            </div>
-                        </a>
-                    @endforeach
+        <div id="blog-home">
+            <div class="container py-5">
+                {{-- First Row --}}
+                <div class="row g-4 align-items-stretch">
+                    {{-- Left (larger) post --}}
+                    <div class="col-8">
+                        @if (isset($selectedPosts[0]))
+                            <x-client.post-card :post="$selectedPosts[0]" />
+                        @endif
+                    </div>
+
+
+                    <div class="col-4 d-flex">
+                        @if (isset($selectedPosts[1]))
+                            <x-client.post-card :post="$selectedPosts[1]" aspect="4/3" class="h-100 w-100" />
+                        @endif
+                    </div>
                 </div>
 
-                <div class="d-flex justify-content-center align-items-center blog-images-2">
-                    @if ($selectedPosts->count() >= 3)
-                        @php $thirdPost = $selectedPosts[2]; @endphp
-                        <a href="{{ route('client.posts.show', ['slug' => $post->slug]) }}" class=""
-                            style="height: inherit">
-                            <div class="image-box me-3">
-                                <img src="{{ !empty($thirdPost->media) && isset($thirdPost->media[0]) ? asset('storage/' . $thirdPost->media[0]->path) : asset('images/client/image-3.png') }}"
-                                    alt="Post Image">
-                                <p class="text-white d-md-block d-none">{{ $thirdPost->title }}</p>
+                <div class="row g-4 mt-4">
+                    <div class="col-6">
+                        @if (isset($selectedPosts[2]))
+                            <x-client.post-card :post="$selectedPosts[2]" aspect="4/3" class="h-100" />
+                        @endif
+                    </div>
+
+                    <div class="col-6">
+                        <a href="{{ route('client.posts.index') }}" class="blog-wrapper">
+                            <div class="ratio-box" style="aspect-ratio: 4 / 3;">
+                                <img src="{{ asset('images/client/image-4.png') }}" alt="Blog" class="blog-image">
+                                <div class="blog-overlay"></div>
+                                <div class="blog-content fs-5">VEZI TOATE<br>ARTICOLELE DE<br>PE BLOG</div>
                             </div>
                         </a>
-                    @else
-                        <a href="#" class="" style="height: inherit">
-                            <div class="image-box me-3">
-                                <img src="{{ asset('images/client/image-3.png') }}" alt="">
-                                <p class="text-white d-md-block d-none">Lorem, ipsum dolor.</p>
-                            </div>
-                        </a>
-                    @endif
-                    <a href="{{ route('client.posts.index') }}" class="" style="height: inherit">
-                        <div class="image-box">
-                            <img src="{{ asset('images/client/image-4.png') }}" alt="">
-                            <p class="text-white ">Vezi toate articolele pe blog</p>
-                        </div>
-                    </a>
+                    </div>
                 </div>
-
-
             </div>
         </div>
 
@@ -250,5 +237,3 @@
         checkVisibility(); // Check on page load in case it's already in view
     });
 </script>
-<style>
-</style>

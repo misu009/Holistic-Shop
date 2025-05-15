@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\User::factory(2)->create();
         \App\Models\PostCategory::factory(2)->create();
-        \App\Models\Post::factory(4)->withPostCategory()->create();
+        \App\Models\Post::factory(20)->withPostCategory()->create();
         \App\Models\ProductCategory::factory(2)->create();
         \App\Models\Product::factory(15)->withProductCategory()->create();
         \App\Models\Collaborator::factory(20)->create();

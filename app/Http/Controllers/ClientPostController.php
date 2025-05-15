@@ -11,7 +11,7 @@ class ClientPostController extends Controller
     public function index()
     {
         $settings = Setting::first() ?? new Setting();
-        $posts = Post::orderBy('order')->paginate(12);
+        $posts = Post::orderBy('order')->paginate(16);
         return view('client.posts.index', compact('posts', 'settings'));
     }
 

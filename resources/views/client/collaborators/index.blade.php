@@ -16,7 +16,7 @@
                                 <div class="col-md-9">
                                     <h2 class="fw-bold text-white">{{ $collaborator->name }}</h2>
                                     <p class="text-white">
-                                        {{ $collaborator->long_description }}
+                                        {!! $collaborator->long_description !!}
                                     </p>
                                     @if ($collaborator->email || $collaborator->phone_number)
                                         <div class="text-white fs-5">
@@ -57,7 +57,7 @@
                             style="max-width: 70vw">
                         <h2 class="fw-bold text-white mt-5">{{ $collaborator->name }}</h2>
                         <p class="text-white">
-                            {{ $collaborator->long_description }}
+                            {!! $collaborator->long_description !!}
                         </p>
                     </div>
                 @endforeach

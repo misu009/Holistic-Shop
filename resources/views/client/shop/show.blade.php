@@ -59,11 +59,22 @@
                 </div>
 
                 <!-- Product Description (col-8 on lg screens) -->
-                <div class="col-lg-8 d-flex flex-column text-white mt-lg-0 mt-4">
+                <div class="col-lg-8 d-flex flex-column text-white mt-lg-0 mt-4" id="productDescription">
                     <h1>{{ $product->name }}</h1>
-                    <h5 class="fw-bold">Descriere produs:</h5>
-                    <div id="productDescription">
+                    <h5 class="fw-bold mt-5">Descriere produs:</h5>
+                    <div class="fs-5">
                         {!! $product->description !!}
+                    </div>
+                    <div id="priceInfo">
+                        <h3 class="fw-bold mt-4 text-white">{{ number_format($product->price, 2) }} LEI</h3>
+                        <div class="text-white fs-5">
+                            (pretul este orientativ, pentru mai multe informatii contactati-ne la
+                            {{ $product->phone }}
+                            @if ($product->email)
+                                sau la {{ $product->email }}
+                            @endif
+                            )
+                        </div>
                     </div>
                 </div>
 
@@ -74,14 +85,17 @@
                 <div class="col-12 ">
                     <div id="overflowContent"></div>
                 </div>
-                <h3 class="fw-bold mt-4">{{ number_format($product->price, 2) }} LEI</h3>
-                (pretul este orientativ, pentru mai multe informatii contactati-ne la
-                @if (!isset($preview))
-                    {{ $product->user->email }})
-                @else
-                    {{ Auth::user()->email }})
-                @endif
-
+                <div>
+                    <h3 class="fw-bold mt-4 text-white">{{ number_format($product->price, 2) }} LEI</h3>
+                    <div class="text-white fs-5">
+                        ( pretul este orientativ, pentru mai multe informatii contactati-ne la
+                        {{ $product->phone }}
+                        @if ($product->email)
+                            sau la {{ $product->email }}
+                        @endif
+                        )
+                    </div>
+                </div>
             </div>
 
             <div class="container-fluid py-5 d-flex justify-content-center align-items-center flex-direction-column">
@@ -89,7 +103,6 @@
                     <h2 class="text-uppercase fw-bold mb-4 text-center text-white">
                         Descoperă produse similare
                     </h2>
-
                     <div class="row mt-4 row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 text-center">
                         @foreach ($selectedProducts as $selectedProduct)
                             <div class="col d-flex">
@@ -118,40 +131,56 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             function adjustDescription() {
-                let carouselHeight = document.querySelector("#productCarousel").offsetHeight;
-                let description = document.querySelector("#productDescription");
-                let overflowSection = document.querySelector("#descriptionOverflow");
-                let overflowContent = document.querySelector("#overflowContent");
+                const carouselHeight = document.querySelector("#productCarousel").offsetHeight;
+                const description = document.querySelector("#productDescription");
+                const fullContentDiv = description.querySelector(".fs-5"); // Only description text
+                const priceInfo = document.querySelector("#priceInfo");
+                const overflowSection = document.querySelector("#descriptionOverflow");
+                const overflowContent = document.querySelector("#overflowContent");
 
-                if (description.offsetHeight > carouselHeight) {
-                    overflowSection.classList.remove("d-none"); // Show overflow section
+                // Reset state
+                overflowSection.classList.add("d-none");
+                priceInfo.classList.remove("d-none");
+                fullContentDiv.innerHTML = fullContentDiv.dataset.full || fullContentDiv.innerHTML;
+                overflowContent.innerHTML = "";
 
-                    let text = description.innerHTML;
-                    let words = text.split(" ");
-                    console.log(words);
-                    let visibleText = [];
-                    let hiddenText = [];
+                // Save full content if not already saved
+                if (!fullContentDiv.dataset.full) {
+                    fullContentDiv.dataset.full = fullContentDiv.innerHTML;
+                }
 
-                    let tempDiv = document.createElement("div");
-                    tempDiv.style.visibility = "hidden";
-                    tempDiv.style.position = "absolute";
-                    tempDiv.style.width = description.clientWidth + "px";
-                    document.body.appendChild(tempDiv);
+                // Create test container
+                const tempDiv = document.createElement("div");
+                tempDiv.style.visibility = "hidden";
+                tempDiv.style.position = "absolute";
+                tempDiv.style.width = fullContentDiv.offsetWidth + "px";
+                tempDiv.style.fontSize = getComputedStyle(fullContentDiv).fontSize;
+                document.body.appendChild(tempDiv);
 
-                    for (let word of words) {
-                        tempDiv.innerHTML += word + " ";
-                        if (tempDiv.offsetHeight > carouselHeight) {
-                            hiddenText.push(word);
-                        } else {
-                            visibleText.push(word);
-                        }
+                const words = fullContentDiv.dataset.full.split(" ");
+                let low = 0,
+                    high = words.length,
+                    splitIndex = words.length;
+
+                // Binary search for max visible text
+                while (low <= high) {
+                    let mid = Math.floor((low + high) / 2);
+                    tempDiv.innerHTML = words.slice(0, mid).join(" ");
+                    if (tempDiv.offsetHeight + priceInfo.offsetHeight <= carouselHeight) {
+                        low = mid + 1;
+                    } else {
+                        splitIndex = mid;
+                        high = mid - 1;
                     }
-                    document.body.removeChild(tempDiv);
+                }
 
-                    description.innerHTML = visibleText.join(" ");
-                    overflowContent.innerHTML = hiddenText.join(" ");
-                } else {
-                    overflowSection.classList.add("d-none"); // Hide overflow section
+                document.body.removeChild(tempDiv);
+
+                if (splitIndex < words.length) {
+                    fullContentDiv.innerHTML = words.slice(0, splitIndex).join(" ");
+                    overflowContent.innerHTML = words.slice(splitIndex).join(" ");
+                    overflowSection.classList.remove("d-none");
+                    priceInfo.classList.add("d-none");
                 }
             }
 
