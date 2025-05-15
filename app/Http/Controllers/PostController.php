@@ -104,7 +104,7 @@ class PostController extends Controller
             'slug' => 'nullable|string|regex:/^[a-z0-9-]+$/|unique:posts,slug',
             'order' => 'nullable|integer',
             'excerpt' => 'nullable|string|max:255',
-            'preview_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:20048',
+            'preview_image' => 'required|image|mimes:jpeg,png,jpg,webp|max:20048',
             'post_category' => 'required|array',
             'post_category.*' => 'required|exists:post_categories,id',
             'media.*' => 'nullable|mimes:jpeg,png,jpg,gifjpeg,png,jpg,gif,mp4,mov,avi|max:40480',
