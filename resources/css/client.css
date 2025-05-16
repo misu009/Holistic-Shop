@@ -394,6 +394,7 @@ ul.info-list-left li::after {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    background-attachment: fixed;
 }
 
 #product-show {
@@ -401,6 +402,7 @@ ul.info-list-left li::after {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    background-attachment: fixed;
 }
 
 .contact-section {
@@ -459,11 +461,12 @@ ul.info-list-left li::after {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    /* background-attachment: fixed; */
 }
 
 #collaborator {
     background-image: url("/images/client/bg-dark.jpg");
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
     background-position: top center;
     background-attachment: fixed;
