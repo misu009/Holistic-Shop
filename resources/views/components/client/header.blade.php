@@ -65,8 +65,10 @@
                         class="text-decoration-none text-dark">{{ $settings->email ?? 'N/A' }}</a>
                 </p>
                 <p><strong>Telefon:</strong>
-                    <a href="tel:{{ $settings->phone_number }}"
-                        class="text-decoration-none text-dark">{{ $settings->phone_number ?? 'N/A' }}</a>
+                    <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $settings->phone_number) }}" target="_blank"
+                        class="text-decoration-none text-dark">
+                        {{ $settings->phone_number ?? 'N/A' }}
+                    </a>
                 </p>
             </div>
         </div>

@@ -64,9 +64,16 @@
                 • Ne puteti contacta
             @endif
             @if ($settings->phone_number)
-                la numarul de telefon <strong>{{ $settings->phone_number }}</strong><br>
+                la numarul de telefon
+                <strong>
+                    <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $settings->phone_number) }}" target="_blank"
+                        class="text-decoration-none text-white">
+                        {{ $settings->phone_number ?? 'N/A' }}
+                    </a>
+                </strong>
+                <br>
             @endif
-            @if ($settings->phone_number || $settings->email)
+            @if ($settings->phone_number && $settings->email)
                 sau
             @endif
             @if ($settings->email)
