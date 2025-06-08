@@ -12,7 +12,6 @@
                     <h1 class="text-danger text-center mb-5">!!Acesta este doar un preview!! Produsul nu a fost salvat inca
                     </h1>
                 @endif
-                <!-- Product Media Carousel (col-4 on lg screens) -->
                 @php
                     $allMedia = $product->media;
                     if (isset($preview)) {
@@ -133,52 +132,59 @@
             function adjustDescription() {
                 const carouselHeight = document.querySelector("#productCarousel").offsetHeight;
                 const description = document.querySelector("#productDescription");
-                const fullContentDiv = description.querySelector(".fs-5"); // Only description text
+                const fullContentDiv = description.querySelector(".fs-5"); // description container
                 const priceInfo = document.querySelector("#priceInfo");
                 const overflowSection = document.querySelector("#descriptionOverflow");
                 const overflowContent = document.querySelector("#overflowContent");
 
-                // Reset state
+                // Reset previous
                 overflowSection.classList.add("d-none");
                 priceInfo.classList.remove("d-none");
-                fullContentDiv.innerHTML = fullContentDiv.dataset.full || fullContentDiv.innerHTML;
                 overflowContent.innerHTML = "";
 
-                // Save full content if not already saved
                 if (!fullContentDiv.dataset.full) {
                     fullContentDiv.dataset.full = fullContentDiv.innerHTML;
                 }
 
-                // Create test container
-                const tempDiv = document.createElement("div");
-                tempDiv.style.visibility = "hidden";
-                tempDiv.style.position = "absolute";
-                tempDiv.style.width = fullContentDiv.offsetWidth + "px";
-                tempDiv.style.fontSize = getComputedStyle(fullContentDiv).fontSize;
-                document.body.appendChild(tempDiv);
+                // Prepare
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(fullContentDiv.dataset.full, "text/html");
+                const elements = Array.from(doc.body.childNodes);
 
-                const words = fullContentDiv.dataset.full.split(" ");
-                let low = 0,
-                    high = words.length,
-                    splitIndex = words.length;
+                // Temporary containers
+                const tempVisible = document.createElement("div");
+                const tempHidden = document.createElement("div");
 
-                // Binary search for max visible text
-                while (low <= high) {
-                    let mid = Math.floor((low + high) / 2);
-                    tempDiv.innerHTML = words.slice(0, mid).join(" ");
-                    if (tempDiv.offsetHeight + priceInfo.offsetHeight <= carouselHeight) {
-                        low = mid + 1;
-                    } else {
-                        splitIndex = mid;
-                        high = mid - 1;
+                tempVisible.style.visibility = "hidden";
+                tempVisible.style.position = "absolute";
+                tempVisible.style.width = fullContentDiv.offsetWidth + "px";
+                tempVisible.style.fontSize = getComputedStyle(fullContentDiv).fontSize;
+                tempVisible.style.lineHeight = getComputedStyle(fullContentDiv).lineHeight;
+                document.body.appendChild(tempVisible);
+
+                // Smart append until overflow
+                let splitIndex = elements.length;
+                for (let i = 0; i < elements.length; i++) {
+                    tempVisible.appendChild(elements[i].cloneNode(true));
+
+                    if (tempVisible.offsetHeight + priceInfo.offsetHeight > carouselHeight) {
+                        splitIndex = i;
+                        break;
                     }
                 }
 
-                document.body.removeChild(tempDiv);
+                // Clean up
+                document.body.removeChild(tempVisible);
 
-                if (splitIndex < words.length) {
-                    fullContentDiv.innerHTML = words.slice(0, splitIndex).join(" ");
-                    overflowContent.innerHTML = words.slice(splitIndex).join(" ");
+                // Apply split
+                const visibleHTML = elements.slice(0, splitIndex).map(el => el.outerHTML || el.textContent).join(
+                "");
+                const hiddenHTML = elements.slice(splitIndex).map(el => el.outerHTML || el.textContent).join("");
+
+                fullContentDiv.innerHTML = visibleHTML;
+
+                if (hiddenHTML.trim().length > 0) {
+                    overflowContent.innerHTML = hiddenHTML;
                     overflowSection.classList.remove("d-none");
                     priceInfo.classList.add("d-none");
                 }

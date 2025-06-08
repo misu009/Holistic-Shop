@@ -90,12 +90,13 @@
                     @endif
                 </span>
             </div>
-
             <div class="" style="margin-top: 4rem; margin-bottom: 4rem;">
                 <h2>{{ $post->title }}</h2>
-                <div class="fs-4">
-                    {!! $post->description !!}</div>
+                <div id="editorjs-view"></div>
             </div>
         </div>
     </div>
+    <script>
+        window.editorJsData = {!! $post->description !!};
+    </script>
 @endsection

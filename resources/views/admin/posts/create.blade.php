@@ -6,7 +6,7 @@
     <div class="container my-5">
         <h2 class="text-center">Adauga postare</h2>
         <x-alert-notification />
-        <form action="{{ route('admin.posts.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.posts.store') }}" id="editor-js-form" method="POST" enctype="multipart/form-data">
             @csrf
             <x-admin.input label-name="Titlu postare" attributes-param="type=text id=title required" name="title"
                 value="{{ old('title') }}" />
@@ -29,8 +29,9 @@
             </div>
             <br>
             <div>
-                <label for="description">Descriere</label>
-                <textarea name="description" id="description" rows="4" class="form-textarea ckeditor-media">{!! old('description') !!}</textarea>
+                <label for="editorjs">Descriere</label>
+                <div id="editorjs" class="bg-white"></div>
+                <input type="hidden" name="description" id="description" value="{{ old('description') }}">
             </div>
             <br>
             <x-admin.input label-name="Pozitie postare (default 99999)" attributes-param="type=text id=order" name="order"
@@ -54,4 +55,7 @@
             <button type="submit" name="action" value="preview" class="btn btn-warning">Preview</button>
         </form>
     </div>
+    <script>
+        window.oldEditorData = {!! old('description') ?? 'null' !!};
+    </script>
 @endsection

@@ -6,6 +6,8 @@ import Swiper from "swiper";
 import * as bootstrap from "bootstrap";
 import "swiper/swiper-bundle.css";
 import $ from "jquery";
+import EditorJS from "@editorjs/editorjs";
+import { editorJsTools } from "./editorjs/tools";
 
 window.bootstrap = bootstrap;
 window.$ = window.jQuery = $;
@@ -78,5 +80,16 @@ document.addEventListener("DOMContentLoaded", function () {
         openEffect: "zoom",
         closeEffect: "fade",
         slideEffect: "slide",
+    });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const savedData = window.editorJsData;
+    if (!savedData) return;
+    new EditorJS({
+        holder: "editorjs-view",
+        readOnly: true,
+        data: savedData,
+        tools: editorJsTools,
     });
 });

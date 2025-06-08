@@ -95,12 +95,59 @@ class PostController extends Controller
             'preview' => true,
         ]);
     }
+    private function getExcerpt($description)
+    {
+        $descriptionJson = json_decode($description, true);
+
+        $plainText = collect($descriptionJson['blocks'] ?? [])
+            ->map(function ($block) {
+                return $block['data']['text'] ?? $block['data']['title'] ?? '';
+            })
+            ->implode(' ');
+
+        $plainText = strip_tags($plainText);
+
+        $words = str_word_count($plainText, 1); // 1 = return array of words
+        return implode(' ', array_slice($words, 0, 5)) . (count($words) > 5 ? '...' : '');
+    }
+
+    private function moveEditorJsTempImagesToFinal(string $descriptionJson): string
+    {
+        $data = json_decode($descriptionJson, true);
+        if (!is_array($data) || !isset($data['blocks'])) {
+            return $descriptionJson;
+        }
+
+        foreach ($data['blocks'] as &$block) {
+            if ($block['type'] === 'image' && isset($block['data']['file']['url'])) {
+                $url = $block['data']['file']['url'];
+
+                // Extract just the path after /storage/
+                $parsedUrl = parse_url($url);
+                $relativePath = $parsedUrl['path'] ?? '';
+                $relativePath = Str::after($relativePath, '/storage/'); // editorjs/tmp/xyz.jpg
+
+                if (Str::startsWith($relativePath, 'editorjs/tmp/')) {
+                    $filename = basename($relativePath);
+                    $oldPath = 'editorjs/tmp/' . $filename;
+                    $newPath = 'editorjs/final/' . $filename;
+
+                    if (Storage::disk('public')->exists($oldPath)) {
+                        Storage::disk('public')->move($oldPath, $newPath);
+                        $block['data']['file']['url'] = asset('storage/' . $newPath);
+                    }
+                }
+            }
+        }
+        return json_encode($data);
+    }
+
 
     public function store(Request $request)
     {
         $validated = $request->validate([
             'title' => 'required|string|unique:posts,title',
-            'description' => 'required|string',
+            'description' => 'required|json',
             'slug' => 'nullable|string|regex:/^[a-z0-9-]+$/|unique:posts,slug',
             'order' => 'nullable|integer',
             'excerpt' => 'nullable|string|max:255',
@@ -113,10 +160,8 @@ class PostController extends Controller
         $slug = $validated['slug'] ?? Str::slug($validated['title']) . '-' . uniqid();
         $excerpt = $validated['excerpt'];
         if (!$excerpt) {
-            $words = str_word_count(strip_tags($validated['description']), 1);
-            $excerpt = implode(' ', array_slice($words, 0, 5));
+            $excerpt = $this->getExcerpt($validated['description']);
         }
-
         if ($request->input('action') === 'preview') {
             return $this->previewPost($request);
         }
@@ -125,9 +170,11 @@ class PostController extends Controller
             $validated['preview_image'] = $request->file('preview_image')->store('posts/preview_images', 'public');
         }
 
+        $validated['description'] = $this->moveEditorJsTempImagesToFinal($validated['description']);
+
         $post = Post::create([
             'title' => $request->title,
-            'description' => $request->description,
+            'description' => $validated['description'],
             'slug' => $slug,
             'excerpt' => $excerpt,
             'preview_image' => $validated['preview_image'] ?? null,
@@ -180,17 +227,14 @@ class PostController extends Controller
             'excerpt' => 'nullable|string|max:255',
             'preview_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:20048',
             'order' => 'nullable|integer',
-            'description' => 'required|string',
+            'description' => 'required|json',
             'post_category' => 'required|array',
             'post_category.*' => 'required|exists:post_categories,id',
             'media.*' => 'nullable|mimes:jpeg,png,jpg,gifjpeg,png,jpg,gif,mp4,mov,avi|max:40480',
         ]);
-
         $validated['slug'] = $validated['slug'] ?? Str::slug($validated['title']) . '-' . uniqid();
         if (!$validated['excerpt']) {
-            $words = str_word_count(strip_tags($validated['description']), 1);
-            $excerpt = implode(' ', array_slice($words, 0, 5));
-            $validated['excerpt'] = count($words) > 5 ? $excerpt . '...' : implode(' ', $words);
+            $validated['excerpt'] = $this->getExcerpt($validated['description']);
         }
         $validated['created_by'] = auth()->user()->name;
 
@@ -202,9 +246,11 @@ class PostController extends Controller
             if ($post->preview_image && Storage::disk('public')->exists($post->preview_image)) {
                 Storage::disk('public')->delete($post->preview_image);
             }
-
             $validated['preview_image'] = $request->file('preview_image')->store('posts/preview_images', 'public');
         }
+
+        $validated['description'] = $this->moveEditorJsTempImagesToFinal($validated['description']);
+
 
         $post->update($validated);
 
@@ -227,33 +273,49 @@ class PostController extends Controller
         return redirect()->route('admin.posts.edit', ['post' => $post->id])->with('success', 'Post updated successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Post $post)
     {
-        $content = $post->description; // assuming 'description' holds CKEditor HTML
+        // Delete EditorJS embedded images from JSON
+        $content = $post->description;
 
-        preg_match_all('/<img[^>]+src="([^">]+)"/i', $content, $matches);
-        $imageUrls = $matches[1]; // List of src values
-        foreach ($imageUrls as $url) {
-            // Step 3: Convert URL to storage path (if public disk used)
-            $filePath = str_replace(asset('storage/'), '', $url);
-            if (Storage::disk('public')->exists($filePath)) {
-                Storage::disk('public')->delete($filePath);
+        try {
+            $editorData = json_decode($content, true);
+
+            if (!empty($editorData['blocks']) && is_array($editorData['blocks'])) {
+                foreach ($editorData['blocks'] as $block) {
+                    if ($block['type'] === 'image' && isset($block['data']['file']['url'])) {
+                        $url = $block['data']['file']['url'];
+
+                        // Extract relative path from full URL
+                        $relativePath = str_replace(asset('storage') . '/', '', $url);
+
+                        if (Storage::disk('public')->exists($relativePath)) {
+                            Storage::disk('public')->delete($relativePath);
+                        }
+                    }
+                }
             }
+        } catch (\Exception $e) {
+            
         }
+
+        // Delete associated media (if any)
         foreach ($post->media as $media) {
             if (Storage::exists('public/' . $media->path)) {
                 Storage::delete('public/' . $media->path);
             }
         }
+
+        // Delete preview image
         if ($post->preview_image && Storage::disk('public')->exists($post->preview_image)) {
             Storage::disk('public')->delete($post->preview_image);
         }
 
+        // Delete post
         $post->delete();
-        ActivityLogger::log('Created a post', 'Post', $post->id);
+
+        ActivityLogger::log('Deleted a post', 'Post', $post->id);
+
         return redirect()->back()->with('success', 'Post deleted with success');
     }
 

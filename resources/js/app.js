@@ -2,6 +2,8 @@ import $ from "jquery";
 import * as bootstrap from "bootstrap";
 import "../css/app.css";
 import "../css/admin.css";
+import EditorJS from "@editorjs/editorjs";
+import { editorJsTools } from "./editorjs/tools";
 
 window.$ = window.jQuery = $;
 window.bootstrap = bootstrap;
@@ -199,4 +201,50 @@ document.addEventListener("DOMContentLoaded", () => {
             placeholder: "",
         });
     }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector("form#editor-js-form");
+    const descriptionInput = document.querySelector("#description");
+    let clickedButton = null;
+
+    // Track which submit button was clicked
+    form.querySelectorAll("button[type=submit]").forEach((btn) => {
+        btn.addEventListener("click", function (e) {
+            clickedButton = btn;
+        });
+    });
+
+    window.editor = new EditorJS({
+        holder: "editorjs",
+        tools: editorJsTools,
+        autofocus: true,
+        data: window.oldEditorData || {
+            time: Date.now(),
+            blocks: [],
+            version: "2.31.0-rc.7",
+        },
+    });
+
+    form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        try {
+            const outputData = await window.editor.save();
+            descriptionInput.value = JSON.stringify(outputData);
+
+            // Create a hidden input for the clicked button's name/value
+            if (clickedButton?.name) {
+                const hidden = document.createElement("input");
+                hidden.type = "hidden";
+                hidden.name = clickedButton.name;
+                hidden.value = clickedButton.value;
+                form.appendChild(hidden);
+            }
+
+            form.submit();
+        } catch (error) {
+            console.error("Saving failed: ", error);
+        }
+    });
 });

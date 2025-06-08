@@ -4,7 +4,6 @@
 
 @section('content')
     <section>
-        {{-- @dd($settings) --}}
         <div style="height: 70vh; background-image: url('{{ asset('storage/' . $settings->event_img) }}'); background-size: cover; background-position: center;"
             class="d-flex justify-content-center align-items-center">
             <div class="text-center text-white">

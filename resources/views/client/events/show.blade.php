@@ -43,7 +43,7 @@
                     @foreach ($primary as $collaborator)
                         <div class="d-flex mb-3 align-items-start text-white">
                             @if ($collaborator->picture)
-                                <img src="{{ asset($collaborator->picture) }}" class="me-3 rounded-circle"
+                                <img src="{{ asset('storage/' . $collaborator->picture) }}" class="me-3 rounded-circle"
                                     style="width: 64px; height: 64px; object-fit: cover;" alt="{{ $collaborator->name }}">
                             @endif
                             <div>
@@ -69,7 +69,7 @@
                     @foreach ($secondary as $collaborator)
                         <div class="d-flex mb-3 align-items-start">
                             @if ($collaborator->picture)
-                                <img src="{{ asset($collaborator->picture) }}" class="me-3 rounded-circle"
+                                <img src="{{ asset('storage/' . $collaborator->picture) }}" class="me-3 rounded-circle"
                                     style="width: 48px; height: 48px; object-fit: cover;" alt="{{ $collaborator->name }}">
                             @endif
                             <div>

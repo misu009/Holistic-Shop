@@ -249,6 +249,28 @@ ul.info-list-left li::after {
     height: auto;
 }
 
+.full-height-wrapper {
+    height: 100%;
+}
+
+.full-height-wrapper .ratio-box {
+    height: 100% !important;
+    aspect-ratio: auto !important;
+}
+
+.full-height-wrapper .blog-image {
+    height: 100%;
+    object-fit: cover;
+}
+
+#editorjs-view .codex-editor__redactor {
+    padding-bottom: 1rem !important;
+}
+
+#editorjs-view .ce-block__content {
+    max-width: 100% !important;
+}
+
 .product-section {
     background: url("/images/client/shop-main-bg.png") no-repeat center center;
     background-size: cover;
