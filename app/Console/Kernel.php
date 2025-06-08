@@ -7,20 +7,20 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
-    /**
-     * Define the application's command schedule.
-     */
-    protected function schedule(Schedule $schedule): void
+    protected $commands = [
+        \App\Console\Commands\CleanTempFiles::class,
+        \App\Console\Commands\CleanEditorJsTemp::class,
+    ];
+
+    protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('clean:temp-files')->daily();
+        $schedule->command('editorjs:clean-temp')->daily();
     }
 
-    /**
-     * Register the commands for the application.
-     */
     protected function commands(): void
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

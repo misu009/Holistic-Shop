@@ -24,7 +24,7 @@ class CleanEditorJsTemp extends Command
                 unlink($fullPath);
                 $deleted++;
             }
-        }
+        }   
 
         $this->info("Cleaned $deleted old temp file(s).");
         return 0;
