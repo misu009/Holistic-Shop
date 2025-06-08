@@ -27,9 +27,27 @@
                     <a class="nav-link {{ request()->routeIs('client.posts.index') ? 'active' : '' }} ms-2 me-2"
                         href="{{ route('client.posts.index') }}">BLOG</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('client.events.index') ? 'active' : '' }} ms-2 me-2"
-                        href="{{ route('client.events.index') }}">EVENIMENTE</a>
+                <li
+                    class="nav-item dropdown {{ request()->routeIs('client.events.index', 'client.services.index') ? 'active' : '' }}">
+                    <a class="nav-link dropdown-toggle ms-2 me-2 {{ request()->routeIs('client.events.index', 'client.services.index') ? 'active' : '' }}"
+                        href="#" id="navbarEventsDropdown" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        EVENIMENTE ȘI SERVICII
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarEventsDropdown">
+                        <li>
+                            <a class="dropdown-item {{ request()->routeIs('client.events.index') ? 'active' : '' }}"
+                                href="{{ route('client.events.index') }}">
+                                Evenimente
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item {{ request()->routeIs('client.services.index') ? 'active' : '' }}"
+                                href="{{ route('client.services.index') }}">
+                                Servicii
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('client.collaborators.index') ? 'active' : '' }} ms-2 me-2"

@@ -22,4 +22,9 @@ class Collaborator extends Model
     {
         return $this->belongsToMany(Events::class);
     }
+
+    public function services()
+    {
+        return $this->belongsToMany(Services::class);
+    }
 }

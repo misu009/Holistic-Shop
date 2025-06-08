@@ -155,6 +155,7 @@ class EventsController extends Controller
      */
     public function destroy(Events $event)
     {
+        $event->collaborators()->detach();
         foreach ($event->media as $media) {
             if (Storage::exists('public/' . $media->path)) {
                 Storage::delete('public/' . $media->path);

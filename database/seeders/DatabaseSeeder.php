@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\Product::factory(15)->withProductCategory()->create();
         \App\Models\Collaborator::factory(20)->create();
         \App\Models\Events::factory(20)->withCollaborators()->create();
+        \App\Models\Services::factory(20)->withCollaborators()->create();
 
         DB::table('settings')->insert([
             'hero_text_1' => 'Welcome to Lotus',

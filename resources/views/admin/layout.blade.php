@@ -23,6 +23,7 @@
             ['name' => 'Produse', 'url' => '/admin/products'],
             ['name' => 'Colaboratori', 'url' => '/admin/collaborators'],
             ['name' => 'Evenimente', 'url' => '/admin/events'],
+            ['name' => 'Servicii', 'url' => '/admin/services'],
             ['name' => 'Setari', 'url' => '/admin/settings'],
             ['name' => 'Contact', 'url' => '/admin/contact'],
         ];

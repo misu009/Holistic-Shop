@@ -8,6 +8,7 @@ use App\Http\Controllers\ClientContactController;
 use App\Http\Controllers\ClientEventController;
 use App\Http\Controllers\ClientPostCategoryController;
 use App\Http\Controllers\ClientPostController;
+use App\Http\Controllers\ClientServicesController;
 use App\Http\Controllers\ClientShopController;
 use App\Http\Controllers\CollaboratorController;
 use App\Http\Controllers\EditorJsMediaController;
@@ -18,8 +19,10 @@ use App\Http\Controllers\PostCategoryController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
+use App\Models\Services;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -54,6 +57,9 @@ Route::post('/contact-us', [ClientContactController::class, 'store'])->name('cli
 
 Route::get('/events', [ClientEventController::class, 'index'])->name('client.events.index');
 Route::get('/events/{id}', [ClientEventController::class, 'show'])->name('client.events.show');
+
+Route::get('/services', [ClientServicesController::class, 'index'])->name('client.services.index');
+Route::get('/services/{id}', [ClientServicesController::class, 'show'])->name('client.services.show');
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
@@ -118,6 +124,13 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/events/{event}', [EventsController::class, 'edit'])->name('admin.events.edit');
     Route::put('/events/{event}', [EventsController::class, 'update'])->name('admin.events.update');
     Route::delete('/events/{event}', [EventsController::class, 'destroy'])->name('admin.events.destroy');
+
+    Route::get('/services', [ServicesController::class, 'index'])->name('admin.services.index');
+    Route::get('/services/create', [ServicesController::class, 'create'])->name('admin.services.create');
+    Route::get('/services/{service}', [ServicesController::class, 'edit'])->name('admin.services.edit');
+    Route::post('/services', [ServicesController::class, 'store'])->name('admin.services.store');
+    Route::put('/services/{service}', [ServicesController::class, 'update'])->name('admin.services.update');
+    Route::delete('/services/{service}', [ServicesController::class, 'destroy'])->name('admin.services.destroy');
 
     Route::get('/settings', [SettingController::class, 'index'])->name('admin.settings.index');
     Route::post('/settings', [SettingController::class, 'update'])->name('admin.settings.update');

@@ -144,16 +144,16 @@
             </div>
 
             <div class="card shadow-sm border-0 mt-5">
-                <div class="card-header bg-warning text-white">Events Page Settings</div>
+                <div class="card-header bg-warning text-white">Setari pagina evenimente si servicii</div>
                 <div class="card-body">
                     <div class="mb-3">
-                        <label class="form-label">Text Event Hero</label>
+                        <label class="form-label">Text Hero</label>
                         <textarea name="event_text_1" id="event_text_1" class="ckeditor form-control" rows="3" required>
                             {!! old('event_text_1', $settings->event_text_1) !!}
                         </textarea>
                     </div>
                     <div class="mb-3 mt-5">
-                        <label class="form-label">Poze Event Hero</label>
+                        <label class="form-label">Poze Hero</label>
                         <br>
                         <x-admin.image-uploader imagePreviewId="image-preview-event"
                             path="{{ Storage::url($settings->event_img) }}" imageInputId="select-event-img"
