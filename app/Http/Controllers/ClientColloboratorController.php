@@ -14,7 +14,6 @@ class ClientColloboratorController extends Controller
         $settings = Setting::first() ?? new Setting();
         $paginatedCollaborators = Collaborator::paginate(12);
         $collaborators = Collaborator::all();
-        // dd($collaborators);
         return view('client.collaborators.index', compact('collaborators', 'paginatedCollaborators', 'settings'));
     }
 }

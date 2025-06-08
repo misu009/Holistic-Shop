@@ -42,7 +42,7 @@ class CollaboratorController extends Controller
             'user-picture' => 'nullable|string|exists:users,picture',
             'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:8048'
         ]);
-        // dd($request->has('picture'));
+        
         if ($request->has('picture')) {
             $path = $request->file('picture')->store('collaborators', 'public');
             $validated['picture'] = $path;

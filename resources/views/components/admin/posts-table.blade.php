@@ -5,7 +5,6 @@
                 <th scope="col">#</th>
                 <th scope="col">Titlu</th>
                 <th scope="col">Categorii</th>
-                <th scope="col">Descriere</th>
                 <th scope="col">Creat de</th>
                 <th scope="col">Actualizat la</th>
                 <th scope="col">Pozitie</th>
@@ -29,15 +28,6 @@
                             @endforeach
                         </div>
                     </td>
-                    <td
-                        style="max-width: 400px; /* Set the max width you desire */
-    overflow: hidden; /* Prevents overflow of text */
-    text-overflow: ellipsis">
-                        <div style="max-height: 100px; overflow: auto;display: block;">
-                            {!! $post->description !!}
-                        </div>
-                    </td>
-
                     <td>{{ $post->created_by }}</td>
                     <td>{{ $post->updated_at }}</td>
                     <td>{{ $post->order }}</td>

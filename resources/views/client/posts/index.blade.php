@@ -17,9 +17,10 @@
 
                     @if ($posts[1])
                         <div class="col-4 d-flex">
-                            <x-client.post-card :post="$posts[1]" class="w-100 full-height-wrapper position-relative" />
+                            <x-client.post-card :post="$posts[1]" aspect="4/3" class="w-100 full-height-wrapper h-100" />
                         </div>
                     @endif
+
                 </div>
 
                 <div class="row g-4 mt-3">
@@ -36,7 +37,6 @@
                 </div>
             @endif
 
-            {{-- Grid for remaining posts --}}
             <div class="row g-4 mt-1">
                 @foreach ($posts->slice($posts->currentPage() === 1 ? 4 : 0) as $post)
                     <div class="col-lg-3 col-md-6 col-12 mt-5">

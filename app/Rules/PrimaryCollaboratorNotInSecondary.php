@@ -14,7 +14,6 @@ class PrimaryCollaboratorNotInSecondary implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        dd(2);
         $primary = request()->input('primary_collaborators', []);
         $secondary = request()->input('secondary_collaborators', []);
 

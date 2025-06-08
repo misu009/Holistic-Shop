@@ -48,7 +48,22 @@
 
             </div>
         </div>
+
         <div id="shop-product" class="mt-5 container">
+            <div class="mb-4">
+                <form action="{{ route('client.shop.search') }}" method="GET"
+                    class="d-flex justify-content-center align-items-center mt-4">
+                    <div class="input-group custom-search">
+                        <input type="text" name="query"
+                            class="form-control border-0 text-start text-light bg-transparent" placeholder="CAUTA AICI"
+                            value="{{ request('query') }}" aria-label="Search">
+                        <span class="input-group-text bg-transparent border-0 text-light">
+                            <i class="bi bi-caret-down-fill"></i>
+                        </span>
+                    </div>
+                </form>
+            </div>
+
             <h1 class="text-white text-center mb-4">
                 Descopera produsele noastre
             </h1>
@@ -83,4 +98,32 @@
             </div>
         </div>
     </div>
+    <style>
+        .custom-search {
+            border: 2px solid #E4C994;
+            border-radius: 2px;
+            max-width: 600px;
+            width: 100%;
+            background: transparent;
+        }
+
+        .custom-search .form-control {
+            background-color: transparent;
+            color: #E4C994;
+            border: none;
+            box-shadow: none;
+        }
+
+        .custom-search .form-control::placeholder {
+            color: #E4C994;
+            opacity: 1;
+        }
+
+        .custom-search .input-group-text {
+            color: #E4C994;
+            border: none;
+            background: transparent;
+        }
+    </style>
+
 @endsection

@@ -10,8 +10,10 @@ use App\Http\Controllers\ClientPostCategoryController;
 use App\Http\Controllers\ClientPostController;
 use App\Http\Controllers\ClientShopController;
 use App\Http\Controllers\CollaboratorController;
+use App\Http\Controllers\EditorJsMediaController;
 use App\Http\Controllers\EventsController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LinkMetadataController;
 use App\Http\Controllers\PostCategoryController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductCategoryController;
@@ -44,6 +46,7 @@ Route::get('/categories/{category}', [ClientPostCategoryController::class, 'show
 Route::get('/collaborators', [ClientColloboratorController::class, 'index'])->name('client.collaborators.index');
 
 Route::get('/shop', [ClientShopController::class, 'index'])->name('client.shop.index');
+Route::get('/shop/search', [ClientShopController::class, 'search'])->name('client.shop.search');
 Route::get('/shop/{slug}', [ClientShopController::class, 'show'])->name('client.shop.show');
 
 Route::get('/contact-us', [ClientContactController::class, 'index'])->name('client.contact.index');
@@ -78,6 +81,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::put('/posts/{post}', [PostController::class, 'update'])->name('admin.posts.update');
     Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('admin.posts.destroy');
     Route::post('/posts/update-select2', [PostController::class, 'loadSearchOptions']);
+
 
     Route::get('/shop-categories', [ProductCategoryController::class, 'index'])->name('admin.shop-categories.index');
     Route::get('/shop-categories/create', [ProductCategoryController::class, 'create'])->name('admin.shop-categories.create');
@@ -123,4 +127,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::post('/ckeditor/upload', [CKEditorController::class, 'upload'])->name('admin.ckeditor.upload');
     Route::post('/ckeditor/delete-image', [CKEditorController::class, 'deleteImage'])->name('admin.ckeditor.delete-image');
+
+    Route::post('/upload-image', [EditorJsMediaController::class, 'uploadImage']);
+    Route::post('/fetch-image-from-url', [EditorJsMediaController::class, 'fetchImageFromUrl']);
+    Route::get('/fetch-link-metadata', [LinkMetadataController::class, 'fetch']);
 });

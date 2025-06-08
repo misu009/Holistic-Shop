@@ -7,7 +7,7 @@
         <div class="blog-content">
             <div class="fw-bold">{{ $post->title }}</div>
             @if ($showExcerpt)
-                <div class="small mt-1">{{ Str::limit($post->excerpt, 80) }}</div>
+                <div class="small mt-1">{!! Str::limit($post->excerpt, 80) !!}</div>
             @endif
         </div>
     </div>

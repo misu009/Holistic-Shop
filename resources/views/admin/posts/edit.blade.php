@@ -6,7 +6,8 @@
     <div class="content p-lg-5 ml-5">
         <x-alert-notification />
         <h2 class="text-center">Actualizeaza postare</h2>
-        <form action="{{ route('admin.posts.update', ['post' => $post->id]) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.posts.update', ['post' => $post->id]) }}" id="editor-js-form" method="POST"
+            enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <x-admin.input label-name="Titlu postare" attributes-param="type=text id=title required"
@@ -33,8 +34,9 @@
             </div>
             <br>
             <div>
-                <label for="description">Continut postare</label>
-                <textarea name="description" id="description" rows="4" class="form-textarea ckeditor-media">{!! old('description') ? old('description') : $post->description !!}</textarea>
+                <label for="editorjs">Descriere</label>
+                <div id="editorjs" class="bg-white"></div>
+                <input type="hidden" name="description" id="description" value="{!! old('description') ?? $post->description !!}">
             </div>
             <br>
             <x-admin.input label-name="Pozitie postare (optional)" attributes-param="type=text id=order"
@@ -62,4 +64,8 @@
         <br>
         <x-admin.media-content :objectId="$post->id" :media="$post->media" route="admin.posts.image." objectName="postId" />
     </div>
+
+    <script>
+        window.oldEditorData = {!! old('description') ?? $post->description !!};
+    </script>
 @endsection

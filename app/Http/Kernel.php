@@ -69,10 +69,12 @@ class Kernel extends HttpKernel
 
     protected $commands = [
         \App\Console\Commands\CleanTempFiles::class,
+        \App\Console\Commands\CleanEditorJsTemp::class,
     ];
 
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('clean:temp-files')->daily(); // Or hourly(), weekly(), etc.
+        $schedule->command('editorjs:clean-temp')->daily(); // or hourly
     }
 }
