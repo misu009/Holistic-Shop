@@ -16,6 +16,9 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('clean:temp-files')->daily();
         $schedule->command('editorjs:clean-temp')->daily();
+        $schedule->call(function () {
+            \App\Models\Visit::where('visited_at', '<', now()->subDays(90))->delete();
+        })->daily();
     }
 
     protected function commands(): void

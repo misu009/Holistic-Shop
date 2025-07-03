@@ -66,6 +66,7 @@
     </div>
 
     <script>
-        window.oldEditorData = {!! old('description') ?? $post->description !!};
+        window.oldEditorData = {!! json_encode(old('description') ?? $post->description) !!};
     </script>
+    
 @endsection
