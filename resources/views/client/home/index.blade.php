@@ -96,7 +96,7 @@
                     </div>
                     <div class="col-md-5 col-12 p-5 flex-column text-white d-flex justify-content-center align-items-start">
                         <h2>CINE SUNTEM NOI?!</h2>
-                        <div class="mt-5 about-us-text">
+                        <div class="mt-5 fs-4">
                             <p>{!! $settings->about_text !!}</p>
                         </div>
                         <a class="btn btn-custom mt-5 text-decoration-none text-reset"

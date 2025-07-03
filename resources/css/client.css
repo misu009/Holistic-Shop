@@ -182,12 +182,6 @@ ul.info-list-left li::after {
     height: 80vh;
 }
 
-.about-us-text {
-    font-size: 20px !important;
-    max-height: 80vh;
-    overflow-y: auto;
-}
-
 .btn-custom {
     background-color: #b96e2e;
     color: white;
@@ -230,7 +224,6 @@ ul.info-list-left li::after {
     object-fit: cover;
     display: block;
 }
-
 
 /* .blog-wrapper {
     position: relative;
@@ -444,7 +437,7 @@ ul.info-list-left li::after {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    background-attachment: fixed;
+    background-attachment: scroll;
 }
 
 #product-show {

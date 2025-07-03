@@ -5,8 +5,15 @@
 @section('content')
     <div class="container-fluid mt-3">
         <div class="row">
-            <!-- Dashboard Stats -->
-            <div class="col-md-4">
+            <div class="col-md-3">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Total Vizitatori(30 zile)</h5>
+                        <p class="display-6 fw-bold">{{ $totalVisits }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
                 <div class="card shadow-sm border-0">
                     <div class="card-body text-center">
                         <h5 class="card-title">Total Useri</h5>
@@ -14,7 +21,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card shadow-sm border-0">
                     <div class="card-body text-center">
                         <h5 class="card-title">Total postari</h5>
@@ -22,7 +29,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card shadow-sm border-0">
                     <div class="card-body text-center">
                         <h5 class="card-title">Total Produse</h5>
