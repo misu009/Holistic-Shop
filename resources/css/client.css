@@ -437,7 +437,7 @@ ul.info-list-left li::after {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    background-attachment: scroll;
+    background-attachment: fixed;
 }
 
 #product-show {
@@ -504,7 +504,6 @@ ul.info-list-left li::after {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    /* background-attachment: fixed; */
 }
 
 #collaborator {
@@ -615,6 +614,21 @@ ul.info-list-left li::after {
     }
     .image-box p {
         font-size: 24px;
+    }
+    #shop-content {
+       background-attachment: scroll;
+    }
+    #collaborator {
+        background-attachment: scroll;
+    }
+    #product-show {
+        background-attachment: scroll;
+    }
+    #blog {
+        background-attachment: scroll;
+    }
+    #event-show {
+        background-attachment: scroll;
     }
 }
 
