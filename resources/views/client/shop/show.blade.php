@@ -12,6 +12,7 @@
                     <h1 class="text-danger text-center mb-5">!!Acesta este doar un preview!! Produsul nu a fost salvat inca
                     </h1>
                 @endif
+
                 @php
                     $allMedia = $product->media;
                     if (isset($preview)) {
@@ -19,14 +20,16 @@
                     }
                 @endphp
 
+                <!-- Carousel -->
                 <div class="col-lg-4">
                     <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner">
                             @if (!count($allMedia))
                                 <div class="carousel-item active text-center">
-                                    <p class="text-white fw-bold fs-2">no-media</p>
+                                    <p class="text-black fw-bold fs-2">no-media</p>
                                 </div>
                             @endif
+
                             @foreach ($allMedia as $key => $media)
                                 <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
                                     <div class="ratio ratio-1x1">
@@ -46,6 +49,7 @@
                                 </div>
                             @endforeach
                         </div>
+
                         <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel"
                             data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -58,48 +62,45 @@
                 </div>
 
                 <!-- Product Description (col-8 on lg screens) -->
-                <div class="col-lg-8 d-flex flex-column text-white mt-lg-0 mt-4" id="productDescription">
+                <div class="col-lg-8 d-flex flex-column text-black mt-lg-0 mt-4" id="productDescription">
+
+                    <!-- Add to Cart moved to the START of this column -->
+                    <div class="text-black fs-5 mb-4" id="priceInfo">
+                        <form action="{{ route('client.cart.add', $product->id) }}" method="POST">
+                            @csrf
+                            <div class="d-flex align-items-stretch gap-3">
+                                <div class="d-flex align-items-center justify-content-center px-3 rounded">
+                                    <h3 class="fw-bold text-black m-0">{{ number_format($product->price, 2) }} LEI</h3>
+                                </div>
+                                <button type="submit"
+                                    class="btn btn-custom d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-cart-plus me-2"></i> Add to Cart
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
                     <h1>{{ $product->name }}</h1>
-                    <h5 class="fw-bold mt-5">Descriere produs:</h5>
-                    <div class="fs-5">
+                    <h5 class="fw-bold mt-3">Descriere produs:</h5>
+
+                    <!-- Description content (we keep the full HTML here and the script will split it) -->
+                    <div class="fs-5" id="fullDescription">
                         {!! $product->description !!}
                     </div>
-                    <div id="priceInfo">
-                        <h3 class="fw-bold mt-4 text-white">{{ number_format($product->price, 2) }} LEI</h3>
-                        <div class="text-white fs-5">
-                            (pretul este orientativ, pentru mai multe informatii contactati-ne la
-                            {{ $product->phone }}
-                            @if ($product->email)
-                                sau la {{ $product->email }}
-                            @endif
-                            )
-                        </div>
-                    </div>
                 </div>
-
-
             </div>
 
-            <div class="row mt-4 d-none text-white" id="descriptionOverflow">
-                <div class="col-12 ">
+            <!-- Overflow area (below the carousel). Only used when JS determines there's more content than fits) -->
+            <div class="row mt-4 d-none text-black" id="descriptionOverflow">
+                <div class="col-12">
                     <div id="overflowContent"></div>
                 </div>
-                <div>
-                    <h3 class="fw-bold mt-4 text-white">{{ number_format($product->price, 2) }} LEI</h3>
-                    <div class="text-white fs-5">
-                        ( pretul este orientativ, pentru mai multe informatii contactati-ne la
-                        {{ $product->phone }}
-                        @if ($product->email)
-                            sau la {{ $product->email }}
-                        @endif
-                        )
-                    </div>
-                </div>
             </div>
 
+            <!-- Similar products -->
             <div class="container-fluid py-5 d-flex justify-content-center align-items-center flex-direction-column">
-                <div class="container product-container text-white p-5 rounded-4 d-flex flex-column">
-                    <h2 class="text-uppercase fw-bold mb-4 text-center text-white">
+                <div class="container product-container text-black p-5 rounded-4 d-flex flex-column">
+                    <h2 class="text-uppercase fw-bold mb-4 text-center text-black">
                         Descoperă produse similare
                     </h2>
                     <div class="row mt-4 row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 text-center">
@@ -115,7 +116,7 @@
                                                 style="aspect-ratio: 1/1; object-fit: cover; border-radius: 15px;">
                                         </div>
                                         <div class="card-body d-flex flex-column justify-content-end">
-                                            <h5 class="mt-3 text-white">{{ $selectedProduct->name }}</h5>
+                                            <h5 class="mt-3 text-black">{{ $selectedProduct->name }}</h5>
                                         </div>
                                     </div>
                                 </a>
@@ -127,71 +128,120 @@
         </div>
     </section>
 
+    <!-- Splitting JS -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            const BREAKPOINT_LG = 992; // Bootstrap lg breakpoint
+
             function adjustDescription() {
-                const carouselHeight = document.querySelector("#productCarousel").offsetHeight;
-                const description = document.querySelector("#productDescription");
-                const fullContentDiv = description.querySelector(".fs-5"); // description container
+                const carousel = document.querySelector("#productCarousel");
+                const carouselHeight = carousel ? carousel.offsetHeight : 0;
+                const fullContentDiv = document.querySelector("#fullDescription");
                 const priceInfo = document.querySelector("#priceInfo");
                 const overflowSection = document.querySelector("#descriptionOverflow");
                 const overflowContent = document.querySelector("#overflowContent");
 
-                // Reset previous
+                if (!fullContentDiv) return;
+
+                // Reset overflow visibility & content
                 overflowSection.classList.add("d-none");
-                priceInfo.classList.remove("d-none");
                 overflowContent.innerHTML = "";
 
+                // Cache original full HTML the first time
                 if (!fullContentDiv.dataset.full) {
                     fullContentDiv.dataset.full = fullContentDiv.innerHTML;
                 }
+                // Restore full content before re-calculating
+                fullContentDiv.innerHTML = fullContentDiv.dataset.full;
 
-                // Prepare
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(fullContentDiv.dataset.full, "text/html");
-                const elements = Array.from(doc.body.childNodes);
+                // Only perform splitting on large screens (when carousel is beside description)
+                if (window.innerWidth < BREAKPOINT_LG || !carousel) {
+                    // Small screens: leave everything under the carousel
+                    return;
+                }
 
-                // Temporary containers
+                const priceHeight = priceInfo ? priceInfo.offsetHeight : 0;
+                const availableHeight = Math.max(0, carouselHeight - priceHeight);
+
+                // Create a hidden measuring container with identical width and text metrics
                 const tempVisible = document.createElement("div");
-                const tempHidden = document.createElement("div");
-
                 tempVisible.style.visibility = "hidden";
                 tempVisible.style.position = "absolute";
+                tempVisible.style.left = "-9999px";
+                tempVisible.style.top = "0";
                 tempVisible.style.width = fullContentDiv.offsetWidth + "px";
-                tempVisible.style.fontSize = getComputedStyle(fullContentDiv).fontSize;
-                tempVisible.style.lineHeight = getComputedStyle(fullContentDiv).lineHeight;
+
+                // Copy basic text metrics to match the layout
+                const cs = getComputedStyle(fullContentDiv);
+                tempVisible.style.fontSize = cs.fontSize;
+                tempVisible.style.lineHeight = cs.lineHeight;
+                tempVisible.style.fontFamily = cs.fontFamily;
+                tempVisible.style.whiteSpace = "normal";
                 document.body.appendChild(tempVisible);
 
-                // Smart append until overflow
-                let splitIndex = elements.length;
-                for (let i = 0; i < elements.length; i++) {
-                    tempVisible.appendChild(elements[i].cloneNode(true));
+                // Parse original HTML into nodes (so we can keep whole nodes intact)
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(fullContentDiv.dataset.full, "text/html");
+                const nodes = Array.from(doc.body.childNodes);
 
-                    if (tempVisible.offsetHeight + priceInfo.offsetHeight > carouselHeight) {
+                // Append nodes one by one until we overflow
+                let splitIndex = nodes.length;
+                for (let i = 0; i < nodes.length; i++) {
+                    tempVisible.appendChild(nodes[i].cloneNode(true));
+                    if (tempVisible.offsetHeight > availableHeight) {
                         splitIndex = i;
                         break;
                     }
                 }
 
-                // Clean up
                 document.body.removeChild(tempVisible);
 
-                // Apply split
-                const visibleHTML = elements.slice(0, splitIndex).map(el => el.outerHTML || el.textContent).join(
-                "");
-                const hiddenHTML = elements.slice(splitIndex).map(el => el.outerHTML || el.textContent).join("");
+                // If everything fits -> nothing to overflow
+                if (splitIndex === nodes.length) {
+                    return;
+                }
+
+                // Build visible and hidden HTML preserving whole nodes
+                const visibleHTML = nodes.slice(0, splitIndex).map(el => el.outerHTML || el.textContent).join("");
+                const hiddenHTML = nodes.slice(splitIndex).map(el => el.outerHTML || el.textContent).join("");
 
                 fullContentDiv.innerHTML = visibleHTML;
 
                 if (hiddenHTML.trim().length > 0) {
                     overflowContent.innerHTML = hiddenHTML;
                     overflowSection.classList.remove("d-none");
-                    priceInfo.classList.add("d-none");
+                    // priceInfo remains visible at the top of the description column
                 }
             }
 
+            // Run initially and on resize (debounced)
             adjustDescription();
-            window.addEventListener("resize", adjustDescription);
+            let resizeTimer = null;
+            window.addEventListener("resize", function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(adjustDescription, 120);
+            });
+
+            // If carousel changes height (images loaded late), re-run after a short delay
+            // Useful when carousel images load asynchronously
+            window.addEventListener('load', function() {
+                setTimeout(adjustDescription, 120);
+            });
         });
     </script>
+
+    <style>
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            filter: invert(1);
+        }
+
+        /* Optional helper to ensure measurement matches content */
+        #fullDescription,
+        #overflowContent {
+            font-family: inherit;
+            font-size: inherit;
+            line-height: inherit;
+        }
+    </style>
 @endsection

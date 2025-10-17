@@ -29,10 +29,19 @@
                 attributes-param="type=number id=order step=1 min=0 max=100000000" name="order" />
 
             <div>
+                <label for="description">Scurta descriere produs</label>
+                <br>
+                <textarea name="excerpt" id="excerpt" rows="4" class="form-textarea ckeditor">{!! old('excerpt') !!}</textarea>
+            </div>
+            <br>
+            <br>
+
+            <div>
                 <label for="description">Product description</label>
                 <br>
                 <textarea name="description" id="description" rows="4" class="form-textarea ckeditor">{!! old('description') !!}</textarea>
             </div>
+            <br>
             <br>
             <div>
                 <label for="media">Adauga media pentru produs</label>

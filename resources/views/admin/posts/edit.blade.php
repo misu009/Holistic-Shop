@@ -36,8 +36,11 @@
             <div>
                 <label for="editorjs">Descriere</label>
                 <div id="editorjs" class="bg-white"></div>
-                <input type="hidden" name="description" id="description" value="{!! old('description') ?? $post->description !!}">
+                <input type="hidden" name="description" id="description"
+                    value="{{ old('description', $post->description) }}">
             </div>
+
+
             <br>
             <x-admin.input label-name="Pozitie postare (optional)" attributes-param="type=text id=order"
                 value="{!! old('order') ? old('order') : $post->order !!}" name="order" />
@@ -65,8 +68,36 @@
         <x-admin.media-content :objectId="$post->id" :media="$post->media" route="admin.posts.image." objectName="postId" />
     </div>
 
+    @php
+        $raw = old('description', $post->description ?? '');
+
+        // If $raw contains valid Editor.js JSON, decode it; otherwise wrap text into a paragraph block
+        if ($raw) {
+            $decoded = json_decode($raw, true);
+            if (json_last_error() === JSON_ERROR_NONE && isset($decoded['blocks']) && is_array($decoded['blocks'])) {
+                $editorData = $decoded;
+            } else {
+                $editorData = [
+                    'time' => round(microtime(true) * 1000),
+                    'blocks' => [
+                        [
+                            'type' => 'paragraph',
+                            'data' => ['text' => $raw],
+                        ],
+                    ],
+                ];
+            }
+        } else {
+            $editorData = [
+                'time' => round(microtime(true) * 1000),
+                'blocks' => [],
+            ];
+        }
+    @endphp
+
+
     <script>
-        window.oldEditorData = {!! json_encode(old('description') ?? $post->description) !!};
+        window.oldEditorData = {!! json_encode(old('description', $post->description)) !!};
     </script>
-    
+
 @endsection

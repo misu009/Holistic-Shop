@@ -29,7 +29,7 @@
     <div id="shop-content" class="pt-5">
         <div id="unique-orgonites" class="mb-5">
             <div class="container">
-                <h2 class="text-white text-center fs-1">Vindeca-ti energia</h2>
+                <h2 class="text-black text-center fs-1">Vindeca-ti energia</h2>
                 <div class="row">
                     @foreach (range(1, 4) as $i)
                         @php
@@ -64,7 +64,7 @@
                 </form>
             </div>
 
-            <h1 class="text-white text-center mb-4">
+            <h1 class="text-black text-center mb-4">
                 Descopera produsele noastre
             </h1>
             <div class="shop-products row row-cols-2 row-cols-md-4 g-4 mt-2">
@@ -82,7 +82,7 @@
                                 <div class="mt-3 flex-grow-1">
                                     {{-- <h4 class="product-name fw-bold">{{ $product->name }}</h4> --}}
                                     <p class="product-description " st>
-                                        {{ Str::words(strip_tags(html_entity_decode($product->description)), 5, ' ..') }}
+                                        {{ Str::words(strip_tags(html_entity_decode($product['short_description'])), 12, ' ..') }}
                                     </p>
                                 </div>
 

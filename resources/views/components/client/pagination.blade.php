@@ -2,7 +2,7 @@
     <nav aria-label="Pagination" class="d-flex justify-content-center mt-4">
         <ul class="pagination pagination-lg d-flex flex-wrap justify-content-center" style="gap: 0.5rem;">
             <li class="page-item {{ $paginator->onFirstPage() ? 'disabled' : '' }}">
-                <a class="page-link text-white bg-transparent border-0" href="{{ $paginator->previousPageUrl() }}"
+                <a class="page-link text-black bg-transparent border-0" href="{{ $paginator->previousPageUrl() }}"
                     aria-label="Previous">
                     &lt;
                 </a>
@@ -18,14 +18,14 @@
 
             @foreach ($pagesToShow as $key => $page)
                 @if ($key > 0 && $pagesToShow[$key - 1] != $page - 1)
-                    <li class="page-item disabled"><span class="page-link text-white bg-transparent border-0">...</span>
+                    <li class="page-item disabled"><span class="page-link text-black bg-transparent border-0">...</span>
                     </li>
                 @endif
 
                 <li class="page-item {{ $paginator->currentPage() == $page ? 'active' : '' }}">
                     <a class="page-link border-0"
                         href="{{ $paginator->currentPage() == $page ? '#' : $paginator->url($page) }}"
-                        style="color: {{ $paginator->currentPage() == $page ? '#70C8C3' : 'white' }}; background: none;">
+                        style="color: {{ $paginator->currentPage() == $page ? 'white' : 'black' }}; background: none;">
                         {{ $page }}
                     </a>
                 </li>
@@ -33,7 +33,7 @@
 
             {{-- Next Page Link --}}
             <li class="page-item {{ $paginator->hasMorePages() ? '' : 'disabled' }}">
-                <a class="page-link text-white bg-transparent border-0" href="{{ $paginator->nextPageUrl() }}"
+                <a class="page-link text-black bg-transparent border-0" href="{{ $paginator->nextPageUrl() }}"
                     aria-label="Next">
                     &gt;
                 </a>

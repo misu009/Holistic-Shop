@@ -6,7 +6,7 @@
 
 @section('content')
     <div id="blog">
-        <div class="container text-white" style="margin-top:100px !important;">
+        <div class="container text-black" style="padding-top:90px !important;">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <a href="{{ route('client.posts.show', $prevPost->slug) }}" class="btn btn-outline-info">
                     <i class="bi bi-arrow-left"></i> ÎNAPOI
@@ -68,7 +68,7 @@
                 @foreach ($post->categories as $category)
                     <a href="{{ route('client.categories.show', $category->id) }}" class="text-decoration-none">
                         <span
-                            class="btn btn-outline-info badge rounded-pill text-white border border-info px-3 py-2 text-wrap">
+                            class="btn btn-outline-info badge rounded-pill text-black border border-info px-3 py-2 text-wrap">
                             {{ $category->name }}
                         </span>
                     </a>

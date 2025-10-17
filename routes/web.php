@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CKEditorController;
+use App\Http\Controllers\ClientCartController;
 use App\Http\Controllers\ClientColloboratorController;
 use App\Http\Controllers\ClientContactController;
 use App\Http\Controllers\ClientEventController;
@@ -15,6 +16,8 @@ use App\Http\Controllers\EditorJsMediaController;
 use App\Http\Controllers\EventsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LinkMetadataController;
+use App\Http\Controllers\ClientOrderController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PostCategoryController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductCategoryController;
@@ -60,6 +63,14 @@ Route::get('/events/{id}', [ClientEventController::class, 'show'])->name('client
 
 Route::get('/services', [ClientServicesController::class, 'index'])->name('client.services.index');
 Route::get('/services/{id}', [ClientServicesController::class, 'show'])->name('client.services.show');
+
+Route::get('/cart', [ClientCartController::class, 'index'])->name('client.cart.index');
+Route::post('/cart/add/{id}', [ClientCartController::class, 'add'])->name('client.cart.add');
+Route::post('/cart/update/{id}', [ClientCartController::class, 'update'])->name('client.cart.update');
+Route::delete('/cart/remove/{id}', [ClientCartController::class, 'remove'])->name('client.cart.remove');
+Route::delete('/cart/clear', [ClientCartController::class, 'clear'])->name('client.cart.clear');
+
+Route::post('/orders', [ClientOrderController::class, 'store'])->name('client.orders.store');
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
@@ -144,4 +155,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::post('/upload-image', [EditorJsMediaController::class, 'uploadImage']);
     Route::post('/fetch-image-from-url', [EditorJsMediaController::class, 'fetchImageFromUrl']);
     Route::get('/fetch-link-metadata', [LinkMetadataController::class, 'fetch']);
+
+    Route::get('/orders', [OrderController::class, 'index'])->name('admin.orders.index');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('admin.orders.show');
+    Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('admin.orders.updateStatus');
+    Route::get('/admin/orders/{order}/invoice', [OrderController::class, 'downloadInvoice'])->name('admin.orders.invoice');
 });

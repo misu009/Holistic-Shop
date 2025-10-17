@@ -3,10 +3,10 @@
 @section('title', 'Contact')
 
 @section('content')
-    <section class="contact-section d-flex flex-column align-items-center justify-content-center text-center text-white">
-        <h2 class="mb-5 display-5 fw-bold text-uppercase pb-2" style="color: var(--col1);">FORMULAR DE CONTACT</h2>
+    <section class="contact-section d-flex flex-column align-items-center justify-content-center text-center text-black">
+        <h2 class="mb-5 display-5 fw-bold text-uppercase pb-2">FORMULAR DE CONTACT</h2>
         @if (session('success'))
-            <div class="alert alert-success" role="alert">
+            <div class="alert alert-light" role="alert">
                 {{ session('success') }}
             </div>
         @endif
@@ -16,8 +16,8 @@
                 <div class="col-md-6 d-flex flex-column justify-content-between">
                     <!-- Name Input -->
                     <div class="form-group">
-                        <input type="text" name="name" placeholder="NUMELE TĂU" class="form-control glass-input mb-3"
-                            required value="{{ old('name') }}">
+                        <input type="text" name="name" placeholder="NUMELE TĂU"
+                            class="form-control glass-input  bg-light mb-3" required value="{{ old('name') }}">
                         @error('name')
                             <p class="text-danger">{{ $message }}</p>
                         @enderror
@@ -26,7 +26,7 @@
                     <!-- Email Input -->
                     <div class="form-group">
                         <input type="email" name="email" placeholder="ADRESA DE E-MAIL"
-                            class="form-control glass-input mb-3" required value="{{ old('email') }}">
+                            class="form-control glass-input bg-light mb-3" required value="{{ old('email') }}">
                         @error('email')
                             <p class="text-danger">{{ $message }}</p>
                         @enderror
@@ -35,7 +35,7 @@
                     <!-- Phone Input -->
                     <div class="form-group">
                         <input type="tel" name="phone" placeholder="NUMĂRE DE TELEFON"
-                            class="form-control glass-input" value="{{ old('phone') }}">
+                            class="form-control glass-input bg-light" value="{{ old('phone') }}">
                         @error('phone')
                             <p class="text-danger">{{ $message }}</p>
                         @enderror
@@ -46,7 +46,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <textarea name="message" rows="7" placeholder="Cu ce te putem susține în această etapă a vieții tale?"
-                            class="form-control glass-input">{{ old('message') }}</textarea>
+                            class="form-control glass-input bg-light">{{ old('message') }}</textarea>
                         @error('message')
                             <p class="text-danger">{{ $message }}</p>
                         @enderror
@@ -67,7 +67,7 @@
                 la numarul de telefon
                 <strong>
                     <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $settings->phone_number) }}" target="_blank"
-                        class="text-decoration-none text-white">
+                        class="text-decoration-none text-black">
                         {{ $settings->phone_number ?? 'N/A' }}
                     </a>
                 </strong>
@@ -78,7 +78,7 @@
             @endif
             @if ($settings->email)
                 la adresa de e-mail <a href="mailto:{{ $settings->email }}"
-                    class="text-decoration-none text-white"><strong>{{ $settings->email }}</strong></a>
+                    class="text-decoration-none text-black"><strong>{{ $settings->email }}</strong></a>
             @endif
         </p>
     </section>

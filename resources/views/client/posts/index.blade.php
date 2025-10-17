@@ -3,9 +3,9 @@
 @section('title', 'Blog')
 
 @section('content')
-    <div id="blog-content">
+    <div id="blog-content" class="text-black">
         <div class="container py-5">
-            <h1 class="text-white text-center">Blog</h1>
+            <h1 class="text-center">Blog</h1>
             {{-- First Page Custom Layout --}}
             @if ($posts->currentPage() === 1)
                 <div class="row g-4 align-items-stretch mt-5">

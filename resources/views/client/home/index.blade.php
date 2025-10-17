@@ -5,45 +5,27 @@
 @section('content')
     <div class="homepage">
         <div class="hero-section  fade show">
-            <div class="hero-left">
-                <div class="rounded-container ps-md-5 ps-3">
-                    <div class="d-flex algin justify-content-between">
-                        <div>
-                            <p class="text-white mt-5 fs-1">
-                                {{ $settings->hero_text_1 }}<br>
-                            </p>
-                            <p class="text-white hero-text-2 d-md-block d-none">
-                                {{ $settings->hero_text_2 }}
-                            </p>
-                        </div>
-                        <img height="220px" class="hero-lotus" src="{{ asset('images/client/ellipse-hero.svg') }}"
-                            alt="">
-                    </div>
-                    <div>
-                        <p class="text-white hero-text-2 d-md-none ">
-                            {{ $settings->hero_text_2 }}
-                        </p>
-                        <p class="hero-text-2">
-                            {{ $settings->hero_text_3 }}
-                        </p>
-                    </div>
-                </div>
+            <div class="hero-content h-100 text-left text-black d-flex flex-column align-items-center">
+                <h1 class="text-left col-md-7 col-9 mb-4" style="margin-top: 48vh;">{{ $settings->hero_text_1 }}</h1>
+                <h4 class="text-left col-md-7 pe-5 col-9 mb-4 mt-2">{{ $settings->hero_text_2 }}</h4>
+                <h4 class="text-left col-md-7 col-9 mb-4 mt-2">{{ $settings->hero_text_3 }}</h4>
             </div>
-            <div class="hero-right"></div>
         </div>
 
-        <div class="our-mision mt-5 fade-in mb-5">
-            <div class="container">
-                <div class="our-mision-texts p-5 w-100 d-flex align-items-center contianer" style="flex-direction: column">
+        <x-client.divider />
+
+        <div class="our-mision fade-in pb-5">
+            <div class="container our-mision-content d-flex flex-column">
+                <div class="our-mision-texts p-5 w-100 d-flex align-items-center flex-column">
                     <h2 class="our-mision-title text-center" style="letter-spacing: 2px">MISIUNEA NOASTRA</h2>
                     <p class="mt-3 text-center fs-5">
                         {{ $settings->mission_text }}
                     </p>
                 </div>
-                <div class="our-mision-content container fade-in">
-                    <div class="row align-items-center" style="height: inherit">
+                <div class="container fade-in" style="flex: 1">
+                    <div class="row align-items-center h-100">
                         <div class="d-md-block d-none col-md-4 text-end col-6" style="height: inherit">
-                            <ul class="info-list-left p-1 d-flex align-items-center justify-content-around"
+                            <ul class="info-list-left p-1 d-flex align-items-end justify-content-around"
                                 style="height: inherit; flex-direction: column;">
                                 @if ($settings->mission_bullets)
                                     @foreach ($settings->mission_bullets as $index => $mission_bullet)
@@ -57,7 +39,7 @@
                         </div>
                         <div class="d-none d-md-block col-md-4"></div>
                         <div class="d-md-block d-none col-6 col-md-4 text-start p-1" style="height: inherit">
-                            <ul class="info-list d-flex justify-content-around align-items-center"
+                            <ul class="info-list d-flex justify-content-around align-items-start"
                                 style="height: inherit; flex-direction: column;">
                                 @if ($settings->mission_bullets)
                                     @foreach ($settings->mission_bullets as $index => $mission_bullet)
@@ -88,18 +70,70 @@
             </div>
         </div>
 
+        <x-client.divider />
+
+        <div class="product-section d-flex  align-items-stretch flex-column">
+            <div class="banner-wrapper">
+                <img src="{{ asset('images/client/banner-shop.png') }}" alt="shop banner">
+            </div>
+            <div class="p-5 d-flex flex-grow-1 justify-content-center container text-black  rounded-4 d-flex flex-column">
+                <h2 class="text-uppercase fw-bold mb-4 text-center">
+                    <a href="{{ route('client.shop.index') }}" class="text-black text-decoration-none">
+                        Descoperă Produse
+                    </a>
+                </h2>
+
+                @php
+                    if ($settings->selected_products != null) {
+                        $selectedProducts = \App\Models\Product::whereIn('id', $settings->selected_products)
+                            ->take(4)
+                            ->get();
+                    } else {
+                        $selectedProducts = \App\Models\Product::take(4)->get();
+                    }
+                @endphp
+
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 text-center mt-4">
+                    @foreach ($selectedProducts as $product)
+                        <div class="col d-flex">
+                            <a href="{{ route('client.shop.show', ['slug' => $product->slug]) }}"
+                                class="text-decoration-none w-100">
+                                <div class="card my-gradient-card border-0 bg-transparent d-flex flex-column h-100">
+                                    <div class="position-relative">
+                                        <img class="img-fluid w-100"
+                                            src="{{ !empty($product->media) && isset($product->media[0]) ? asset('storage/' . $product->media[0]->path) : asset('images/client/product-' . ($loop->index + 1) . '.png') }}"
+                                            alt="Product Image"
+                                            style="aspect-ratio: 1/1; object-fit: cover; border-radius: 15px;">
+                                    </div>
+                                    <div class="card-body d-flex flex-column justify-content-end">
+                                        <h5 class="mt-3">{{ $product->name }}</h5>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
+                <p class="text-center mt-4">
+                    Orice produs se creeaza personalizat pe vibratia si energia fiecaruia
+                </p>
+            </div>
+        </div>
+
+        <x-client.divider />
+
         <div class="about-us">
             <div class="container-fluid">
-                <div class="row about-us-content">
+                <div class="row align-items-center">
                     <div class="col-md-7 col-12 about-us-images d-flex justify-content-center align-items-center">
-                        <img src="{{ asset('images/client/about-us-clj.svg') }}" alt="">
+                        <img src="{{ asset('images/client/cine_suntem_noi_1.png') }}" alt="">
                     </div>
-                    <div class="col-md-5 col-12 p-5 flex-column text-white d-flex justify-content-center align-items-start">
+                    <div
+                        class="about-us-content my-gradient-card col-md-5 col-12 p-5 flex-column text-black d-flex justify-content-center align-items-start">
                         <h2>CINE SUNTEM NOI?!</h2>
                         <div class="mt-5 fs-4">
                             <p>{!! $settings->about_text !!}</p>
                         </div>
-                        <a class="btn btn-custom mt-5 text-decoration-none text-reset"
+                        <a class="btn btn-custom mt-5 text-decoration-none text-white"
                             href="{{ route('client.posts.index') }}">
                             CITEȘTE MAI MULTE PE BLOG
                         </a>
@@ -107,6 +141,8 @@
                 </div>
             </div>
         </div>
+
+        <x-client.divider />
 
         @php
             $selectedPosts = \App\Models\Post::whereIn('id', $settings->selected_blog_posts)->take(3)->get();
@@ -139,59 +175,22 @@
                     </div>
 
                     <div class="col-6">
-                        <a href="{{ route('client.posts.index') }}" class="blog-wrapper">
+                        <a href="{{ route('client.posts.index') }}" class="blog-wrapper border-golden">
                             <div class="ratio-box" style="aspect-ratio: 4 / 3;">
                                 <img src="{{ asset('images/client/image-4.png') }}" alt="Blog" class="blog-image">
                                 <div class="blog-overlay"></div>
-                                <div class="blog-content fs-5">VEZI TOATE<br>ARTICOLELE DE<br>PE BLOG</div>
+                                {{-- <div class="blog-content fs-1 text-black">VEZI TOATE <br> ARTICOLELE <br> DE PE BLOG
+                                </div> --}}
+                                <div class="d-md-block d-none blog-content fs-1 text-black">VEZI TOATE <br> ARTICOLELE <br>
+                                    DE PE BLOG
+                                </div>
+                                <div class="d-md-none d-block blog-content fs-5 text-black">VEZI TOATE <br> ARTICOLELE <br>
+                                    DE PE BLOG
+                                </div>
                             </div>
                         </a>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="product-section py-5 d-flex  align-items-center flex-direction-column">
-            <div class="container product-container text-white  rounded-4 d-flex flex-column">
-                <h2 class="text-uppercase fw-bold mb-4 text-center">
-                    <a href="{{ route('client.shop.index') }}" class="text-decoration-none">
-                        Descoperă Produse
-                    </a>
-                </h2>
-
-                @php
-                    if ($settings->selected_products != null) {
-                        $selectedProducts = \App\Models\Product::whereIn('id', $settings->selected_products)
-                            ->take(4)
-                            ->get();
-                    } else {
-                        $selectedProducts = \App\Models\Product::take(4)->get();
-                    }
-                @endphp
-
-                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 text-center mt-4">
-                    @foreach ($selectedProducts as $product)
-                        <div class="col d-flex">
-                            <a href="{{ route('client.shop.show', ['slug' => $product->slug]) }}"
-                                class="text-decoration-none w-100">
-                                <div class="card my-gradient-card border-0 bg-transparent d-flex flex-column h-100">
-                                    <div class="position-relative">
-                                        <img class="img-fluid w-100"
-                                            src="{{ !empty($product->media) && isset($product->media[0]) ? asset('storage/' . $product->media[0]->path) : asset('images/client/product-' . ($loop->index + 1) . '.png') }}"
-                                            alt="Product Image"
-                                            style="aspect-ratio: 1/1; object-fit: cover; border-radius: 15px;">
-                                    </div>
-                                    <div class="card-body d-flex flex-column justify-content-end">
-                                        <h5 class="mt-3 text-white">{{ $product->name }}</h5>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    @endforeach
-                </div>
-                <p class="text-center mt-4">
-                    Orice produs se creeaza personalizat pe vibratia si energia fiecaruia
-                </p>
             </div>
         </div>
     </div>

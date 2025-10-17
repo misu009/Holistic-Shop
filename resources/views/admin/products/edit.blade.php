@@ -38,6 +38,12 @@
                 attributes-param="type=number id=order required step=1 min=0 max=10000000000" name="order"
                 :value="old('order') ?? $product->order" />
             <div>
+                <label for="excerpt">Scurta descriere a produsului</label>
+                <br>
+                <textarea name="excerpt" id="excerpt" rows="4" class="form-textarea ckeditor">{!! old('excerpt') ? old('excerpt') : $product->excerpt !!}</textarea>
+            </div>
+            <br>
+            <div>
                 <label for="description">Descriere produs</label>
                 <br>
                 <textarea name="description" id="description" rows="4" class="form-textarea ckeditor">{!! old('description') ? old('description') : $product->description !!}</textarea>

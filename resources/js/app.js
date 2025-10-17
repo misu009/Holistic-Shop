@@ -215,15 +215,31 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    const postDescription = document.getElementById("description");
+
+    let initialData;
+    try {
+        initialData = JSON.parse(postDescription.value);
+    } catch (e) {
+        // fallback if it's not valid JSON
+        initialData = {
+            time: Date.now(),
+            blocks: postDescription.value
+                ? [
+                      {
+                          type: "paragraph",
+                          data: { text: postDescription.value },
+                      },
+                  ]
+                : [],
+        };
+    }
+
     window.editor = new EditorJS({
         holder: "editorjs",
         tools: editorJsTools,
         autofocus: true,
-        data: window.oldEditorData || {
-            time: Date.now(),
-            blocks: [],
-            version: "2.31.0-rc.7",
-        },
+        data: initialData,
     });
 
     form.addEventListener("submit", async function (e) {

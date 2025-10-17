@@ -18,6 +18,7 @@ class Product extends Model
         "phone_number",
         'user_id',
         'order',
+        "excerpt"
     ];
 
 

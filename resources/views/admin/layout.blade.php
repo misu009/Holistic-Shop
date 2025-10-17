@@ -26,6 +26,7 @@
             ['name' => 'Servicii', 'url' => '/admin/services'],
             ['name' => 'Setari', 'url' => '/admin/settings'],
             ['name' => 'Contact', 'url' => '/admin/contact'],
+            ['name' => 'Comenzi', 'url' => '/admin/orders'],
         ];
     @endphp
 
