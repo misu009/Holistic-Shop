@@ -53,7 +53,7 @@
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('client.cart.index') ? 'active' : '' }}"
                         href="{{ route('client.cart.index') }}">
-                        <i class="bi bi-cart h5"></i>
+                        <i class="bi bi-cart h5"></i>COȘ
                     </a>
                 </li>
             </ul>

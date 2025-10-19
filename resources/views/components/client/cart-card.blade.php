@@ -16,7 +16,7 @@
 
                 <div class="d-flex flex-column pt-3 pb-3 ps-2 pe-2 flex-grow-0 align-items-start align-items-md-end">
                     <p class="text-danger fs-5">PRET</p>
-                    <p class="text-black fs-4">{{ number_format($product['price'], 2) * $product['quantity'] }} LEI</p>
+                    <p class="text-black fs-4">{{ number_format($product['price'] * $product['quantity'], 2) }} LEI</p>
                 </div>
             </div>
 

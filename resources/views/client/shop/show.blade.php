@@ -113,7 +113,8 @@
                                             <img class="img-fluid w-100"
                                                 src="{{ !empty($selectedProduct->media) && isset($selectedProduct->media[0]) ? asset('storage/' . $selectedProduct->media[0]->path) : '' }}"
                                                 alt="Selected Product Image"
-                                                style="aspect-ratio: 1/1; object-fit: cover; border-radius: 15px;">
+                                                style="aspect-ratio: 1/1; object-fit: cover; border-radius: 15px;"
+                                                loading="lazy">
                                         </div>
                                         <div class="card-body d-flex flex-column justify-content-end">
                                             <h5 class="mt-3 text-black">{{ $selectedProduct->name }}</h5>

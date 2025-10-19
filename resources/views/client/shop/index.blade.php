@@ -76,7 +76,7 @@
                                 <div class="product-image position-relative">
                                     <img class="img-fluid w-100"
                                         src="{{ !empty($product->media) && isset($product->media[0]) ? asset('storage/' . $product->media[0]->path) : '' }}"
-                                        alt="{{ $product->name }}">
+                                        alt="{{ $product->name }}" loading="lazy">
                                 </div>
 
                                 <div class="mt-3 flex-grow-1">

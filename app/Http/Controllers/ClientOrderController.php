@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\AdminOrderNotificationMail;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -12,7 +13,6 @@ class ClientOrderController extends Controller
 {
     public function store(Request $request)
     {
-        // dd($request->all());
         $validated = $request->validate([
             'client_type' => 'required|in:natural,legal',
             'full_name' => 'required_if:client_type,natural|string|max:255',
@@ -54,7 +54,9 @@ class ClientOrderController extends Controller
             ]);
         }
 
-        Mail::to('mihaillivadaru2@gmail.com')->send(new AdminOrderNotificationMail($order));
+        $settings = Setting::first();
+        $order->load('items');
+        Mail::to($settings->email)->send(new AdminOrderNotificationMail($order));
 
         session()->forget('cart');
 
