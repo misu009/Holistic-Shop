@@ -127,7 +127,8 @@
                                 <input class="form-check-input" type="checkbox" id="agreeCheckbox"
                                     name="agree_terms" {{ old('agree_terms') ? 'checked' : '' }} required>
                                 <label class="form-check-label" for="agreeCheckbox">
-                                    Transportul pentru România este gratuit, iar pentru restul Europei și Americii sunt
+                                    <span class="text-danger">*</span> Transportul pentru România este gratuit, iar
+                                    pentru restul Europei și Americii sunt
                                     de acord să fiu contactat cu datele de contact oferite.
                                 </label>
                             </div>
@@ -135,7 +136,8 @@
                                 <input class="form-check-input" type="checkbox" id="agreeCheckbox2"
                                     name="agree_terms2" {{ old('agree_terms') ? 'checked' : '' }} required>
                                 <label class="form-check-label" for="agreeCheckbox2">
-                                    Am luat la cunostinta si continutul celor 2 bife de la pasul precedent si sunt de
+                                    <span class="text-danger">*</span> Am luat la cunostinta si continutul celor 2 bife
+                                    de la pasul precedent si sunt de
                                     acord
                                 </label>
                             </div>

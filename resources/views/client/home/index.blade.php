@@ -181,10 +181,10 @@
                                 <div class="blog-overlay"></div>
                                 {{-- <div class="blog-content fs-1 text-black">VEZI TOATE <br> ARTICOLELE <br> DE PE BLOG
                                 </div> --}}
-                                <div class="d-md-block d-none blog-content fs-1 text-black">VEZI TOATE <br> ARTICOLELE <br>
+                                <div class="d-md-block d-none blog-content fs-1 text-white">VEZI TOATE <br> ARTICOLELE <br>
                                     DE PE BLOG
                                 </div>
-                                <div class="d-md-none d-block blog-content fs-5 text-black">VEZI TOATE <br> ARTICOLELE <br>
+                                <div class="d-md-none d-block blog-content fs-5 text-white">VEZI TOATE <br> ARTICOLELE <br>
                                     DE PE BLOG
                                 </div>
                             </div>

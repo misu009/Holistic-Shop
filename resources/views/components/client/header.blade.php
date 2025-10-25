@@ -13,7 +13,7 @@
 
         <!-- collapse -->
         <div class="collapse navbar-collapse bg-light ps-3 ps-md-5" id="mainNavbar">
-            <ul class="navbar-nav ms-auto me-md-5 mb-2 mb-xl-0 text-left">
+            <ul class="navbar-nav ms-auto me-md-5 mb-2 mb-xl-0 align-items-lg-center justify-content-lg-start">
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}"
                         href="{{ route('home') }}">ACASA</a>
@@ -39,7 +39,7 @@
                                 href="{{ route('client.services.index') }}">Servicii</a></li>
                     </ul>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item align-middle">
                     <a class="nav-link {{ request()->routeIs('client.collaborators.index') ? 'active' : '' }}"
                         href="{{ route('client.collaborators.index') }}">ECHIPA NOASTRA</a>
                 </li>
@@ -53,9 +53,25 @@
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('client.cart.index') ? 'active' : '' }}"
                         href="{{ route('client.cart.index') }}">
-                        <i class="bi bi-cart h5"></i>COȘ
+                        <span class="cart-icon position-relative d-inline-block">
+                            <i class="bi bi-cart h5 mb-0" aria-hidden="true"></i>
+
+                            @php
+                                $cartCount = count(session('cart', []));
+                            @endphp
+
+                            @if ($cartCount > 0)
+                                <span
+                                    class="cart-badge position-absolute top-0 start-100 translate-middle badge bg-danger text-white rounded-circle d-flex align-items-center justify-content-center"
+                                    title="{{ $cartCount }} item{{ $cartCount > 1 ? 's' : '' }}">
+                                    {{ $cartCount > 99 ? '99+' : $cartCount }}
+                                </span>
+                            @endif
+                        </span>
                     </a>
                 </li>
+
+
             </ul>
         </div>
     </div>
@@ -87,3 +103,29 @@
         </div>
     </div>
 </div>
+
+<style>
+    /* keep the badge and icon responsive using clamp() */
+    .cart-icon {
+        display: inline-block;
+        line-height: 1;
+    }
+
+    .cart-icon .bi {
+        font-size: clamp(1rem, 2.2vw, 1.25rem);
+    }
+
+    .cart-badge {
+        width: clamp(0.95rem, 2.6vw, 1.5rem);
+        height: clamp(0.95rem, 2.6vw, 1.5rem);
+        font-size: clamp(0.55rem, 1.05vw, 0.85rem);
+        padding: 0;
+        line-height: 1;
+        z-index: 5;
+        transform: translate(0, 0);
+    }
+
+    .cart-icon .cart-badge {
+        top: 0.05rem;
+    }
+</style>

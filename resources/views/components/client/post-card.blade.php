@@ -6,9 +6,9 @@
         <img src="{{ asset('storage/' . $post->preview_image) }}" alt="{{ $post->title }}" class="blog-image">
         <div class="blog-overlay"></div>
         <div class="blog-content">
-            <div class="fw-bold text-black">{{ $post->title }}</div>
+            <div class="fw-bold text-white">{{ $post->title }}</div>
             @if ($showExcerpt)
-                <div class="small mt-1 text-black">{!! Str::limit($post->excerpt, 80) !!}</div>
+                <div class="small mt-1 text-white">{!! Str::limit($post->excerpt, 80) !!}</div>
             @endif
         </div>
     </div>

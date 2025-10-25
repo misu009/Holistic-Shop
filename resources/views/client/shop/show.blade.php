@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <section id="product-show" class="fs-5">
+    <section id="product-snhow" class="fs-5">
         <div class="container py-5">
             <div class="row d-flex">
                 @if (isset($preview))

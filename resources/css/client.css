@@ -250,6 +250,7 @@ ul.info-list-left li::after {
     height: 100%;
     object-fit: cover;
     display: block;
+    filter: brightness(70%);
 }
 
 .blog-overlay {
@@ -260,7 +261,7 @@ ul.info-list-left li::after {
 }
 
 .blog-wrapper:hover .blog-overlay {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .blog-content {
@@ -419,8 +420,8 @@ ul.info-list-left li::after {
 .hero-shop-section {
     position: relative;
     width: 100vw;
-    height: 100vh;
-    background: url("/images/client/shop-banner.png") no-repeat center center;
+    height: 95vh;
+    background: url("/images/client/shop-page-hero.png") no-repeat center center;
     background-size: cover;
 }
 
@@ -455,19 +456,12 @@ ul.info-list-left li::after {
     font-weight: 400;
 }
 #shop-content {
-    background-image: url("/images/client/bg-3.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
+    background-color: var(--col1);
     /* background-attachment: fixed; */
 }
 
 #product-show {
-    background-image: url("/images/client/bg-3.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    /* background-attachment: fixed; */
+    background-color: var(--col1);
 }
 
 .contact-section {
@@ -532,10 +526,7 @@ ul.info-list-left li::after {
 }
 
 #blog-content {
-    background-image: url("/images/client/bg-3.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
+    background-color: var(--col1);
 }
 
 #blog {
@@ -547,10 +538,7 @@ ul.info-list-left li::after {
 }
 
 #event-content {
-    background-image: url("/images/client/bg-2.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
+    background-color: var(--col1);
 }
 
 #event-show {

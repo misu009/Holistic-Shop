@@ -61,6 +61,6 @@ class ClientOrderController extends Controller
         session()->forget('cart');
 
         return redirect()->route('client.cart.index')
-            ->with('success', 'Comanda a fost trimisă cu succes!');
+            ->with('ordered', 'Mulțumim cu recunoștință pt comanda! Fii binecuvântat!');
     }
 }

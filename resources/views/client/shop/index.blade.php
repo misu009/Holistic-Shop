@@ -7,25 +7,26 @@
         <div class="container p-4 d-flex flex-column justify-content-md-around" style="height: inherit">
             <div class="hero-shop-content d-md-block d-flex flex-column justify-content-between">
                 <div>
-                    <div class="text-md-start text-center text-white fs-1">
+                    <div class="text-md-start text-center text-black fs-1">
                         {!! $settings->shop_text_1 !!}
                     </div>
                 </div>
                 <br>
                 <br>
                 <div>
-                    <div class="text-md-start text-center text-white fs-1 pb-5">
+                    <div class="text-md-start text-center text-black fs-1 pb-5">
                         {!! $settings->shop_text_2 !!}
                     </div>
 
                     <a href="#unique-orgonites"
-                        class="d-md-none ms-auto me-auto d-block hero-shop-button text-decoration-none">{{ $settings->shop_text_3 }}</a>
+                        class="d-md-none ms-auto me-auto d-block hero-shop-button text-decoration-none text-black">{{ $settings->shop_text_3 }}</a>
                 </div>
             </div>
             <a href="#unique-orgonites"
-                class="d-none d-md-block hero-shop-button text-decoration-none">{{ $settings->shop_text_3 }}</a>
+                class="d-none d-md-block hero-shop-button text-decoration-none text-black">{{ $settings->shop_text_3 }}</a>
         </div>
     </section>
+    <x-client.divider />
     <div id="shop-content" class="pt-5">
         <div id="unique-orgonites" class="mb-5">
             <div class="container">
@@ -80,7 +81,7 @@
                                 </div>
 
                                 <div class="mt-3 flex-grow-1">
-                                    {{-- <h4 class="product-name fw-bold">{{ $product->name }}</h4> --}}
+                                    <h4 class="product-name fw-bold">{{ $product->name }}</h4>
                                     <p class="product-description " st>
                                         {{ Str::words(strip_tags(html_entity_decode($product['short_description'])), 12, ' ..') }}
                                     </p>

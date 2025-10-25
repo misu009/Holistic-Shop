@@ -14,17 +14,17 @@
                                     <img src="{{ Storage::url($collaborator->picture) }}" class="img-fluid">
                                 </div>
                                 <div class="col-md-9">
-                                    <h2 class="fw-bold text-white">{{ $collaborator->name }}</h2>
-                                    <div class="text-white">
+                                    <h2 class="fw-bold text-black">{{ $collaborator->name }}</h2>
+                                    <div class="text-black">
                                         {!! $collaborator->long_description !!}
                                     </div>
                                     @if ($collaborator->email || $collaborator->phone_number)
-                                        <div class="text-white fs-5">
-                                            <p class="text-white">Date de contact: <br></p>
+                                        <div class="text-black fs-5">
+                                            <p class="text-black">Date de contact: <br></p>
                                             @if ($collaborator->email)
                                                 <p><strong>Email:</strong>
                                                     <a href="mailto:{{ $collaborator->email }}"
-                                                        class="text-decoration-none text-white">
+                                                        class="text-decoration-none text-black">
                                                         {{ $collaborator->email ?? 'N/A' }}
                                                     </a>
                                                 </p>
@@ -32,7 +32,7 @@
                                             @if ($collaborator->phone_number)
                                                 <p><strong>WhatsApp:</strong>
                                                     <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $collaborator->phone_number) }}"
-                                                        target="_blank" class="text-decoration-none text-white">
+                                                        target="_blank" class="text-decoration-none text-black">
                                                         {{ $collaborator->phone_number ?? 'N/A' }}
                                                     </a>
                                                 </p>

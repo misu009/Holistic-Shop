@@ -6,7 +6,10 @@
     <div class="cart mt-5">
         <div class="container p-5">
             <h2 class="text-black">Cosul tau de cumparaturi</h2>
-            @if (count($cart) === 0)
+            @if (Session::get('ordered'))
+                <p class="fs-2 mt-5">{{ Session::get('ordered') }}</p>
+                <a href="{{ route('client.shop.index') }}" class="btn btn-custom btn-lg mt-3">Continua cumparaturile</a>
+            @elseif (count($cart) === 0)
                 <p class="fs-2 mt-5">Cosul tau este gol...</p>
                 <a href="{{ route('client.shop.index') }}" class="btn btn-custom btn-lg mt-3">Continua cumparaturile</a>
             @else
@@ -28,7 +31,7 @@
                     <input class="form-check-input check-condition" type="checkbox" id="check1"
                         @if ($errors->any()) checked @endif>
                     <label class="form-check-label text-black" for="check1">
-                        Sunt de acord cu prelucrarea datelor mele personale conform GDPR
+                        <span class="text-danger">*</span> Sunt de acord cu prelucrarea datelor mele personale conform GDPR
                     </label>
                 </div>
 
@@ -36,7 +39,9 @@
                     <input class="form-check-input check-condition" type="checkbox" id="check2"
                         @if ($errors->any()) checked @endif>
                     <label class="form-check-label text-black" for="check2">
-                        Inteleg ca orgoanele pe care le voi primi sunt personalizate si nu vor fi identice cu cele din poze
+                        <span class="text-danger">*</span> Inteleg ca orgoanele pe care le voi primi sunt personalizate si
+                        nu vor fi identice cu
+                        cele din poze
                     </label>
                 </div>
 

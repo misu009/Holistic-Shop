@@ -15,7 +15,7 @@ class Visit extends Model
 
     public static function visitsLast30DaysUntilNoon()
     {
-        $endDate = now();
+        $endDate = now()->setTime(12, 0, 0);
         $startDate = $endDate->copy()->subDays(29)->startOfDay();
         $startUtc = $startDate->copy()->utc();
         $endUtc = $endDate->copy()->utc();
