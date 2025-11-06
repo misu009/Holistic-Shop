@@ -41,7 +41,7 @@
                         <div class="col-md-3 col-6 mt-3 d-flex justify-content-center">
                             <img class="img-uniques-orgonites"
                                 src="{{ $imagePath ? Storage::url($imagePath) : asset('images/client/shop-' . $i . '.png') }}"
-                                alt="Shop {{ $i }}">
+                                alt="Shop {{ $i }}" loading="lazy">
                         </div>
                     @endforeach
 

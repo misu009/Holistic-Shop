@@ -81,6 +81,7 @@ class CollaboratorController extends Controller
             'short_description' => 'required|string',
             'long_description' => 'required|string',
             'email' => 'nullable|email',
+            'disabled' => 'nullable|boolean',
             'phone_number' => 'nullable|string|regex:/^\+?[0-9]\d{1,14}$/|unique:collaborators,phone_number,' . $collaborator->id,
             'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:8048'
         ]);
@@ -93,7 +94,7 @@ class CollaboratorController extends Controller
             $collaborator->picture = $path;
         }
 
-        $collaborator->update($request->only(['name', 'short_description', 'long_description', 'email', 'phone_number']));
+        $collaborator->update($request->only(['name', 'short_description', 'long_description', 'email', 'phone_number', 'disabled']));
         ActivityLogger::log('Updated a collaborator', 'Collaborator', $collaborator->id);
         return redirect()->route('admin.collaborators.edit', $collaborator->id)->with('success', 'Collaborator updated successfully');
     }

@@ -39,7 +39,7 @@
                     <input class="form-check-input check-condition" type="checkbox" id="check2"
                         @if ($errors->any()) checked @endif>
                     <label class="form-check-label text-black" for="check2">
-                        <span class="text-danger">*</span> Inteleg ca orgoanele pe care le voi primi sunt personalizate si
+                        <span class="text-danger">*</span> Inteleg ca produsele pe care le voi primi sunt personalizate si
                         nu vor fi identice cu
                         cele din poze
                     </label>

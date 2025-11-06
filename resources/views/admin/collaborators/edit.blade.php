@@ -30,6 +30,11 @@
             <x-admin.input label-name="Numar de telefon Colaborator <small class='text-danger'>(optional)</small>"
                 attributes-param="type=tel id=phone_number"
                 value="{{ old('phone_number') ? old('phone_number') : $collaborator->phone_number }}" name="phone_number" />
+            <div>
+                <label for="disabled">Dezactiveaza colaborator (check pentru a dezactiva)</label>
+                <input type="checkbox" name="disabled" id="disabled" value="1"
+                    @if (old('disabled') == 1) checked @elseif ($collaborator->disabled == 1) checked @endif>
+            </div>
             <br>
             <img id="image-preview" src="{{ Storage::url($collaborator->picture) }}">
             <input type="file" id="select-picture" name="picture" accept="image/*">

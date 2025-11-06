@@ -21,7 +21,7 @@
         <div class="container my-4 text-white">
 
             <div class="mb-4">
-                <h3 class="fw-bold">Descriere Servici</h3>
+                <h3 class="fw-bold">Descriere Serviciu</h3>
                 <p>{!! $service->description !!}</p>
             </div>
             <br><br>
