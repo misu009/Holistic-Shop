@@ -12,8 +12,8 @@ class ClientColloboratorController extends Controller
     public function index()
     {
         $settings = Setting::first() ?? new Setting();
-        $paginatedCollaborators = Collaborator::paginate(12);
-        $collaborators = Collaborator::all();
+        $paginatedCollaborators = Collaborator::where('disabled', 0)->paginate(12);
+        $collaborators = Collaborator::where('disabled', 0)->get();
         return view('client.collaborators.index', compact('collaborators', 'paginatedCollaborators', 'settings'));
     }
 }
