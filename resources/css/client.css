@@ -534,11 +534,7 @@ ul.info-list-left li::after {
 }
 
 #event-show {
-    background-image: url("/images/client/bg-2.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: top center;
-    /* background-attachment: fixed; */
+    background-color: var(--col1);
 }
 
 .cart {
