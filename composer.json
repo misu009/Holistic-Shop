@@ -17,6 +17,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "league/iso3166": "^4.3",
+        "predis/predis": "^3.2",
         "spatie/enum": "^3.13"
     },
     "require-dev": {

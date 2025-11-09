@@ -11,14 +11,18 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use \App\Models\Visit;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
 
 class AdminController extends Controller
 {
     public function index()
     {
-        // dd(Session::all());
-        $totalVisits = Visit::visitsLast30DaysUntilNoon();
+        $totalVisits = 0;
+        for ($i = 0; $i < 30; $i++) {
+            $date = now()->subDays($i)->toDateString();
+            $totalVisits += Redis::scard("unique_visitors:{$date}") ?? 0;
+        }
         $postCount = Post::all()->count();
         $userCount = User::all()->count();
         $productCount = Product::all()->count();
