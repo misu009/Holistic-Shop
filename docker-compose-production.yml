@@ -3,24 +3,33 @@
 ###########################
 # Project Name:        Lotus-Retreat
 # Author:              Dobreanu Stefan
-# Description:         
+# Description:         Production Docker Compose with Redis and custom image
 ###########################
 
 services:
   app:
-    image: webdevops/php-nginx:8.3
+    build:
+      context: .
+      dockerfile: Dockerfile.production
+      args:
+        - BUILD_DATE=${BUILD_DATE:-$(date -u +'%Y-%m-%dT%H:%M:%SZ')}
+    image: lotus-retreat-app:latest
     platform: linux/amd64
     container_name: dev_lotus_retreat_app
     working_dir: /app
     volumes:
       - ./:/app
       - ./public:/app/public
+      - ./storage:/app/storage
+      # Cache volumes for faster rebuilds
+      - composer_cache:/root/.composer
+      - npm_cache:/root/.npm
     environment:
       - PHP_DISPLAY_ERRORS=On
-      - PHP_MEMORY_LIMIT=128M
+      - PHP_MEMORY_LIMIT=256M
       - PHP_UPLOAD_MAX_FILESIZE=50M
       - PHP_POST_MAX_SIZE=50M
-      - PHP_MAX_EXECUTION_TIME=30
+      - PHP_MAX_EXECUTION_TIME=60
       - PHP_MAX_INPUT_TIME=60
       - WEB_DOCUMENT_ROOT=/app/public
       - APP_ENV=stage
@@ -43,9 +52,16 @@ services:
     ports:
       - "8834:80"
     depends_on:
-      - redis
+      redis:
+        condition: service_healthy
     networks:
       - lotus_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 40s
 
   redis:
     image: redis:alpine
@@ -57,7 +73,13 @@ services:
       - redis_data:/data
     networks:
       - lotus_network
-    command: redis-server --appendonly yes
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
 
 networks:
   lotus_network:
@@ -66,4 +88,7 @@ networks:
 volumes:
   redis_data:
     driver: local
-
+  composer_cache:
+    driver: local
+  npm_cache:
+    driver: local

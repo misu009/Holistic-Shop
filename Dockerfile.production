@@ -1,0 +1,61 @@
+###########################
+# Dockerfile for Production
+# Project: Lotus-Retreat
+# Author: Dobreanu Stefan
+###########################
+
+FROM webdevops/php-nginx:8.3
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    zip \
+    unzip \
+    nodejs \
+    npm \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Composer dependencies first (for caching)
+# This layer will be cached unless composer files change
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --no-scripts --no-autoloader --optimize-autoloader --prefer-dist
+
+# Install NPM dependencies (for caching)
+# This layer will be cached unless package files change
+COPY package.json package-lock.json ./
+RUN npm ci --silent --prefer-offline --no-audit
+
+# Copy application files
+COPY . .
+
+# Generate optimized autoload files
+RUN composer dump-autoload --no-dev --optimize
+
+# Build frontend assets
+RUN npm run build
+
+# Set permissions
+RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache \
+    && chmod -R 775 /app/storage /app/bootstrap/cache
+
+# Environment configuration
+ENV WEB_DOCUMENT_ROOT=/app/public
+ENV PHP_DISPLAY_ERRORS=On
+ENV PHP_MEMORY_LIMIT=256M
+ENV PHP_UPLOAD_MAX_FILESIZE=50M
+ENV PHP_POST_MAX_SIZE=50M
+ENV PHP_MAX_EXECUTION_TIME=60
+ENV PHP_MAX_INPUT_TIME=60
+
+# Expose port 80
+EXPOSE 80
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
+    CMD curl -f http://localhost/ || exit 1
+

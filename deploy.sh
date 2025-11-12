@@ -66,30 +66,35 @@ fi
 print_success "Git pull completed successfully"
 echo ""
 
-# Step 2: Install/Update Composer dependencies
-print_step "Step 2: Installing/Updating Composer dependencies..."
+# Step 2: Build Docker image with cache
+print_step "Step 2: Building Docker image (this may take a few minutes on first run)..."
 ssh ${SERVER_USER}@${SERVER_HOST} << ENDSSH
     cd ${SERVER_PATH}
-    docker exec ${CONTAINER_NAME} composer install --no-dev --optimize-autoloader
+    docker compose -f ${COMPOSE_FILE} build --build-arg BUILD_DATE=\$(date -u +'%Y-%m-%dT%H:%M:%SZ')
 ENDSSH
-print_success "Composer dependencies updated"
+
+if [ $? -ne 0 ]; then
+    print_error "Failed to build Docker image"
+    exit 1
+fi
+print_success "Docker image built successfully"
 echo ""
 
 # Step 3: Stop existing containers
 print_step "Step 3: Stopping existing containers..."
 ssh ${SERVER_USER}@${SERVER_HOST} << ENDSSH
     cd ${SERVER_PATH}
-    docker-compose -f ${COMPOSE_FILE} down
+    docker compose -f ${COMPOSE_FILE} down
 ENDSSH
 print_success "Containers stopped"
 echo ""
 
 # Step 4: Start containers with new configuration
-print_step "Step 4: Starting containers with new configuration..."
+print_step "Step 4: Starting containers with new image..."
 ssh ${SERVER_USER}@${SERVER_HOST} << ENDSSH
     cd ${SERVER_PATH}
-    docker-compose -f ${COMPOSE_FILE} up -d
-    sleep 5
+    docker compose -f ${COMPOSE_FILE} up -d
+    sleep 10
 ENDSSH
 
 if [ $? -ne 0 ]; then
@@ -142,19 +147,19 @@ ENDSSH
 print_success "Caches cleared and optimized"
 echo ""
 
-# Step 8: Build frontend assets
-print_step "Step 8: Building frontend assets..."
+# Step 8: Verify frontend assets (already built in Docker image)
+print_step "Step 8: Verifying frontend assets..."
 ssh ${SERVER_USER}@${SERVER_HOST} << ENDSSH
     cd ${SERVER_PATH}
-    docker exec ${CONTAINER_NAME} npm install
-    docker exec ${CONTAINER_NAME} npm run build
+    if [ -d "public/build" ]; then
+        echo "Frontend assets are present"
+    else
+        echo "Warning: Frontend assets not found, rebuilding..."
+        docker exec ${CONTAINER_NAME} npm install
+        docker exec ${CONTAINER_NAME} npm run build
+    fi
 ENDSSH
-
-if [ $? -ne 0 ]; then
-    print_warning "NPM build had issues, but continuing..."
-else
-    print_success "Frontend assets built successfully"
-fi
+print_success "Frontend assets verified"
 echo ""
 
 # Step 9: Set proper permissions
