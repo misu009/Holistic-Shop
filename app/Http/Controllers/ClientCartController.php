@@ -77,7 +77,6 @@ class ClientCartController extends Controller
     public function clear()
     {
         session()->forget('cart');
-
         return redirect()->route('cart.index')->with('success', 'Cart cleared!');
     }
 }
