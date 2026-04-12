@@ -11,9 +11,8 @@
                         {!! $settings->shop_text_1 !!}
                     </div>
                 </div>
-                <br>
-                <br>
-                <div>
+                {{-- Swapped multiple <br> tags for standard CSS margin --}}
+                <div class="mt-5">
                     <div class="text-md-start text-center text-black fs-1 pb-5">
                         {!! $settings->shop_text_2 !!}
                     </div>
@@ -26,7 +25,9 @@
                 class="d-none d-md-block hero-shop-button text-decoration-none text-black">{{ $settings->shop_text_3 }}</a>
         </div>
     </section>
+
     <x-client.divider />
+
     <div id="shop-content" class="pt-5">
         <div id="unique-orgonites" class="mb-5">
             <div class="container">
@@ -41,26 +42,26 @@
                         <div class="col-md-3 col-6 mt-3 d-flex justify-content-center">
                             <img class="img-uniques-orgonites"
                                 src="{{ $imagePath ? Storage::url($imagePath) : asset('images/client/shop-' . $i . '.png') }}"
-                                alt="Shop {{ $i }}">
+                                alt="Shop {{ $i }}" loading="lazy" decoding="async">
                         </div>
                     @endforeach
-
                 </div>
-
             </div>
         </div>
 
         <div id="shop-product" class="mt-5 container">
             <div class="mb-4">
-                <form action="{{ route('client.shop.search') }}" method="GET"
+                <form action="{{ route('client.shop.index') }}" method="GET"
                     class="d-flex justify-content-center align-items-center mt-4">
                     <div class="input-group custom-search">
                         <input type="text" name="query"
                             class="form-control border-0 text-start text-light bg-transparent" placeholder="CAUTA AICI"
                             value="{{ request('query') }}" aria-label="Search">
-                        <span class="input-group-text bg-transparent border-0 text-light">
+                        {{-- Made the icon an actual clickable submit button --}}
+                        <button type="submit" class="input-group-text bg-transparent border-0 text-light"
+                            aria-label="Submit search">
                             <i class="bi bi-caret-down-fill"></i>
-                        </span>
+                        </button>
                     </div>
                 </form>
             </div>
@@ -68,22 +69,26 @@
             <h1 class="text-black text-center mb-4">
                 Descopera produsele noastre
             </h1>
+
             <div class="shop-products row row-cols-2 row-cols-md-4 g-4 mt-2">
                 @foreach ($products as $product)
                     <div class="col">
                         <div class="shop-product text-center text-white p-3 h-100 d-flex flex-column">
                             <a href="{{ route('client.shop.show', ['slug' => $product->slug]) }}"
                                 class="text-decoration-none text-white">
-                                <div class="product-image position-relative">
-                                    <img class="img-fluid w-100"
-                                        src="{{ !empty($product->media) && isset($product->media[0]) ? asset('storage/' . $product->media[0]->path) : '' }}"
-                                        alt="{{ $product->name }}" loading="lazy">
+
+                                {{-- Anti-Flicker Image Container --}}
+                                <div class="product-image-container position-relative">
+                                    <img class="product-image-fit img-fluid w-100"
+                                        src="{{ $product->media->first() ? asset('storage/' . $product->media->first()->path) : asset('images/placeholder.png') }}"
+                                        alt="{{ $product->name }}" loading="lazy" decoding="async">
                                 </div>
 
                                 <div class="mt-3 flex-grow-1">
                                     <h4 class="product-name fw-bold">{{ $product->name }}</h4>
-                                    <p class="product-description " st>
-                                        {{ Str::words(strip_tags(html_entity_decode($product['short_description'])), 12, ' ..') }}
+                                    {{-- Fixed typo 'st' here, and used object syntax for short_description --}}
+                                    <p class="product-description">
+                                        {{ Str::words(strip_tags(html_entity_decode($product->short_description)), 12, ' ..') }}
                                     </p>
                                 </div>
 
@@ -99,6 +104,7 @@
             </div>
         </div>
     </div>
+
     <style>
         .custom-search {
             border: 2px solid #E4C994;
@@ -122,9 +128,31 @@
 
         .custom-search .input-group-text {
             color: #E4C994;
-            border: none;
             background: transparent;
         }
-    </style>
 
+        .custom-search button:hover {
+            opacity: 0.8;
+            cursor: pointer;
+        }
+
+        /* --- Image Anti-Flicker CSS --- */
+        .product-image-container {
+            /* Force the box to be a perfect square to reserve space before the image loads */
+            aspect-ratio: 1 / 1;
+            width: 100%;
+            /* Optional: Add a subtle loading skeleton color */
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .product-image-fit {
+            width: 100%;
+            height: 100%;
+            /* Ensure the image fills the square without stretching */
+            object-fit: cover;
+            object-position: center;
+        }
+    </style>
 @endsection

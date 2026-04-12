@@ -9,12 +9,24 @@ use Illuminate\Support\Facades\DB;
 
 class ClientShopController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        // 1. Get the search query if it exists
+        $query = $request->input('query');
+
+        // 2. Build the query
+        $products = Product::orderBy('order')
+            ->when($query, function ($q) use ($query) {
+                $q->where('name', 'like', "%{$query}%");
+            })
+            ->paginate(12)
+            ->withQueryString()
+            ->fragment('shop-product'); // Keeps the ?query=... in the URL when changing pages!
+
+        // 3. Get settings (Notice you had this typed twice in your original index method!)
         $settings = Setting::first() ?? new Setting();
-        $products = Product::orderBy('order')->paginate(12);
-        $settings = Setting::first() ?? new Setting();;
-        return view('client.shop.index', compact('products', 'settings'));
+
+        return view('client.shop.index', compact('products', 'settings', 'query'));
     }
 
     public function show($slug)
@@ -34,17 +46,6 @@ class ClientShopController extends Controller
             ->limit(4)
             ->get();
 
-
-
-
         return view('client.shop.show', compact('product', 'selectedProducts', 'settings'));
-    }
-
-    public function search(Request $request)
-    {
-        $query = $request->input('query');
-        $products = Product::where('name', 'like', '%' . $query . '%')->paginate(12);
-        $settings = Setting::first() ?? new Setting();
-        return view('client.shop.index', compact('products', 'settings', 'query'));
     }
 }

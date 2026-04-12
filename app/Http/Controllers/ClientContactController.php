@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AdminOrderNotificationMail;
+use App\Mail\ContactMessageMail;
 use App\Models\ContactUs;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ClientContactController extends Controller
 {
@@ -33,12 +36,15 @@ class ClientContactController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        ContactUs::create([
+        $message = ContactUs::create([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
             'message' => $request->message,
         ]);
+
+        $settings = Setting::first();
+        Mail::to($settings->email)->send(new ContactMessageMail($message));
 
         return redirect()->back()->with('success', 'Mesajul a fost trimis!');
     }

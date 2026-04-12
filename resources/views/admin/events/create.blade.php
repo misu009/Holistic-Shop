@@ -54,11 +54,10 @@
             <x-admin.input label-name="Pret"
                 attributes-param="type=number id=price required step=0.01 min=0 max=10000000000" name="price" />
             <div>
-                <label for="media">Adauga media pentru eveniment</label>
+                <label for="image">Adauga media pentru eveniment</label>
                 <br>
-                <input type="file" id="media" name="media" accept="image/*" required>
-            </div>
-            <br>
+                <input type="file" id="image" name="image" accept="image/*" required>
+            </div> <br>
             <div>
                 <label for="disabled">Dezactiveaza eveniment (check pentru a dezactiva)</label>
                 <input type="checkbox" name="disabled" id="disabled" value="1"

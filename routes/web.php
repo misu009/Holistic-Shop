@@ -52,7 +52,6 @@ Route::get('/categories/{category}', [ClientPostCategoryController::class, 'show
 Route::get('/collaborators', [ClientColloboratorController::class, 'index'])->name('client.collaborators.index');
 
 Route::get('/shop', [ClientShopController::class, 'index'])->name('client.shop.index');
-Route::get('/shop/search', [ClientShopController::class, 'search'])->name('client.shop.search');
 Route::get('/shop/{slug}', [ClientShopController::class, 'show'])->name('client.shop.show');
 
 Route::get('/contact-us', [ClientContactController::class, 'index'])->name('client.contact.index');

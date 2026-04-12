@@ -13,6 +13,8 @@ use App\Traits\admin\MediaContentTrait;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class PostController extends Controller
 {
@@ -142,7 +144,6 @@ class PostController extends Controller
         return json_encode($data);
     }
 
-
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -154,20 +155,30 @@ class PostController extends Controller
             'preview_image' => 'required|image|mimes:jpeg,png,jpg,webp|max:20048',
             'post_category' => 'required|array',
             'post_category.*' => 'required|exists:post_categories,id',
-            'media.*' => 'nullable|mimes:jpeg,png,jpg,gifjpeg,png,jpg,gif,mp4,mov,avi|max:40480',
+            // Fixed the mimes typo here:
+            'media.*' => 'nullable|mimes:jpeg,png,jpg,gif,mp4,mov,avi|max:40480',
         ]);
 
         $slug = $validated['slug'] ?? Str::slug($validated['title']) . '-' . uniqid();
-        $excerpt = $validated['excerpt'];
-        if (!$excerpt) {
-            $excerpt = $this->getExcerpt($validated['description']);
-        }
+        $excerpt = $validated['excerpt'] ?? $this->getExcerpt($validated['description']);
+
         if ($request->input('action') === 'preview') {
             return $this->previewPost($request);
         }
 
+        // Initialize Image Manager for v3
+        $manager = new ImageManager(new Driver());
+
+        // --- Handle Preview Image Optimization ---
         if ($request->hasFile('preview_image')) {
-            $validated['preview_image'] = $request->file('preview_image')->store('posts/preview_images', 'public');
+            $file = $request->file('preview_image');
+            $filename = 'posts/preview_images/' . uniqid('prev_') . '.webp';
+
+            $img = $manager->read($file);
+            $encoded = $img->scaleDown(width: 800)->toWebp(quality: 80);
+
+            Storage::disk('public')->put($filename, $encoded->toString());
+            $validated['preview_image'] = $filename;
         }
 
         $validated['description'] = $this->moveEditorJsTempImagesToFinal($validated['description']);
@@ -184,9 +195,20 @@ class PostController extends Controller
 
         $post->categories()->attach($request->post_category);
 
+        // --- Handle Gallery Media Optimization ---
         if ($request->hasFile('media')) {
             foreach ($request->file('media') as $media) {
-                $path = $media->store('posts', 'public');
+                // Only process if it's an image (skip videos)
+                if (in_array($media->getMimeType(), ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'])) {
+                    $path = 'posts/' . uniqid('post_') . '.webp';
+                    $img = $manager->read($media);
+                    $encoded = $img->scaleDown(width: 800)->toWebp(quality: 80);
+                    Storage::disk('public')->put($path, $encoded->toString());
+                } else {
+                    // If it's a video, store it normally
+                    $path = $media->store('posts', 'public');
+                }
+
                 $post->media()->create([
                     'path' => $path,
                     'order' => $post->media()->count() + 1,
@@ -195,7 +217,6 @@ class PostController extends Controller
         }
 
         ActivityLogger::log('Created a post', 'Post', $post->id);
-
         return redirect()->route('admin.posts.index')->with('success', 'Post created successfully');
     }
 
@@ -230,36 +251,47 @@ class PostController extends Controller
             'description' => 'required|json',
             'post_category' => 'required|array',
             'post_category.*' => 'required|exists:post_categories,id',
-            'media.*' => 'nullable|mimes:jpeg,png,jpg,gifjpeg,png,jpg,gif,mp4,mov,avi|max:40480',
+            'media.*' => 'nullable|mimes:jpeg,png,jpg,gif,mp4,mov,avi|max:40480',
         ]);
-        $validated['slug'] = $validated['slug'] ?? Str::slug($validated['title']) . '-' . uniqid();
-        if (!$validated['excerpt']) {
-            $validated['excerpt'] = $this->getExcerpt($validated['description']);
-        }
-        $validated['created_by'] = auth()->user()->name;
 
         if ($request->input('action') === 'preview') {
             return $this->previewPost($request, $post);
         }
 
+        $manager = new ImageManager(new Driver());
+
         if ($request->hasFile('preview_image')) {
+            // Delete old one
             if ($post->preview_image && Storage::disk('public')->exists($post->preview_image)) {
                 Storage::disk('public')->delete($post->preview_image);
             }
-            $validated['preview_image'] = $request->file('preview_image')->store('posts/preview_images', 'public');
+
+            $file = $request->file('preview_image');
+            $filename = 'posts/preview_images/' . uniqid('prev_') . '.webp';
+
+            $img = $manager->read($file);
+            $encoded = $img->scaleDown(width: 800)->toWebp(quality: 80);
+
+            Storage::disk('public')->put($filename, $encoded->toString());
+            $validated['preview_image'] = $filename;
         }
 
         $validated['description'] = $this->moveEditorJsTempImagesToFinal($validated['description']);
-
-
         $post->update($validated);
-
         $post->categories()->sync($request->post_category);
 
-        $maxOrder = $post->media()->max('order');
+        $maxOrder = $post->media()->max('order') ?? 0;
         if ($request->hasFile('media')) {
             foreach ($request->file('media') as $media) {
-                $path = $media->store('posts', 'public');
+                if (in_array($media->getMimeType(), ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'])) {
+                    $path = 'posts/' . uniqid('post_') . '.webp';
+                    $img = $manager->read($media);
+                    $encoded = $img->scaleDown(width: 800)->toWebp(quality: 80);
+                    Storage::disk('public')->put($path, $encoded->toString());
+                } else {
+                    $path = $media->store('posts', 'public');
+                }
+
                 $post->media()->create([
                     'path' => $path,
                     'order' => $maxOrder + 1,
@@ -269,10 +301,8 @@ class PostController extends Controller
         }
 
         ActivityLogger::log('Updated a post', 'Post', $post->id);
-
         return redirect()->route('admin.posts.edit', ['post' => $post->id])->with('success', 'Post updated successfully');
     }
-
     public function destroy(Post $post)
     {
         // Delete EditorJS embedded images from JSON
@@ -296,7 +326,6 @@ class PostController extends Controller
                 }
             }
         } catch (\Exception $e) {
-            
         }
 
         // Delete associated media (if any)

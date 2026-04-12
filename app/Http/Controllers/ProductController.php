@@ -14,6 +14,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class ProductController extends Controller
 {
@@ -53,7 +55,7 @@ class ProductController extends Controller
             'order' => 'nullable|integer',
             'product_category' => 'required|array',
             'product_category.*' => 'required|exists:product_categories,id',
-            'media.*' => 'nullable|mimes:jpeg,png,jpg,gifjpeg,png,jpg,gif,mp4,mov,avi|max:40480',
+            'media.*' => 'nullable|mimes:jpeg,png,jpg,gif,jpeg,png,jpg,gif,mp4,mov,avi|max:40480',
         ]);
         $validated['slug'] = $validated['slug'] ?? Str::slug($validated['name']) . '-' . uniqid();
         if ($request->action == 'preview') {
@@ -75,15 +77,22 @@ class ProductController extends Controller
         $product->categories()->attach($request->product_category);
 
         if ($request->hasFile('media')) {
+            $manager = new ImageManager(new Driver());
+
             foreach ($request->file('media') as $media) {
-                $path = $media->store('products', 'public');
+                $filename = 'products/' . uniqid('prod_') . '.webp';
+
+                $image = $manager->read($media);
+                $encodedImage = $image->scaleDown(width: 800)->toWebp(quality: 80);
+
+                Storage::disk('public')->put($filename, $encodedImage->toString());
+
                 $product->media()->create([
-                    'path' => $path,
-                    'order' => $product->media()->count() + 1,
+                    'path' => $filename,
+                    'order' => $product->media()->count() + 1, // Use $maxOrder + 1 for your update() method
                 ]);
             }
         }
-
         return redirect()->route('admin.products.index')->with('success', 'Product created successfully');
     }
 
@@ -111,7 +120,7 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255', Rule::unique('products', 'name')->ignore($product->id)],
-            'slug' => ['nullable', 'string', 'max:255', Rule::unique('products', 'name')->ignore($product->id), 'regex:/^[a-z0-9-]+$/'],
+            'slug' => ['nullable', 'string', 'max:255', Rule::unique('products', 'slug')->ignore($product->id), 'regex:/^[a-z0-9-]+$/'],
             'description' => 'required|max:20050|string',
             'excerpt' => 'required|max:120|string',
             'product_category' => 'required|array',
@@ -120,7 +129,7 @@ class ProductController extends Controller
             'phone' => 'required|string|regex:/^\+?[0-9\s\-]{7,20}$/',
             'email' => 'nullable|email',
             'order' => 'nullable|integer',
-            'media.*' => 'nullable|mimes:jpeg,png,jpg,gifjpeg,png,jpg,gif,mp4,mov,avi|max:40480',
+            'media.*' => 'nullable|mimes:jpeg,png,jpg,gif,jpeg,png,jpg,gif,mp4,mov,avi|max:40480',
         ]);
         $validated['slug'] = $validated['slug'] ?? Str::slug($validated['name']) . '-' . uniqid();
         if ($request->action == 'preview') {
@@ -144,16 +153,22 @@ class ProductController extends Controller
         $maxOrder = $product->media()->max('order');
 
         if ($request->hasFile('media')) {
+            $manager = new ImageManager(new Driver());
+
             foreach ($request->file('media') as $media) {
-                $path = $media->store('products', 'public');
+                $filename = 'products/' . uniqid('prod_') . '.webp';
+
+                $image = $manager->read($media);
+                $encodedImage = $image->scaleDown(width: 800)->toWebp(quality: 80);
+
+                Storage::disk('public')->put($filename, $encodedImage->toString());
+
                 $product->media()->create([
-                    'path' => $path,
-                    'order' => $maxOrder + 1,
+                    'path' => $filename,
+                    'order' => $product->media()->count() + 1, // Use $maxOrder + 1 for your update() method
                 ]);
-                $maxOrder++;
             }
         }
-
         return redirect()->route('admin.products.edit', ['product' => $product->id])->with('success', 'Produs actualizat cu succes');
     }
 
@@ -345,7 +360,7 @@ class ProductController extends Controller
 
         $firstCategory = $product->categories->first();
         $selectedProducts = $firstCategory->products()
-            ->where('name', '!=', $product->title)
+            ->where('name', '!=', $product->name)
             ->take(4)
             ->get();
 
