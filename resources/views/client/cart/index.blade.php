@@ -9,12 +9,12 @@
             @if (Session::get('ordered'))
                 <p class="fs-2 mt-5">{{ Session::get('ordered') }}</p>
                 <a href="{{ route('client.shop.index') }}" class="btn btn-custom btn-lg mt-3">Continua cumparaturile</a>
-            @elseif (count($cart) === 0)
+            @elseif (count($cartItems) === 0)
                 <p class="fs-2 mt-5">Cosul tau este gol...</p>
                 <a href="{{ route('client.shop.index') }}" class="btn btn-custom btn-lg mt-3">Continua cumparaturile</a>
             @else
                 <div class="mb-5">
-                    @foreach ($cart as $item)
+                    @foreach ($cartItems as $item)
                         <x-client.cart-card :product="$item" />
                     @endforeach
                 </div>

@@ -1,38 +1,37 @@
 <div class="d-flex border-golden w-100 bg-white flex-column flex-md-row mt-5 mb-5">
-    <!-- IMAGE -->
     <div class="text-center p-3 d-flex align-items-center justify-content-center">
-        <img src="{{ $product['image'] }}" class="product-image rounded" alt="product image">
+        {{-- Safely grab the first image from the media relationship --}}
+        <img src="{{ $product['product']->media->first() ? asset('storage/' . $product['product']->media->first()->path) : asset('images/placeholder.png') }}" class="product-image rounded" alt="product image">
     </div>
 
-    <!-- INFO -->
     <div class="flex-grow-1">
         <div>
-            <!-- PRODUCT + PRICE -->
             <div class="d-flex flex-column flex-md-row">
                 <div class="d-flex flex-column pt-3 pb-3 ps-2 pe-2 flex-grow-1">
                     <p class="text-danger fs-5">PRODUS</p>
-                    <p class="flex-grow-1 text-black fs-4">{{ $product['name'] }}</p>
+                    {{-- Access the name from the Eloquent Model --}}
+                    <p class="flex-grow-1 text-black fs-4">{{ $product['product']->name }}</p>
                 </div>
 
                 <div class="d-flex flex-column pt-3 pb-3 ps-2 pe-2 flex-grow-0 align-items-start align-items-md-end">
                     <p class="text-danger fs-5">PRET</p>
-                    <p class="text-black fs-4">{{ number_format($product['price'] * $product['quantity'], 2) }} LEI</p>
+                    {{-- We can just use the subtotal we already calculated in the controller! --}}
+                    <p class="text-black fs-4">{{ number_format($product['subtotal'], 2) }} LEI</p>
                 </div>
             </div>
 
-            <!-- DESCRIPTION + QUANTITY CONTROLS + DELETE -->
             <div class="d-flex mt-2 pb-2 align-items-center justify-content-between flex-wrap">
                 <div class="flex-grow-1 ps-2">
                     <p class="mb-0">
-                        {{ Str::words(strip_tags(html_entity_decode($product['short_description'])), 12, ' ..') }}
+                        {{-- Access the short_description (or excerpt) from the Eloquent Model --}}
+                        {{ Str::words(strip_tags(html_entity_decode($product['product']->short_description ?? $product['product']->excerpt)), 12, ' ..') }}
                     </p>
                 </div>
 
-                <!-- Controls block -->
                 <div class="d-flex align-items-center gap-2 ps-2 pe-2">
 
                     @if ($product['quantity'] > 1)
-                        <form action="{{ route('client.cart.update', $product['id']) }}" method="POST"
+                        <form action="{{ route('client.cart.update', $product['product']->id) }}" method="POST"
                             class="d-inline">
                             @csrf
                             <input type="hidden" name="quantity" value="{{ $product['quantity'] - 1 }}">
@@ -40,7 +39,7 @@
                         </form>
                     @else
                         {{-- When qty === 1, clicking - will remove the item --}}
-                        <form action="{{ route('client.cart.remove', $product['id']) }}" method="POST"
+                        <form action="{{ route('client.cart.remove', $product['product']->id) }}" method="POST"
                             class="d-inline">
                             @csrf
                             @method('DELETE')
@@ -52,13 +51,13 @@
                         <span class="fs-5 fw-bold">{{ $product['quantity'] }}</span>
                     </div>
 
-                    <form action="{{ route('client.cart.update', $product['id']) }}" method="POST" class="d-inline">
+                    <form action="{{ route('client.cart.update', $product['product']->id) }}" method="POST" class="d-inline">
                         @csrf
                         <input type="hidden" name="quantity" value="{{ $product['quantity'] + 1 }}">
                         <button type="submit" class="btn qty-btn" aria-label="Increase quantity">+</button>
                     </form>
 
-                    <form action="{{ route('client.cart.remove', $product['id']) }}" method="POST"
+                    <form action="{{ route('client.cart.remove', $product['product']->id) }}" method="POST"
                         class="d-inline ms-2">
                         @csrf
                         @method('DELETE')

@@ -1,0 +1,94 @@
+###########################
+# Project Configuration
+###########################
+# Project Name:        Lotus-Retreat
+# Author:              Dobreanu Stefan
+# Description:         Production Docker Compose with Redis and custom image
+###########################
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.production
+      args:
+        - BUILD_DATE=${BUILD_DATE:-$(date -u +'%Y-%m-%dT%H:%M:%SZ')}
+    image: lotus-retreat-app:latest
+    platform: linux/amd64
+    container_name: dev_lotus_retreat_app
+    working_dir: /app
+    volumes:
+      - ./:/app
+      - ./public:/app/public
+      - ./storage:/app/storage
+      # Cache volumes for faster rebuilds
+      - composer_cache:/root/.composer
+      - npm_cache:/root/.npm
+    environment:
+      - PHP_DISPLAY_ERRORS=On
+      - PHP_MEMORY_LIMIT=256M
+      - PHP_UPLOAD_MAX_FILESIZE=50M
+      - PHP_POST_MAX_SIZE=50M
+      - PHP_MAX_EXECUTION_TIME=60
+      - PHP_MAX_INPUT_TIME=60
+      - WEB_DOCUMENT_ROOT=/app/public
+      - APP_ENV=stage
+      - APP_DEBUG=true
+      - APP_NAME=Lotus-Retreat
+      - APP_KEY=base64:+1N1xTSxhanLlAenE0xEm/JkYIxFpN5xINVFNHPKmr8=
+      - DB_CONNECTION=mysql
+      - DB_HOST=192.168.1.133
+      - DB_PORT=3306
+      - DB_DATABASE=dev_lotusretreat_ro
+      - DB_USERNAME=root
+      - DB_PASSWORD=Hypeneboss2024@-
+      - REDIS_HOST=redis
+      - REDIS_PASSWORD=null
+      - REDIS_PORT=6379
+      - CACHE_DRIVER=redis
+      - SESSION_DRIVER=redis
+      - REDIS_CLIENT=predis
+    restart: always
+    ports:
+      - "8834:80"
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - lotus_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 40s
+
+  redis:
+    image: redis:alpine
+    container_name: dev_lotus_retreat_redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - lotus_network
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+networks:
+  lotus_network:
+    driver: bridge
+
+volumes:
+  redis_data:
+    driver: local
+  composer_cache:
+    driver: local
+  npm_cache:
+    driver: local

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\AdminOrderNotificationMail;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -40,20 +41,34 @@ class ClientOrderController extends Controller
             return redirect()->back()->with('error', 'Coșul este gol.');
         }
 
-        $total = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']);
+        $productIds = array_keys($cart);
 
+        $realProducts = Product::whereIn('id', $productIds)->get()->keyBy('id');
+
+        $total = 0;
+        $orderItemsData = [];
+
+        foreach ($cart as $productId => $quantity) {
+            $realProduct = $realProducts->get($productId);
+
+            if (!$realProduct) continue;
+
+            $currentPrice = $realProduct->price;
+
+            $total += ($currentPrice * $quantity);
+
+            $orderItemsData[] = [
+                'product_id' => $productId,
+                'product_name' => $realProduct->name,
+                'quantity' => $quantity,
+                'price' => $currentPrice,
+            ];
+        }
         $order = Order::create([...$validated, 'total' => $total]);
 
-        foreach ($cart as $productId => $item) {
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $productId,
-                'product_name' => $item['name'],
-                'quantity' => $item['quantity'],
-                'price' => $item['price'],
-            ]);
+        foreach ($orderItemsData as $itemData) {
+            $order->items()->create($itemData); // Assumes you have an items() relationship on Order
         }
-
         $settings = Setting::first();
         $order->load('items');
         Mail::to($settings->email)->send(new AdminOrderNotificationMail($order));
@@ -61,6 +76,6 @@ class ClientOrderController extends Controller
         session()->forget('cart');
 
         return redirect()->route('client.cart.index')
-            ->with('ordered', 'Mulțumim cu recunoștință pt comanda! Fii binecuvântat!');
+            ->with('ordered', 'Mulțumim cu recunoștință pentru comanda! Fii binecuvântat!');
     }
 }

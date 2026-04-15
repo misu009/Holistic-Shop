@@ -16,6 +16,7 @@ class Collaborator extends Model
         'email',
         'phone_number',
         'picture',
+        'disabled',
     ];
 
     public function events()

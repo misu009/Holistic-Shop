@@ -11,54 +11,65 @@ class ClientCartController extends Controller
 {
     public function index()
     {
-        $cart = session()->get('cart', []);
-        $total = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']);
-        $settings = Setting::first() ?? new Setting();
-        $countries = collect((new ISO3166())->all())->pluck('name', 'alpha2');
-        return view('client.cart.index', compact('cart', 'total', 'settings', 'countries'));
-    }
-    public function add(Request $request, $id)
-    {
-        $product = Product::findOrFail($id);
+        // 1. Get the "skinny" cart [product_id => quantity]
         $cart = session()->get('cart', []);
 
-        if (isset($cart[$id])) {
-            $cart[$id]['quantity']++;
-        } else {
-            $cart[$id] = [
-                'id' => $product->id,
-                'name' => $product->name,
-                'price' => $product->price,
-                'quantity' => 1,
-                'image' => !empty($product->media) && isset($product->media[0]) ? asset('storage/' . $product->media[0]->path) : null,
-                'short_description' => $product->excerpt ?? '',
+        // 2. Fetch fresh products from the database
+        $products = Product::with('media')->whereIn('id', array_keys($cart))->get();
+
+        $total = 0;
+        $cartItems = [];
+
+        // 3. Build the cart array for the view using real-time database data
+        foreach ($products as $product) {
+            $quantity = $cart[$product->id];
+            $total += $product->price * $quantity;
+
+            $cartItems[] = [
+                'product' => $product,
+                'quantity' => $quantity,
+                'subtotal' => $product->price * $quantity
             ];
+        }
+
+        $settings = Setting::first() ?? new Setting();
+        $countries = collect((new ISO3166())->all())->pluck('name', 'alpha2');
+
+        // Pass $cartItems instead of the raw session $cart
+        return view('client.cart.index', compact('cartItems', 'total', 'settings', 'countries'));
+    }
+
+    public function add(Request $request, $id)
+    {
+        // Just verify the product exists before adding
+        Product::findOrFail($id);
+
+        $cart = session()->get('cart', []);
+
+        // Only store the quantity linked to the ID
+        if (isset($cart[$id])) {
+            $cart[$id]++;
+        } else {
+            $cart[$id] = 1;
         }
 
         session()->put('cart', $cart);
 
-        // Redirect back to product page with success message
-        return redirect()->back()->with('success', 'Product added to cart!');
+        return redirect()->back()->with('success', 'Produs adăugat în coș!');
     }
 
-    /**
-     * Update a product quantity.
-     */
     public function update(Request $request, $id)
     {
         $cart = session()->get('cart', []);
 
         if (isset($cart[$id])) {
-            $cart[$id]['quantity'] = max(1, (int)$request->quantity);
+            $cart[$id] = max(1, (int)$request->quantity);
             session()->put('cart', $cart);
         }
 
-        return redirect()->route('client.cart.index')->with('success', 'Cart updated successfully!');
+        return redirect()->route('client.cart.index')->with('success', 'Coș actualizat cu succes!');
     }
 
-    /**
-     * Remove a single product from the cart.
-     */
     public function remove($id)
     {
         $cart = session()->get('cart', []);
@@ -68,16 +79,14 @@ class ClientCartController extends Controller
             session()->put('cart', $cart);
         }
 
-        return redirect()->route('client.cart.index')->with('success', 'Product removed from cart!');
+        return redirect()->route('client.cart.index')->with('success', 'Produs șters din coș!');
     }
 
-    /**
-     * Clear the entire cart.
-     */
     public function clear()
     {
         session()->forget('cart');
 
-        return redirect()->route('cart.index')->with('success', 'Cart cleared!');
+        // FIXED BUG: Your original code said 'cart.index', but it should be 'client.cart.index'
+        return redirect()->route('client.cart.index')->with('success', 'Coșul a fost golit!');
     }
 }

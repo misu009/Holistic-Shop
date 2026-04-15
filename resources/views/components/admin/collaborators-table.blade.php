@@ -7,7 +7,7 @@
                 <th scope="col">Scurta Descriere</th>
                 <th scope="col">Email</th>
                 <th scope="col">Telefon</th>
-                <th scope="col">Actualizat la</th>
+                <th scope="col">Disponibilitate</th>
                 <th scope="col">Actions</th>
             </tr>
         </thead>
@@ -27,7 +27,7 @@
                     <td>{{ isset($collaborator->email) ? $collaborator->email : 'No email set..' }}</td>
                     <td>{{ isset($collaborator->phone_number) ? $collaborator->phone_number : 'No phone number set..' }}
                     </td>
-                    <td>{{ $collaborator->updated_at }}</td>
+                    <td> {{ $collaborator->disabled == 1 ? '🚫' : '✅' }} </td>
                     <td>
                         <div class="d-flex justify-content-center">
                             <form class="m-1" action="{{ route('admin.collaborators.edit', $collaborator->id) }}">
