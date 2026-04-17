@@ -9,11 +9,10 @@
 
         @if ($page->is_system)
             <div class="alert alert-warning mb-4">
-                <i class="bi bi-shield-lock"></i> Aceasta este o pagină de sistem. Titlul și statusul sunt protejate, dar
-                poți edita conținutul textului.
+                <i class="bi bi-shield-lock"></i> Aceasta este o pagină de sistem. Titlul este protejat, dar poți edita
+                conținutul și vizibilitatea paginii.
             </div>
         @endif
-
         <form action="{{ route('admin.pages.update', $page->slug) }}" method="POST" class="bg-white p-4 rounded shadow-sm">
             @csrf
             @method('PUT')
@@ -24,14 +23,14 @@
                 value="{{ $page->title }}" />
 
             <div class="mb-3 form-check form-switch mt-3">
+                {{-- REMOVED the 'disabled' attribute --}}
                 <input class="form-check-input" type="checkbox" role="switch" id="is_active" name="is_active"
-                    {{ $page->is_active ? 'checked' : '' }} {{ $page->is_system ? 'disabled' : '' }}>
-                <label class="form-check-label fw-bold" for="is_active">Vizibil pe site (Activ)</label>
-                @if ($page->is_system)
-                    <input type="hidden" name="is_active" value="1"> {{-- Ensures it stays active if disabled --}}
-                @endif
-            </div>
+                    {{ $page->is_active ? 'checked' : '' }}>
 
+                <label class="form-check-label fw-bold" for="is_active">Vizibil pe site (Activ)</label>
+
+                {{-- REMOVED the hidden input field --}}
+            </div>
             <div class="mt-4">
                 <label class="fw-bold mb-2">Conținut Pagină</label>
                 <textarea name="content" id="content" rows="15" class="form-textarea ckeditor-media">{!! old('content', $page->content) !!}</textarea>

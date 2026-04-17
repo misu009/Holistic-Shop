@@ -50,31 +50,30 @@ class PageController extends Controller
 
     public function update(Request $request, Page $page)
     {
-        // Validation logic
         $rules = [
             'content' => 'nullable|string',
         ];
 
-        // Only validate/allow title changes for non-system pages
+        // Title remains protected for system pages to keep URLs stable
         if (!$page->is_system) {
             $rules['title'] = 'required|string|max:255';
         }
 
         $request->validate($rules);
 
-        // Protect core identity of System Pages (TOS, Return Policy)
+        // Update title ONLY if it's a custom page
         if (!$page->is_system) {
             $page->title = $request->title;
-            $page->is_active = $request->has('is_active');
         }
 
-        // Content is always editable (so you can update the actual text of the TOS)
+        // CONTROL RETURNED: Update active status for ALL pages
+        $page->is_active = $request->has('is_active');
+
         $page->content = $request->input('content');
         $page->save();
 
         return redirect()->route('admin.pages.index')->with('success', 'Pagina a fost actualizată.');
     }
-
     public function destroy(Page $page)
     {
         if ($page->is_system) {
