@@ -9,12 +9,15 @@
     @vite(['resources/css/app.css', 'resources/css/client.css', 'resources/js/client.js'])
 </head>
 
-<body>
+{{-- 1. Add these classes to the body --}}
+
+<body class="d-flex flex-column min-vh-100">
     <header>
         @include('components.client.header')
     </header>
 
-    <main>
+    {{-- 2. Add flex-grow-1 to the main tag --}}
+    <main class="flex-grow-1">
         @yield('content')
     </main>
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\ProductCategory;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -11,22 +12,25 @@ class ClientShopController extends Controller
 {
     public function index(Request $request)
     {
-        // 1. Get the search query if it exists
-        $query = $request->input('query');
+        $settings = Setting::first() ?? new Setting();
+        $categories = ProductCategory::paginate(12);
+        return view('client.shop.index', compact('categories', 'settings'));
+    }
 
-        // 2. Build the query
-        $products = Product::orderBy('order')
+    public function category(Request $request, $id)
+    {
+        $settings = Setting::first() ?? new Setting();
+        $category = ProductCategory::findOrFail($id);
+        $query = $request->input('query');
+        $products = $category->products()
+            ->orderBy('order')
             ->when($query, function ($q) use ($query) {
                 $q->where('name', 'like', "%{$query}%");
             })
             ->paginate(12)
             ->withQueryString()
-            ->fragment('shop-product'); // Keeps the ?query=... in the URL when changing pages!
-
-        // 3. Get settings (Notice you had this typed twice in your original index method!)
-        $settings = Setting::first() ?? new Setting();
-
-        return view('client.shop.index', compact('products', 'settings', 'query'));
+            ->fragment('shop-product');
+        return view('client.shop.category', compact('category', 'products', 'settings', 'query'));
     }
 
     public function show($slug)

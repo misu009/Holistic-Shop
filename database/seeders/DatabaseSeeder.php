@@ -2,67 +2,69 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Page;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
-    public function run(): void
-    {
-        \App\Models\User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@lotus.com',
-            'password' => bcrypt('12345'),
-            'picture' => '/users/dlsanjkd.jpeg',
-        ]);
+	public function run(): void
+	{
+		// 1. Create standard data
+		\App\Models\User::factory()->create([
+			'name' => 'Test User',
+			'email' => 'test@lotus.com',
+			'password' => bcrypt('12345'),
+			'picture' => '/users/dlsanjkd.jpeg',
+		]);
 
-        \App\Models\User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@lotus.com',
-            'password' => bcrypt(value: '12345'),
-            'picture' => '/users/dasfasfa.jpeg',
-        ]);
+		\App\Models\User::factory()->create([
+			'name' => 'Admin',
+			'email' => 'admin@lotus.com',
+			'password' => bcrypt('12345'),
+			'picture' => '/users/dasfasfa.jpeg',
+		]);
 
-        \App\Models\User::factory(2)->create();
-        \App\Models\PostCategory::factory(2)->create();
-        \App\Models\Post::factory(20)->withPostCategory()->create();
-        \App\Models\ProductCategory::factory(2)->create();
-        \App\Models\Product::factory(15)->withProductCategory()->create();
-        \App\Models\Collaborator::factory(20)->create();
-        \App\Models\Events::factory(20)->withCollaborators()->create();
-        \App\Models\Services::factory(20)->withCollaborators()->create();
+		\App\Models\User::factory(2)->create();
+		\App\Models\PostCategory::factory(2)->create();
+		\App\Models\Post::factory(20)->withPostCategory()->create();
+		\App\Models\ProductCategory::factory(2)->create();
+		\App\Models\Product::factory(15)->withProductCategory()->create();
+		\App\Models\Collaborator::factory(20)->create();
+		\App\Models\Events::factory(20)->withCollaborators()->create();
+		\App\Models\Services::factory(20)->withCollaborators()->create();
 
-        DB::table('settings')->insert([
-            'hero_text_1' => 'Welcome to Lotus',
-            'hero_text_2' => 'Your one-stop solution for all needs',
-            'hero_text_3' => 'Quality, Service, and Innovation',
-            'shop_text_1' => 'Shop with us for the best products',
-            'shop_text_2' => 'Discover our wide range of offerings',
-            'shop_text_3' => 'Personalizeaza-ti energia acum!',
-            'event_text_1' => 'Join us for exciting events and offers',
-            'mission_text' => 'Our mission is to provide the best service to our customers.',
-            'mission_bullets' => json_encode([
-                'Quality products',
-                'Fast delivery',
-                'Customer satisfaction',
-                'Innovative solutions',
-                'Affordable prices',
-                'Eco-friendly options',
-                'Strong customer support',
-                'Continuous improvement'
-            ]),
-            'about_text' => 'We are a company dedicated to innovation and customer service.',
-            'selected_blog_posts' => json_encode([1, 2, 3]), // Example post IDs
-            'selected_products' => json_encode([1, 2, 3, 4]), // Example product IDs
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-            'footer_text' => '© 2025 Lotus. All rights reserved.',
-        ]);
-    }
+		DB::table('settings')->insert([
+			'hero_text_1' => 'Welcome to Lotus',
+			'hero_text_2' => 'Your one-stop solution for all needs',
+			'hero_text_3' => 'Quality, Service, and Innovation',
+			'shop_text_1' => 'Shop with us for the best products',
+			'shop_text_2' => 'Discover our wide range of offerings',
+			'shop_text_3' => 'Personalizeaza-ti energia acum!',
+			'event_text_1' => 'Join us for exciting events and offers',
+			'mission_text' => 'Our mission is to provide the best service to our customers.',
+			'mission_bullets' => json_encode([
+				'Quality products',
+				'Fast delivery',
+				'Customer satisfaction',
+				'Innovative solutions',
+				'Affordable prices',
+				'Eco-friendly options',
+				'Strong customer support',
+				'Continuous improvement'
+			]),
+			'about_text' => 'We are a company dedicated to innovation and customer service.',
+			'selected_blog_posts' => json_encode([1, 2, 3]),
+			'selected_products' => json_encode([1, 2, 3, 4]),
+			'created_at' => Carbon::now(),
+			'updated_at' => Carbon::now(),
+			'footer_text' => '© 2025 Lotus. All rights reserved.',
+		]);
+
+		$this->call([
+			PageSeeder::class,
+			// You should eventually do this for your Settings too! e.g., SettingSeeder::class
+		]);
+	}
 }

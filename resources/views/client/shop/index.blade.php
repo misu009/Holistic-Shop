@@ -11,7 +11,6 @@
                         {!! $settings->shop_text_1 !!}
                     </div>
                 </div>
-                {{-- Swapped multiple <br> tags for standard CSS margin --}}
                 <div class="mt-5">
                     <div class="text-md-start text-center text-black fs-1 pb-5">
                         {!! $settings->shop_text_2 !!}
@@ -49,110 +48,88 @@
             </div>
         </div>
 
-        <div id="shop-product" class="mt-5 container">
-            <div class="mb-4">
-                <form action="{{ route('client.shop.index') }}" method="GET"
-                    class="d-flex justify-content-center align-items-center mt-4">
-                    <div class="input-group custom-search">
-                        <input type="text" name="query"
-                            class="form-control border-0 text-start text-light bg-transparent" placeholder="CAUTA AICI"
-                            value="{{ request('query') }}" aria-label="Search">
-                        {{-- Made the icon an actual clickable submit button --}}
-                        <button type="submit" class="input-group-text bg-transparent border-0 text-light"
-                            aria-label="Submit search">
-                            <i class="bi bi-caret-down-fill"></i>
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <h1 class="text-black text-center mb-4">
-                Descopera produsele noastre
+        <div id="shop-categories" class="mt-5 container mb-5">
+            <h1 class="text-black text-center mb-5">
+                Descopera Categoriile Noastre
             </h1>
 
-            <div class="shop-products row row-cols-2 row-cols-md-4 g-4 mt-2">
-                @foreach ($products as $product)
+            <div class="row row-cols-1 row-cols-md-3 g-4 mt-2">
+                @foreach ($categories as $category)
                     <div class="col">
-                        <div class="shop-product text-center text-white p-3 h-100 d-flex flex-column">
-                            <a href="{{ route('client.shop.show', ['slug' => $product->slug]) }}"
-                                class="text-decoration-none text-white">
+                        {{-- CLEAN WHITE & GOLDEN CARD --}}
+                        <div class="category-card-clean bg-white text-center p-4 h-100 d-flex flex-column shadow-sm">
+                            <a href="{{ route('client.shop.category', ['id' => $category->id]) }}"
+                                class="text-decoration-none text-black d-flex flex-column h-100">
 
-                                {{-- Anti-Flicker Image Container --}}
-                                <div class="product-image-container position-relative">
+                                <div class="product-image-container mb-3">
                                     <img class="product-image-fit img-fluid w-100"
-                                        src="{{ $product->media->first() ? asset('storage/' . $product->media->first()->path) : asset('images/placeholder.png') }}"
-                                        alt="{{ $product->name }}" loading="lazy" decoding="async">
+                                        src="{{ $category->picture ? asset('storage/' . $category->picture) : asset('images/placeholder.png') }}"
+                                        alt="{{ $category->name }}" loading="lazy" decoding="async">
                                 </div>
 
-                                <div class="mt-3 flex-grow-1">
-                                    <h4 class="product-name fw-bold">{{ $product->name }}</h4>
-                                    {{-- Fixed typo 'st' here, and used object syntax for short_description --}}
-                                    <p class="product-description">
-                                        {{ Str::words(strip_tags(html_entity_decode($product->short_description)), 12, ' ..') }}
+                                <div class="flex-grow-1 mt-2">
+                                    {{-- Uses a dark golden/brown hue for the title --}}
+                                    <h3 class="fw-bold" style="color: #5b2b12;">{{ $category->name }}</h3>
+                                    <p class="small text-muted mt-2">
+                                        {{ Str::words(strip_tags(html_entity_decode($category->description)), 15, ' ..') }}
                                     </p>
                                 </div>
 
-                                <h3 class="fw-bold">{{ number_format($product->price, 2) }} LEI</h3>
+                                <div class="mt-auto pt-3">
+                                    {{-- Using your exact golden button class --}}
+                                    <span class="btn btn-custom w-100">Vezi Produsele</span>
+                                </div>
                             </a>
                         </div>
                     </div>
                 @endforeach
             </div>
 
-            <div class="d-flex justify-content-center mt-4">
-                <x-client.pagination :paginator="$products" />
+            <div class="d-flex justify-content-center mt-5">
+                <x-client.pagination :paginator="$categories" />
             </div>
         </div>
     </div>
 
     <style>
-        .custom-search {
-            border: 2px solid #E4C994;
-            border-radius: 2px;
-            max-width: 600px;
-            width: 100%;
-            background: transparent;
+        /* --- Clean White & Golden Card Styles --- */
+        .category-card-clean {
+            border-radius: 15px;
+            /* A subtle golden border outline */
+            border: 1px solid #e0c27b;
+            transition: all 0.3s ease;
         }
 
-        .custom-search .form-control {
-            background-color: transparent;
-            color: #E4C994;
-            border: none;
-            box-shadow: none;
+        .category-card-clean:hover {
+            transform: translateY(-8px);
+            /* Soft golden glowing shadow on hover */
+            box-shadow: 0 15px 25px rgba(185, 110, 46, 0.15) !important;
+            /* Border gets darker gold on hover */
+            border-color: #b96e2e;
         }
 
-        .custom-search .form-control::placeholder {
-            color: #E4C994;
-            opacity: 1;
-        }
-
-        .custom-search .input-group-text {
-            color: #E4C994;
-            background: transparent;
-        }
-
-        .custom-search button:hover {
-            opacity: 0.8;
-            cursor: pointer;
-        }
-
-        /* --- Image Anti-Flicker CSS --- */
+        /* --- Image Styles --- */
         .product-image-container {
-            /* Force the box to be a perfect square to reserve space before the image loads */
             aspect-ratio: 1 / 1;
             width: 100%;
-            /* Optional: Add a subtle loading skeleton color */
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
+            /* Very light grey background for the image holding area */
+            background-color: #f8f9fa;
+            border-radius: 8px;
             overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .product-image-fit {
             width: 100%;
             height: 100%;
-            /* Ensure the image fills the square without stretching */
             object-fit: cover;
             object-position: center;
+            transition: transform 0.5s ease;
+        }
+
+        /* Subtle zoom effect on the image when hovering over the card */
+        .category-card-clean:hover .product-image-fit {
+            transform: scale(1.05);
         }
     </style>
 @endsection

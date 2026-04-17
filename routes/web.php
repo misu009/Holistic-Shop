@@ -18,6 +18,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LinkMetadataController;
 use App\Http\Controllers\ClientOrderController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostCategoryController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductCategoryController;
@@ -52,7 +53,8 @@ Route::get('/categories/{category}', [ClientPostCategoryController::class, 'show
 Route::get('/collaborators', [ClientColloboratorController::class, 'index'])->name('client.collaborators.index');
 
 Route::get('/shop', [ClientShopController::class, 'index'])->name('client.shop.index');
-Route::get('/shop/{slug}', [ClientShopController::class, 'show'])->name('client.shop.show');
+Route::get('/shop/category/{id}', [ClientShopController::class, 'category'])->name('client.shop.category');
+Route::get('/shop/product/{slug}', [ClientShopController::class, 'show'])->name('client.shop.show');
 
 Route::get('/contact-us', [ClientContactController::class, 'index'])->name('client.contact.index');
 Route::post('/contact-us', [ClientContactController::class, 'store'])->name('client.contact.store');
@@ -70,6 +72,14 @@ Route::delete('/cart/remove/{id}', [ClientCartController::class, 'remove'])->nam
 Route::delete('/cart/clear', [ClientCartController::class, 'clear'])->name('client.cart.clear');
 
 Route::post('/orders', [ClientOrderController::class, 'store'])->name('client.orders.store');
+
+// Add this near the bottom of your client routes so it doesn't conflict with core routes like /shop
+Route::get('/p/{slug}', function ($slug) {
+    $page = \App\Models\Page::where('slug', $slug)->where('is_active', true)->firstOrFail();
+    $settings = \App\Models\Setting::first() ?? new \App\Models\Setting();
+
+    return view('client.pages.show', compact('page', 'settings'));
+})->name('client.pages.show');
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
@@ -159,4 +169,6 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('admin.orders.show');
     Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('admin.orders.updateStatus');
     Route::get('/admin/orders/{order}/invoice', [OrderController::class, 'downloadInvoice'])->name('admin.orders.invoice');
+
+    Route::resource('pages', PageController::class)->names('admin.pages')->except(['show']);
 });

@@ -34,9 +34,9 @@ class ClientCartController extends Controller
 
         $settings = Setting::first() ?? new Setting();
         $countries = collect((new ISO3166())->all())->pluck('name', 'alpha2');
-
+        $tosPage = \App\Models\Page::where('slug', 'termeni-si-conditii')->first();
         // Pass $cartItems instead of the raw session $cart
-        return view('client.cart.index', compact('cartItems', 'total', 'settings', 'countries'));
+        return view('client.cart.index', compact('cartItems', 'total', 'settings', 'countries', 'tosPage'));
     }
 
     public function add(Request $request, $id)
