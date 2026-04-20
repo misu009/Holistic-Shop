@@ -7,65 +7,65 @@ use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+// ADD THESE TWO IMPORTS:
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class ProductCategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $categories = ProductCategory::paginate(15);
+        $categories = ProductCategory::orderBy('order', 'asc')->paginate(15);
         return view('admin.shop-categories.index', ['categories' => $categories]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('admin.shop-categories.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:50|unique:product_categories,name',
             'description' => 'required|max:2050|string',
             'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'order' => 'nullable|integer|min:0'
         ]);
+
         $productCategory = $request->only(['name', 'description']);
-        if ($request->has('picture')) {
-            $path = $request->file('picture')->store('shop-categories', 'public');
-            $productCategory['picture'] = $path;
+        $productCategory['order'] = $request->input('order') ?? 99999;
+
+        if ($request->hasFile('picture')) {
+            $manager = new ImageManager(new Driver());
+            $filename = 'shop-categories/' . uniqid('cat_') . '.webp';
+
+            // Read, Resize, and Encode to WebP
+            $image = $manager->read($request->file('picture'));
+            $encodedImage = $image->scaleDown(width: 800)->toWebp(quality: 85); // Increased quality slightly for crispness
+
+            // Save to public disk
+            Storage::disk('public')->put($filename, $encodedImage->toString());
+
+            $productCategory['picture'] = $filename;
         }
+
         $productCategory = ProductCategory::create($productCategory);
         ActivityLogger::log('Added a new product category', 'ProductCategory', $productCategory->id);
+
         return redirect()->route('admin.shop-categories.index')->with('success', 'Product category created successfully');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(ProductCategory $productCategory)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(ProductCategory $productCategory)
     {
         return view('admin.shop-categories.edit', ['productCategory' => $productCategory]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, ProductCategory $productCategory)
     {
         $validated = $request->validate([
@@ -73,40 +73,52 @@ class ProductCategoryController extends Controller
                 'required',
                 'string',
                 'max:50',
-                Rule::unique('post_categories', 'name')->ignore($productCategory->id)
+                // FIXED: Changed 'post_categories' to 'product_categories'
+                Rule::unique('product_categories', 'name')->ignore($productCategory->id)
             ],
             'description' => 'required|max:2050|string',
             'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'order' => 'nullable|integer|min:0'
         ]);
 
         $productCategory->name = $validated['name'];
         $productCategory->description = $validated['description'];
+        $productCategory->order = $request->input('order') ?? 99999;
 
-        if ($request->has('picture')) {
-            $picturePath = 'public/' . $productCategory->picture;
-            if (Storage::exists($picturePath)) {
-                Storage::delete($picturePath);
+        if ($request->hasFile('picture')) {
+            // 1. Delete the old picture safely
+            if ($productCategory->picture && Storage::disk('public')->exists($productCategory->picture)) {
+                Storage::disk('public')->delete($productCategory->picture);
             }
-            $path = $request->file('picture')->store('shop-categories', 'public');
-            $productCategory->picture = $path;
+
+            // 2. Process the new picture
+            $manager = new ImageManager(new Driver());
+            $filename = 'shop-categories/' . uniqid('cat_') . '.webp';
+
+            $image = $manager->read($request->file('picture'));
+            $encodedImage = $image->scaleDown(width: 800)->toWebp(quality: 85);
+
+            Storage::disk('public')->put($filename, $encodedImage->toString());
+
+            $productCategory->picture = $filename;
         }
 
         $productCategory->save();
         ActivityLogger::log('Updated a product category', 'ProductCategory', $productCategory->id);
+
         return redirect()->route('admin.shop-categories.edit', ['productCategory' => $productCategory->id])->with('success', 'Category updated with success');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(ProductCategory $productCategory)
     {
-        $picturePath = 'public/' . $productCategory->picture;
-        if (Storage::exists($picturePath)) {
-            Storage::delete($picturePath);
+        // Safer deletion logic to match how we save it
+        if ($productCategory->picture && Storage::disk('public')->exists($productCategory->picture)) {
+            Storage::disk('public')->delete($productCategory->picture);
         }
+
         $productCategory->delete();
         ActivityLogger::log('Deleted a product category', 'ProductCategory', $productCategory->id);
+
         return back()->with('success', 'Product category deleted successfully');
     }
 }

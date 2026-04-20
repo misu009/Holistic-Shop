@@ -11,6 +11,9 @@
             @method('PUT')
             <x-admin.input label-name="Nume categorie" attributes-param='type=text id=name required'
                 value="{!! old('name') ? old('name') : $productCategory->name !!}" name="name" />
+            <x-admin.input label-name="Pozitie categorie (default 99999)"
+                attributes-param="type=number id=order step=1 min=0 max=100000000" value="{!! old('order') ? old('order') : $productCategory->order !!}"
+                name="order" />
             <div>
                 <label for="description">Descriere Categorie</label>
                 <br>

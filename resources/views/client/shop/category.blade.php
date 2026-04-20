@@ -8,7 +8,7 @@
         <div class="container text-center mb-5">
             <h1 class="text-black fw-bold display-4">{{ $category->name }}</h1>
             <p class="text-black fs-5 mx-auto" style="max-width: 800px;">
-                {{ $category->description }}
+                {!! $category->description !!}
             </p>
             <a href="{{ route('client.shop.index') }}" class="btn btn-outline-dark mt-3">
                 &larr; Inapoi la toate categoriile
@@ -26,8 +26,8 @@
                     <div class="input-group custom-search shadow-sm">
                         {{-- Removed 'text-light' so dark text shows on the white background --}}
                         <input type="text" name="query" class="form-control border-0 text-start bg-transparent"
-                            placeholder="CAUTA IN {{ strtoupper($category->name) }}" value="{{ request('query') }}"
-                            aria-label="Search">
+                            placeholder="CAUTA IN {{ mb_strtoupper($category->name, 'UTF-8') }}"
+                            value="{{ request('query') }}" aria-label="Search">
                         {{-- Removed 'text-light' --}}
                         <button type="submit" class="input-group-text bg-transparent border-0" aria-label="Submit search">
                             <i class="bi bi-search"></i> {{-- Changed icon to a standard search magnifying glass, optional! --}}

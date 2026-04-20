@@ -24,22 +24,26 @@
                         {{-- Basic Info Section --}}
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Nume complet</label>
-                            <input type="text" name="full_name" class="form-control" value="{{ old('full_name') }}" required>
+                            <input type="text" name="full_name" class="form-control" value="{{ old('full_name') }}"
+                                required>
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Email</label>
-                            <input type="email" name="email" class="form-control" value="{{ old('email') }}" required>
+                            <input type="email" name="email" class="form-control" value="{{ old('email') }}"
+                                required>
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Telefon</label>
-                            <input type="text" name="phone" class="form-control" value="{{ old('phone') }}" required>
+                            <input type="text" name="phone" class="form-control" value="{{ old('phone') }}"
+                                required>
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Data nașterii</label>
-                            <input type="date" name="birth_date" class="form-control" value="{{ old('birth_date') }}" required>
+                            <input type="date" name="birth_date" class="form-control" value="{{ old('birth_date') }}"
+                                required>
                         </div>
 
                         {{-- Tip Client Radio - Placed after Basic Info --}}
@@ -48,7 +52,8 @@
                             <div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="client_type" id="natural"
-                                        value="natural" {{ old('client_type', 'natural') === 'natural' ? 'checked' : '' }} required>
+                                        value="natural"
+                                        {{ old('client_type', 'natural') === 'natural' ? 'checked' : '' }} required>
                                     <label class="form-check-label" for="natural">Persoană Fizică</label>
                                 </div>
                                 <div class="form-check form-check-inline">
@@ -64,19 +69,23 @@
                             <div class="row g-3 border-start border-3 border-warning ps-3 my-2">
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Denumire firmă</label>
-                                    <input type="text" name="company_name" class="form-control" value="{{ old('company_name') }}">
+                                    <input type="text" name="company_name" class="form-control"
+                                        value="{{ old('company_name') }}">
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">CUI / CIF</label>
-                                    <input type="text" name="company_cui" class="form-control" value="{{ old('company_cui') }}">
+                                    <input type="text" name="company_cui" class="form-control"
+                                        value="{{ old('company_cui') }}">
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Reg. Com.</label>
-                                    <input type="text" name="company_reg" class="form-control" value="{{ old('company_reg') }}">
+                                    <input type="text" name="company_reg" class="form-control"
+                                        value="{{ old('company_reg') }}">
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Adresa firmă</label>
-                                    <input type="text" name="company_address" class="form-control" value="{{ old('company_address') }}">
+                                    <input type="text" name="company_address" class="form-control"
+                                        value="{{ old('company_address') }}">
                                 </div>
                             </div>
                         </div>
@@ -87,7 +96,8 @@
                             <select name="country" class="form-select" required>
                                 <option value="">Selectează țara</option>
                                 @foreach ($countries ?? [] as $code => $name)
-                                    <option value="{{ $code }}" {{ old('country') == $code ? 'selected' : '' }}>
+                                    <option value="{{ $code }}"
+                                        {{ old('country') == $code ? 'selected' : '' }}>
                                         {{ $name }}
                                     </option>
                                 @endforeach
@@ -96,17 +106,20 @@
 
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Oraș</label>
-                            <input type="text" name="city" class="form-control" value="{{ old('city') }}" required>
+                            <input type="text" name="city" class="form-control" value="{{ old('city') }}"
+                                required>
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Adresă livrare</label>
-                            <input type="text" name="address" class="form-control" value="{{ old('address') }}" required>
+                            <input type="text" name="address" class="form-control" value="{{ old('address') }}"
+                                required>
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Cod poștal</label>
-                            <input type="text" name="postal_code" class="form-control" value="{{ old('postal_code') }}" required>
+                            <input type="text" name="postal_code" class="form-control"
+                                value="{{ old('postal_code') }}" required>
                         </div>
 
                         <div class="col-12">
@@ -116,23 +129,36 @@
 
                         {{-- Agreements Section --}}
                         <div class="col-12 mt-3">
-                            <div class="form-check">
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="soulCustomizationCheck"
+                                    name="wants_soul_customization" value="1"
+                                    {{ old('wants_soul_customization') ? 'checked' : '' }}>
+                                <label class="form-check-label" for="soulCustomizationCheck">
+                                    (opțional) Îmi doresc ca produsul să fie personalizat, făcut special pentru energia
+                                    mea,
+                                    conform datei mele de naștere și a nevoilor sufletului meu.
+                                </label>
+                            </div>
+
+                            <div class="form-check mb-2">
                                 <input class="form-check-input" type="checkbox" id="agreeCheckbox"
                                     name="agree_terms" {{ old('agree_terms') ? 'checked' : '' }} required>
                                 <label class="form-check-label" for="agreeCheckbox">
                                     <span class="text-danger">*</span> Transportul pentru România este gratuit, iar
-                                    pentru restul Europei și Americii sunt
-                                    de acord să fiu contactat cu datele de contact oferite.
+                                    pentru restul Europei și Americii sunt de acord să fiu contactat cu datele de
+                                    contact oferite.
                                 </label>
                             </div>
+
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="agreeCheckbox2"
                                     name="agree_terms2" {{ old('agree_terms2') ? 'checked' : '' }} required>
                                 <label class="form-check-label" for="agreeCheckbox2">
-                                    <span class="text-danger">*</span> Am luat la cunostinta si continutul celor 2 bife
-                                    de la pasul precedent si sunt de acord
+                                    <span class="text-danger">*</span> Am luat la cunoștință și conținutul celor 2 bife
+                                    de la pasul precedent și sunt de acord.
                                 </label>
                             </div>
+
                             @error('agree_terms')
                                 <div class="text-danger small mt-1">{{ $message }}</div>
                             @enderror
@@ -169,7 +195,7 @@
         function toggleLegalFields() {
             const selected = document.querySelector('input[name="client_type"]:checked').value;
             legalFields.style.display = selected === 'legal' ? 'block' : 'none';
-            
+
             // Toggle required attribute for legal fields when visible
             const inputs = legalFields.querySelectorAll('input');
             inputs.forEach(input => {

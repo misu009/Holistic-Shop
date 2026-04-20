@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+// ADD THESE IMPORTS FOR INTERVENTION IMAGE v3:
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class PostCategoryController extends Controller
 {
@@ -37,16 +40,26 @@ class PostCategoryController extends Controller
             'name' => 'required|string|max:50|unique:post_categories,name',
             'slug' => 'required|max:50|string',
             'description' => 'required|max:2050|string',
-            'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
         $postCategory = $request->only(['name', 'slug', 'description']);
-        if ($request->has('picture')) {
-            $path = $request->file('picture')->store('post-categories', 'public');
-            $postCategory['picture'] = $path;
+
+        if ($request->hasFile('picture')) {
+            $manager = new ImageManager(new Driver());
+            $filename = 'post-categories/' . uniqid('pcat_') . '.webp';
+
+            $image = $manager->read($request->file('picture'));
+            $encodedImage = $image->scaleDown(width: 800)->toWebp(quality: 85);
+
+            Storage::disk('public')->put($filename, $encodedImage->toString());
+
+            $postCategory['picture'] = $filename;
         }
+
         $category = PostCategory::create($postCategory);
         ActivityLogger::log('Created a post category', 'PostCategory', $category->id);
+
         return redirect()->route('admin.blog-categories.index')->with('success', 'Blog category created successfully');
     }
 
@@ -80,25 +93,31 @@ class PostCategoryController extends Controller
             ],
             'slug' => 'required|max:50|string',
             'description' => 'required|max:2050|string',
-            'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
-
 
         $postCategory->name = $validated['name'];
         $postCategory->slug = $validated['slug'];
         $postCategory->description = $validated['description'];
 
-        if ($request->has('picture')) {
-            if ($postCategory->picture && Storage::exists('public/' . $postCategory->picture)) {
-                Storage::delete('public/' . $postCategory->picture);
+            if ($postCategory->picture && Storage::disk('public')->exists($postCategory->picture)) {
+                Storage::disk('public')->delete($postCategory->picture);
             }
 
-            $path = $request->file('picture')->store('post-categories', 'public');
-            $postCategory->picture = $path;
+            $manager = new ImageManager(new Driver());
+            $filename = 'post-categories/' . uniqid('pcat_') . '.webp';
+
+            $image = $manager->read($request->file('picture'));
+            $encodedImage = $image->scaleDown(width: 800)->toWebp(quality: 85);
+
+            Storage::disk('public')->put($filename, $encodedImage->toString());
+
+            $postCategory->picture = $filename;
         }
 
         $postCategory->save();
         ActivityLogger::log('Updated a post category', 'PostCategory', $postCategory->id);
+
         return redirect()->route('admin.blog-categories.edit', ['postCategory' => $postCategory->id])->with('success', 'Category updated with success');
     }
 
@@ -107,11 +126,14 @@ class PostCategoryController extends Controller
      */
     public function destroy(PostCategory $postCategory)
     {
-        if ($postCategory->picture && Storage::exists('public/' . $postCategory->picture)) {
-            Storage::delete('public/' . $postCategory->picture);
+        // Safely delete the image from the public disk
+        if ($postCategory->picture && Storage::disk('public')->exists($postCategory->picture)) {
+            Storage::disk('public')->delete($postCategory->picture);
         }
+
         $postCategory->delete();
         ActivityLogger::log('Deleted a post category', 'PostCategory', $postCategory->id);
+
         return redirect()->route('admin.blog-categories.index')->with('success', 'Category deleted with success');
     }
 }

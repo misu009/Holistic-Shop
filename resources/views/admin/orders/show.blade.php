@@ -50,8 +50,12 @@
                     </div>
                 @endif
 
-                <div class="row">
-                    <div class="col-md-12"><strong>Note:</strong> {{ $order->notes ?? '—' }}</div>
+                <div class="row mb-2">
+                    <div class="col-md-6"><strong>Note:</strong> {{ $order->notes ?? '—' }}</div>
+                    @if ($order->wants_soul_customization)
+                        <div class="col-md-6"><i class="bi bi-stars"></i> <strong>Atenție!</strong> Clientul a solicitat
+                            personalizarea produsului conform energiei și datei de naștere.</div>
+                    @endif
                 </div>
             </div>
         </div>

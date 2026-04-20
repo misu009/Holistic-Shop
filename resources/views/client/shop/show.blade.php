@@ -4,6 +4,8 @@
     {{ $product->name }} - {{ number_format($product->price, 0) }} LEI | {{ config('app.name') }}
 @endsection
 
+@section('meta_description', $product->excerpt)
+
 @section('content')
     <section id="product-snhow" class="fs-5">
         <div class="container py-5">

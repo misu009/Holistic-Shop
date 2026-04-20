@@ -86,7 +86,7 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                     aria-label="Închide"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" data-nosnippet>
                 <p><strong>Nume cont:</strong> {{ $settings->data ?? 'N/A' }}</p>
                 <p><strong>IBAN:</strong> {{ $settings->iban ?? 'N/A' }}</p>
                 <p><strong>Email:</strong>

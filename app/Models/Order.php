@@ -20,6 +20,7 @@ class Order extends Model
         'address',
         'postal_code',
         'notes',
+        'wants_soul_customization',
         'total',
         'status',
         'client_type',

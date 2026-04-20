@@ -97,6 +97,19 @@
             <p>{{ $order->notes }}</p>
         @endif
 
+        @if ($order->wants_soul_customization)
+            <div class="section-title" style="color: #b96e2e; font-weight: bold;">✨ Personalizare Energetică Solicitată
+            </div>
+            <p style="background: #fcf8f5; padding: 10px; border-left: 4px solid #b96e2e; margin-top: 5px;">
+                Clientul a bifat opțiunea: <em>"Îmi doresc ca produsul să fie personalizat, făcut special pentru energia
+                    mea, conform datei mele de naștere și a nevoilor sufletului meu."</em>
+            </p>
+            @if ($order->client_type === 'natural' && $order->birth_date)
+                <p><strong>Nu uitați să verificați Data Nașterii:</strong>
+                    {{ \Carbon\Carbon::parse($order->birth_date)->format('d.m.Y') }}</p>
+            @endif
+        @endif
+
         <div class="section-title">Produse comandate</div>
         <table>
             <thead>

@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="@yield('meta_description', 'Bine ai venit Acasă! Un loc unde Dumnezeu, creația si iubirea ne ajuta sa ne reamintim cine suntem cu adevărat. Spațiu pentru eliberare, inspirație și produse handmade.')">
     <title>@yield('title')</title>
     <link rel="icon" href="{{ asset('images/client/navbar-logo-2.png') }}" type="image/png">
     @vite(['resources/css/app.css', 'resources/css/client.css', 'resources/js/client.js'])

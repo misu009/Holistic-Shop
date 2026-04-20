@@ -9,6 +9,8 @@
         <form action="{{ route('admin.shop-categories.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <x-admin.input label-name="Nume categorie" attributes-param="type=text id=name required" name="name" />
+            <x-admin.input label-name="Pozitie categorie (default 99999)"
+                attributes-param="type=number id=order step=1 min=0 max=100000000" name="order" />
             <div>
                 <label for="description">Descriere categorie</label>
                 <br>

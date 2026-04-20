@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use App\Models\Product;
 use App\Models\Post;
 use App\Models\Events;
+use App\Models\ProductCategory; // <-- ADDED IMPORT
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
@@ -13,7 +14,6 @@ use Illuminate\Support\Str;
 
 class OptimizeExistingImages extends Command
 {
-    // Added {--dry} to the signature
     protected $signature = 'images:optimize {--dry : Run the script without modifying files or database}';
     protected $description = 'Rescale and convert all existing images to WebP';
 
@@ -32,20 +32,26 @@ class OptimizeExistingImages extends Command
 
         // 1. Products (800px)
         $this->info('Processing Product Gallery...');
-        $this->processMedia(\App\Models\Product::all(), 800, $manager, $disk);
+        $this->processMedia(Product::all(), 800, $manager, $disk);
 
         // 2. Posts (800px)
         $this->info('Processing Post Gallery...');
-        $this->processMedia(\App\Models\Post::all(), 800, $manager, $disk);
+        $this->processMedia(Post::all(), 800, $manager, $disk);
 
         // 3. Events (1920px)
         $this->info('Processing Event Media...');
-        $this->processMedia(\App\Models\Events::all(), 1920, $manager, $disk);
+        $this->processMedia(Events::all(), 1920, $manager, $disk);
 
         // 4. Post Preview Images
         $this->info('Processing Post Preview Images...');
         foreach (Post::whereNotNull('preview_image')->get() as $post) {
             $this->optimizeSingleColumn($post, 'preview_image', 800, $manager, $disk);
+        }
+
+        // 5. Product Category Images <-- NEW SECTION
+        $this->info('Processing Product Category Images...');
+        foreach (ProductCategory::whereNotNull('picture')->get() as $category) {
+            $this->optimizeSingleColumn($category, 'picture', 800, $manager, $disk);
         }
 
         $this->info($this->isDryRun ? 'Dry run complete. No files were harmed.' : 'Optimization complete!');
@@ -62,7 +68,6 @@ class OptimizeExistingImages extends Command
                     $newPath = Str::replaceLast(pathinfo($oldPath, PATHINFO_EXTENSION), 'webp', $oldPath);
 
                     try {
-                        // We still "read" the image to verify it's not corrupt
                         $img = $manager->read($disk->path($oldPath));
                         $encoded = $img->scaleDown(width: $width)->toWebp(quality: 80);
 
@@ -96,13 +101,14 @@ class OptimizeExistingImages extends Command
                 if (!$this->isDryRun) {
                     $disk->put($newPath, $encoded->toString());
                     $model->update([$column => $newPath]);
-                    $disk->delete($oldPath);
+                    // Double check so we don't accidentally delete if the names matched somehow
+                    if ($oldPath !== $newPath) $disk->delete($oldPath);
                     $this->line("<info>Optimized Column:</info> $newPath");
                 } else {
                     $this->line("<comment>[DRY RUN]</comment> Would optimize column: $oldPath -> $newPath");
                 }
             } catch (\Exception $e) {
-                $this->error("Failed Column: $oldPath");
+                $this->error("Failed Column: $oldPath - " . $e->getMessage());
             }
         }
     }

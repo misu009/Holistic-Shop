@@ -13,7 +13,7 @@ class ClientShopController extends Controller
     public function index(Request $request)
     {
         $settings = Setting::first() ?? new Setting();
-        $categories = ProductCategory::paginate(12);
+        $categories = ProductCategory::orderBy('order', 'asc')->paginate(12);
         return view('client.shop.index', compact('categories', 'settings'));
     }
 

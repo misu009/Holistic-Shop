@@ -4,6 +4,7 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Nume</th>
+                <th scope="col">Poziție</th>
                 <th scope="col">Actualizat la</th>
                 <th scope="col">Actiuni</th>
             </tr>
@@ -13,6 +14,7 @@
                 <tr>
                     <td>{{ $categories->firstItem() + $index }}</td>
                     <td>{{ $category->name }}</td>
+                    <td><span class="badge bg-secondary">{{ $category->order }}</span></td>
                     <td>{{ $category->updated_at }}</td>
                     </td>
                     <td>

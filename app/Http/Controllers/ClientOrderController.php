@@ -35,6 +35,7 @@ class ClientOrderController extends Controller
             'agree_terms.accepted' => 'Trebuie să bifezi checkboxurile pentru a trimite comanda.',
             'agree_terms2.accepted' => 'Trebuie să bifezi checkboxurile pentru a trimite comanda.',
         ]);
+        $validated['wants_soul_customization'] = $request->has('wants_soul_customization');
 
         $cart = session()->get('cart', []);
         if (empty($cart)) {
