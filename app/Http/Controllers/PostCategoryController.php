@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-// ADD THESE IMPORTS FOR INTERVENTION IMAGE v3:
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
@@ -100,10 +99,13 @@ class PostCategoryController extends Controller
         $postCategory->slug = $validated['slug'];
         $postCategory->description = $validated['description'];
 
+        if ($request->hasFile('picture')) {
+            // Safely delete the old picture
             if ($postCategory->picture && Storage::disk('public')->exists($postCategory->picture)) {
                 Storage::disk('public')->delete($postCategory->picture);
             }
 
+            // Process the new picture
             $manager = new ImageManager(new Driver());
             $filename = 'post-categories/' . uniqid('pcat_') . '.webp';
 
@@ -114,7 +116,6 @@ class PostCategoryController extends Controller
 
             $postCategory->picture = $filename;
         }
-
         $postCategory->save();
         ActivityLogger::log('Updated a post category', 'PostCategory', $postCategory->id);
 
